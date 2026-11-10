@@ -7,7 +7,7 @@
    3.  Layout helpers and section headings
    4.  Small components (buttons, chips, labels, bullet lists)
    5.  Header and navigation
-   6.  Intro
+   6.  Page backdrop and intro
    7.  Moving bands (tape and banner)
    8.  Sections (about, projects, experience, skills, contact)
    9.  Footer and back-to-top
@@ -39,16 +39,18 @@
   --body:      #E2E2E2;
   --dim:       #A9A9A9;
   --mute:      #A9A9A9;
-  --red:       #FF1E1E;
-  --red-2:     #EB1220;
+  --red:       #FF2626;
+  --red-2:     #F5141F;
   --on-red:    #000000;
   --green:     #39FF14;
 
   --grid:      rgba(255, 255, 255, 0.07);
-  --glow:      rgba(255, 30, 30, 0.45);
+  --glow:      rgba(255, 38, 38, 0.55);
   --glow-soft: rgba(255, 30, 30, 0.10);
   --spot:      rgba(255, 30, 30, 0.16);
-  --plasma-o:  0.42;
+  --plasma-o:  0.36;
+  --track-o:   0.16;
+  --pulse-o:   0.85;
   --shadow:    none;
   --lift:      0 0 0 1px var(--red), 0 18px 50px -12px var(--glow);
 
@@ -76,16 +78,18 @@
   --body:      #1E1F25;
   --dim:       #4A4D57;
   --mute:      #747885;
-  --red:       #CC0000;
-  --red-2:     #A30010;
+  --red:       #D90000;
+  --red-2:     #B00010;
   --on-red:    #FFFFFF;
   --green:     #0A7D00;
 
   --grid:      rgba(8, 8, 12, 0.09);
-  --glow:      rgba(204, 0, 0, 0.32);
+  --glow:      rgba(217, 0, 0, 0.34);
   --glow-soft: rgba(204, 0, 0, 0.07);
   --spot:      rgba(204, 0, 0, 0.09);
-  --plasma-o:  0.30;
+  --plasma-o:  0.26;
+  --track-o:   0.22;
+  --pulse-o:   0.5;
   --shadow:    0 1px 2px rgba(15, 18, 30, 0.06), 0 16px 36px -18px rgba(15, 18, 30, 0.32);
 
   color-scheme: light;
@@ -104,16 +108,18 @@
     --body:      #1E1F25;
     --dim:       #4A4D57;
     --mute:      #747885;
-    --red:       #CC0000;
-    --red-2:     #A30010;
+    --red:       #D90000;
+    --red-2:     #B00010;
     --on-red:    #FFFFFF;
     --green:     #0A7D00;
 
     --grid:      rgba(8, 8, 12, 0.09);
-    --glow:      rgba(204, 0, 0, 0.32);
+    --glow:      rgba(217, 0, 0, 0.34);
     --glow-soft: rgba(204, 0, 0, 0.07);
     --spot:      rgba(204, 0, 0, 0.09);
-    --plasma-o:  0.30;
+    --plasma-o:  0.26;
+    --track-o:   0.22;
+    --pulse-o:   0.5;
     --shadow:    0 1px 2px rgba(15, 18, 30, 0.06), 0 16px 36px -18px rgba(15, 18, 30, 0.32);
 
     color-scheme: light;
@@ -550,15 +556,20 @@ main > section {
 .is-light .theme-toggle .sun  { display: none; }
 
 
-/* ---------- 6. Intro ---------- */
+/* ---------- 6. Page backdrop and intro ---------- */
 
-#top {
+/* The backdrop is fixed to the screen and sits behind everything (z-index: -1),
+   so the same moving background carries through every section. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
   overflow: hidden;
-  padding-block: clamp(2.5rem, 5vw, 4.25rem) clamp(5rem, 10vw, 8rem);
+  pointer-events: none;
 }
 
 /* Faint grid that fades out towards the edges */
-#top::before {
+.backdrop::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -566,48 +577,93 @@ main > section {
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 56px 56px;
-  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 60% 30%, #000 15%, transparent 78%);
-  mask-image: radial-gradient(ellipse 85% 75% at 60% 30%, #000 15%, transparent 78%);
-  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 55% 35%, #000 20%, transparent 85%);
+  mask-image: radial-gradient(ellipse 90% 80% at 55% 35%, #000 20%, transparent 85%);
 }
 
-/* Three blurred blobs of colour that drift slowly behind the intro */
-.plasma {
+/* A little film grain so large dark areas don't look flat */
+.backdrop::after {
+  content: "";
   position: absolute;
   inset: 0;
-  filter: blur(90px);
-  opacity: var(--plasma-o);
-  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.09;
+  mix-blend-mode: overlay;
 }
 
-.plasma span {
+/* Three blurred blobs of colour. Each one drifts on its own (the animation),
+   and also travels across the screen as the page scrolls (--p goes from 0 to 1). */
+.blob {
   position: absolute;
-  width: min(38vw, 540px);
+  width: clamp(300px, 44vw, 620px);
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--red);
+  filter: blur(110px);
+  opacity: var(--plasma-o);
+  transition: translate 0.6s ease-out;
   animation: drift 18s ease-in-out infinite alternate;
 }
 
-.plasma span:nth-child(1) { top: -14%; right: -6%; }
+.blob:nth-child(1) {
+  top: -16%;
+  right: -8%;
+  translate: calc(var(--p, 0) * -38vw) calc(var(--p, 0) * 78vh);
+}
 
-.plasma span:nth-child(2) {
-  bottom: -30%;
-  left: 22%;
-  width: min(30vw, 420px);
+.blob:nth-child(2) {
+  bottom: -26%;
+  left: -10%;
+  width: clamp(260px, 36vw, 500px);
   background: var(--red-2);
-  opacity: 0.7;
+  translate: calc(var(--p, 0) * 52vw) calc(var(--p, 0) * -70vh);
   animation-duration: 24s;
   animation-delay: -8s;
 }
 
-.plasma span:nth-child(3) {
-  top: 28%;
-  left: -12%;
-  width: min(22vw, 320px);
-  opacity: 0.5;
+.blob:nth-child(3) {
+  top: 34%;
+  left: 38%;
+  width: clamp(200px, 26vw, 360px);
+  opacity: calc(var(--plasma-o) * 0.55);
+  translate: calc(var(--p, 0) * -30vw) calc(var(--p, 0) * 24vh);
   animation-duration: 29s;
   animation-direction: alternate-reverse;
+}
+
+/* Thin curved lines, each with a short bright dash that runs along it */
+.flow {
+  position: absolute;
+  inset: -8% 0;
+  width: 100%;
+  height: 116%;
+  fill: none;
+  translate: 0 calc(var(--p, 0) * -8vh);
+  transition: translate 0.6s ease-out;
+}
+
+.tracks use {
+  stroke: var(--red);
+  stroke-width: 1;
+  opacity: var(--track-o);
+}
+
+.pulses use {
+  stroke: var(--red);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 70 930;
+  opacity: var(--pulse-o);
+  filter: drop-shadow(0 0 6px var(--red));
+  animation: run 13s linear infinite;
+}
+
+.pulses use:nth-child(2) { animation-duration: 17s; animation-delay: -5s; }
+.pulses use:nth-child(3) { animation-duration: 15s; animation-delay: -9s; animation-direction: reverse; }
+.pulses use:nth-child(4) { animation-duration: 20s; animation-delay: -3s; }
+
+#top {
+  padding-block: clamp(2.5rem, 5vw, 4.25rem) clamp(5rem, 10vw, 8rem);
 }
 
 .hero {
@@ -670,6 +726,7 @@ h1 .line:nth-child(2) > * { animation-delay: 0.2s; }
 
 h1 em {
   font-style: normal;
+  filter: drop-shadow(0 0 26px var(--glow));
   background: linear-gradient(100deg, var(--red) 10%, var(--red-2));
   -webkit-background-clip: text;
   background-clip: text;
@@ -873,19 +930,6 @@ h1 em {
 }
 
 /* --- Projects --- */
-#projects,
-#skills {
-  background:
-    radial-gradient(44rem 28rem at 0% 0%, var(--glow-soft), transparent 70%),
-    linear-gradient(180deg, transparent, var(--bg-2) 14%, var(--bg-2) 86%, transparent);
-}
-
-#skills {
-  background:
-    radial-gradient(44rem 28rem at 100% 10%, var(--glow-soft), transparent 70%),
-    linear-gradient(180deg, transparent, var(--bg-2) 14%, var(--bg-2) 86%, transparent);
-}
-
 .cards {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -898,7 +942,10 @@ h1 em {
   flex-direction: column;
   padding: 1.6rem;
   border: 1px solid var(--line);
-  background: var(--panel);
+  /* slightly see-through, with the backdrop blurred behind it */
+  background: color-mix(in srgb, var(--panel) 74%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   box-shadow: var(--shadow);
   transition: transform 0.3s var(--ease), border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -1192,7 +1239,9 @@ h1 em {
   top: calc(var(--head-h) + 1.5rem);
   border: 1px solid var(--line);
   border-top: 4px solid var(--red);
-  background: var(--panel);
+  background: color-mix(in srgb, var(--panel) 74%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   box-shadow: var(--shadow);
   padding: 1.4rem 1.5rem 0.5rem;
 }
@@ -1211,7 +1260,9 @@ h1 em {
 .skill-panel {
   border: 1px solid var(--line);
   border-top: 4px solid var(--red);
-  background: var(--panel);
+  background: color-mix(in srgb, var(--panel) 74%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   box-shadow: var(--shadow);
   padding: 1.6rem 1.7rem 0.6rem;
   transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
@@ -1360,6 +1411,11 @@ h1 em {
 
 @keyframes drift {
   to { transform: translate3d(-9vw, 7vh, 0) scale(1.18); }
+}
+
+@keyframes run {
+  from { stroke-dashoffset: 1000; }
+  to   { stroke-dashoffset: 0; }
 }
 
 @keyframes float {
@@ -1527,7 +1583,7 @@ h1 em {
 @media print {
   .site-header,
   .to-top,
-  .plasma,
+  .backdrop,
   .tape,
   .banner,
   .hero-actions { display: none; }

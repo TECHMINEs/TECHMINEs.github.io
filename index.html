@@ -26,6 +26,28 @@
 </head>
 <body>
 
+<!-- Backdrop behind the whole page: drifting colour, a faint grid, and thin lines
+     with a pulse of light travelling along each one. It stays fixed while the page scrolls. -->
+<div class="backdrop" id="backdrop" aria-hidden="true">
+  <span class="blob"></span>
+  <span class="blob"></span>
+  <span class="blob"></span>
+  <svg class="flow" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <path id="flow-1" pathLength="1000" d="M-100,170 C300,40 520,350 820,220 S1300,70 1560,260"/>
+      <path id="flow-2" pathLength="1000" d="M-100,410 C260,290 560,600 880,460 S1320,310 1560,520"/>
+      <path id="flow-3" pathLength="1000" d="M-100,650 C320,530 600,840 940,700 S1340,540 1560,740"/>
+      <path id="flow-4" pathLength="1000" d="M-100,880 C380,770 700,990 1040,880 S1400,770 1560,910"/>
+    </defs>
+    <g class="tracks">
+      <use href="#flow-1"/><use href="#flow-2"/><use href="#flow-3"/><use href="#flow-4"/>
+    </g>
+    <g class="pulses">
+      <use href="#flow-1"/><use href="#flow-2"/><use href="#flow-3"/><use href="#flow-4"/>
+    </g>
+  </svg>
+</div>
+
 <header class="site-header" id="site-header">
   <nav class="nav wrap" aria-label="Main">
     <a href="#top" class="brand">
@@ -59,8 +81,6 @@
 
 <!-- ================= INTRO ================= -->
 <section id="top">
-  <div class="plasma" aria-hidden="true"><span></span><span></span><span></span></div>
-
   <div class="wrap hero">
     <div class="hero-text">
       <p class="status"><span class="status-dot"></span>Open to product and software internships</p>
@@ -525,6 +545,7 @@
   // On scroll: fill the progress bar and the timeline, and show the back-to-top button
   var header = document.getElementById('site-header');
   var bar = document.getElementById('scroll-bar');
+  var backdrop = document.getElementById('backdrop');
   var toTop = document.getElementById('to-top');
   var orgs = document.getElementById('orgs');
   var waiting = false;
@@ -532,7 +553,9 @@
   function onScroll() {
     waiting = false;
     var max = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.setProperty('--p', max > 0 ? window.scrollY / max : 0);
+    var progress = max > 0 ? window.scrollY / max : 0;
+    bar.style.setProperty('--p', progress);
+    backdrop.style.setProperty('--p', progress);   // the backdrop's colour drifts as you scroll
     header.classList.toggle('scrolled', window.scrollY > 8);
     toTop.classList.toggle('show', window.scrollY > 700);
 
