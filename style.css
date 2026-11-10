@@ -591,11 +591,13 @@ main > section {
   mix-blend-mode: overlay;
 }
 
-/* Three blurred blobs of colour. Each one drifts on its own (the animation),
-   and also travels across the screen as the page scrolls (--p goes from 0 to 1). */
+/* Two blurred blobs of colour, one on each edge of the screen. Each one drifts
+   on its own (the animation) and also slides along its edge as the page scrolls
+   (--p goes from 0 to 1). They stay off to the sides so the middle, where the
+   text is, remains clean. */
 .blob {
   position: absolute;
-  width: clamp(300px, 44vw, 620px);
+  width: clamp(280px, 40vw, 560px);
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--red);
@@ -605,29 +607,21 @@ main > section {
   animation: drift 18s ease-in-out infinite alternate;
 }
 
+/* Right edge: starts at the top and slides down */
 .blob:nth-child(1) {
-  top: -16%;
-  right: -8%;
-  translate: calc(var(--p, 0) * -38vw) calc(var(--p, 0) * 78vh);
+  top: -18%;
+  right: -26%;
+  translate: 0 calc(var(--p, 0) * 80vh);
 }
 
+/* Left edge: starts at the bottom and slides up */
 .blob:nth-child(2) {
-  bottom: -26%;
-  left: -10%;
-  width: clamp(260px, 36vw, 500px);
+  bottom: -22%;
+  left: -28%;
   background: var(--red-2);
-  translate: calc(var(--p, 0) * 52vw) calc(var(--p, 0) * -70vh);
+  translate: 0 calc(var(--p, 0) * -80vh);
   animation-duration: 24s;
   animation-delay: -8s;
-}
-
-.blob:nth-child(3) {
-  top: 34%;
-  left: 38%;
-  width: clamp(200px, 26vw, 360px);
-  opacity: calc(var(--plasma-o) * 0.55);
-  translate: calc(var(--p, 0) * -30vw) calc(var(--p, 0) * 24vh);
-  animation-duration: 29s;
   animation-direction: alternate-reverse;
 }
 
@@ -1410,7 +1404,7 @@ h1 em {
 }
 
 @keyframes drift {
-  to { transform: translate3d(-9vw, 7vh, 0) scale(1.18); }
+  to { transform: translate3d(0, 9vh, 0) scale(1.15); }
 }
 
 @keyframes run {
