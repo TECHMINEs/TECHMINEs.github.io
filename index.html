@@ -39,11 +39,11 @@
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Open menu">
 
     <ul class="nav-links">
-      <li><a href="#projects">Projects</a></li>
       <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#skills">Skills</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#contact" class="nav-cta">Let's talk</a></li>
     </ul>
 
     <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-label="Switch between light and dark">
@@ -52,25 +52,30 @@
     </button>
     <label for="nav-toggle" class="icon-btn nav-burger" aria-hidden="true"><span></span></label>
   </nav>
+  <div class="scroll-bar" id="scroll-bar"></div>
 </header>
 
 <main>
 
 <!-- ================= INTRO ================= -->
 <section id="top">
+  <div class="plasma" aria-hidden="true"><span></span><span></span><span></span></div>
+
   <div class="wrap hero">
+    <p class="status"><span class="status-dot"></span>Open to product and software internships</p>
+    <h1>
+      <span class="line"><span>Engineering depth,</span></span>
+      <span class="line"><em>business sense.</em></span>
+    </h1>
+
     <div class="hero-text">
-      <p class="eyebrow">Pranav Jangid <span>/</span> TECHMINES</p>
-      <h1>I write the code. <em>I also close the deal.</em></h1>
       <p class="lead">
-        I study engineering at MIT Manipal and business at IIM Bangalore, and I practise both.
-        Since 2024 I've shipped five software projects, and I run business development for
-        Manipal's largest student media organisation, where I've negotiated partnerships with
-        brands like Starbucks and MINISO.
+        I'm Pranav. I study engineering at MIT Manipal and business at IIM Bangalore.
+        I build backend-heavy software, and I lead business development for Manipal's
+        largest student media organisation.
       </p>
-      <p class="status"><span class="status-dot"></span>Open to product and software internships</p>
       <div class="hero-actions">
-        <a href="#projects" class="btn btn--solid">See the projects</a>
+        <a href="#projects" class="btn btn--solid">See my work</a>
         <a href="resume.pdf" class="btn" download="PranavJangid_CV.pdf">Download CV</a>
         <a href="https://github.com/TECHMINEs" class="text-link" target="_blank" rel="noopener">GitHub</a>
         <a href="https://www.linkedin.com/in/pranavjangid" class="text-link" target="_blank" rel="noopener">LinkedIn</a>
@@ -78,43 +83,77 @@
     </div>
 
     <figure class="hero-logo">
-      <img src="profile.jpg" alt="The TECHMINES logo: a red V12 engine" width="743" height="743">
-      <figcaption>TECHMINES is the name I ship under.</figcaption>
+      <div class="frame">
+        <img src="profile.jpg" alt="The TECHMINES logo: a red V12 engine" width="743" height="743">
+      </div>
+      <figcaption class="hero-badge">B.Tech <span>×</span> BBA</figcaption>
     </figure>
   </div>
+</section>
 
-  <div class="wrap">
-    <ul class="stats">
-      <li><strong>5</strong><span>projects shipped, all public on GitHub with passing CI</span></li>
-      <li><strong>25k+</strong><span>followers at MTTN, where I head business development and PR</span></li>
-      <li><strong>~15</strong><span>people I led across collaborations, content, merchandise and PR</span></li>
-      <li><strong>10+</strong><span>brand stakeholders in the MAHE MUN sponsorship pipeline</span></li>
-    </ul>
+<!-- Scrolling tape of what I work on. The second copy makes the loop seamless. -->
+<div class="tape" aria-label="What I work on">
+  <div class="tape-track">
+    <p>Backend systems <i>✦</i> Business development <i>✦</i> Product <i>✦</i> AI agents <i>✦</i> Partnerships <i>✦</i> Reliability <i>✦</i> Fintech <i>✦</i> Sponsorship strategy <i>✦</i></p>
+    <p aria-hidden="true">Backend systems <i>✦</i> Business development <i>✦</i> Product <i>✦</i> AI agents <i>✦</i> Partnerships <i>✦</i> Reliability <i>✦</i> Fintech <i>✦</i> Sponsorship strategy <i>✦</i></p>
+  </div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap split">
+    <p class="section-label reveal"><span>01</span>About me</p>
+    <div class="split-main">
+      <h2 class="statement reveal">I like both halves of building something: <span>making it work, and getting people to care that it exists.</span></h2>
+      <div class="about-text reveal">
+        <p>
+          I grew up in Faridabad and moved to Manipal in 2024 for engineering. In code I'm drawn
+          to the failure cases: a provider going down, a record being quietly changed, a factory
+          losing power. Alongside the B.Tech I'm doing a BBA in Digital Business and
+          Entrepreneurship at IIM Bangalore.
+        </p>
+        <p>
+          On the business side I lead the BD and PR division at Manipal The Talk Network, where I
+          own the finances and sign off on every partnership. I also work in the founder's office
+          at D.S. Design Sense, an architectural design firm. Right now I'm most curious about AI
+          agents that automate real workflows, especially in finance.
+        </p>
+      </div>
+
+      <ul class="stats reveal">
+        <li><strong data-count="5">5</strong><span>projects shipped, all public with passing CI</span></li>
+        <li><strong data-count="25" data-suffix="k+">25k+</strong><span>followers at MTTN, where I head BD and PR</span></li>
+        <li><strong data-count="15" data-prefix="~">~15</strong><span>people led across four teams</span></li>
+        <li><strong data-count="10" data-suffix="+">10+</strong><span>brand stakeholders in the MAHE MUN pipeline</span></li>
+      </ul>
+    </div>
   </div>
 </section>
 
 <!-- ================= PROJECTS ================= -->
 <section id="projects">
   <div class="wrap">
-    <div class="section-head reveal">
-      <span class="section-num">01</span>
-      <h2>Projects</h2>
-      <p>Five things I designed, built and shipped. The code for every one is public, and each repo says plainly what isn't finished.</p>
+    <div class="section-head">
+      <div>
+        <p class="section-label reveal"><span>02</span>Selected work</p>
+        <h2 class="statement reveal">Five projects. <span>All public, all with passing CI.</span></h2>
+      </div>
+      <p class="section-note reveal">Open any card to see how it works.</p>
     </div>
 
-    <!-- ChainProof -->
-    <article class="project reveal">
-      <header class="project-head">
-        <span class="project-num">01</span>
-        <div class="project-title">
-          <h3>ChainProof</h3>
-          <p class="project-type">Full-stack · Blockchain</p>
-        </div>
-        <a href="https://github.com/TECHMINEs/ChainProof" class="btn btn--small" target="_blank" rel="noopener">Code on GitHub</a>
-      </header>
-      <div class="project-grid">
-        <div class="project-body">
-          <p class="project-tagline">Chain of custody for forensic evidence, where tampering shows up straight away.</p>
+    <div class="cards">
+
+      <!-- ChainProof -->
+      <article class="card card--featured spot reveal">
+        <div class="card-top"><span>01 / 05</span><span>Full-stack · Blockchain</span></div>
+        <h3>ChainProof</h3>
+        <p class="card-tagline">Chain of custody for forensic evidence, where tampering shows up straight away.</p>
+        <p class="metric"><strong>3</strong><span>independent records checked against each other: database, IPFS and blockchain</span></p>
+        <ul class="chips">
+          <li>Next.js 14</li><li>TypeScript</li><li>PostgreSQL</li><li>Prisma</li><li>Redis</li><li>Solidity</li><li>Hardhat</li><li>snarkjs</li><li>Docker</li>
+        </ul>
+        <details>
+          <summary>How it works</summary>
           <p>
             Evidence passes through many hands between a crime scene and a courtroom, and every
             hand-off is a chance for someone to question it. ChainProof records each one in three
@@ -126,30 +165,21 @@
             <li>Anyone can open the public verify page and confirm an exhibit's record without logging in.</li>
             <li>Transfers carry a Groth16 zero-knowledge proof linking both officers. I haven't published the circuit files yet, so the demo labels those proofs as simulated.</li>
           </ul>
-        </div>
-        <aside class="project-side">
-          <p class="metric"><strong>3</strong><span>independent records checked against each other: database, IPFS and blockchain</span></p>
-          <h4 class="label">Built with</h4>
-          <ul class="chips">
-            <li>Next.js 14</li><li>TypeScript</li><li>PostgreSQL</li><li>Prisma</li><li>Redis</li><li>Solidity</li><li>Hardhat</li><li>snarkjs</li><li>Docker</li>
-          </ul>
-        </aside>
-      </div>
-    </article>
+        </details>
+        <a href="https://github.com/TECHMINEs/ChainProof" class="card-link" target="_blank" rel="noopener">Code on GitHub</a>
+      </article>
 
-    <!-- Relay -->
-    <article class="project reveal">
-      <header class="project-head">
-        <span class="project-num">02</span>
-        <div class="project-title">
-          <h3>Relay</h3>
-          <p class="project-type">Backend · Infrastructure</p>
-        </div>
-        <a href="https://github.com/TECHMINEs/Relay" class="btn btn--small" target="_blank" rel="noopener">Code on GitHub</a>
-      </header>
-      <div class="project-grid">
-        <div class="project-body">
-          <p class="project-tagline">A gateway that keeps LLM apps running when a model provider goes down.</p>
+      <!-- Relay -->
+      <article class="card spot reveal">
+        <div class="card-top"><span>02 / 05</span><span>Backend · Infrastructure</span></div>
+        <h3>Relay</h3>
+        <p class="card-tagline">A gateway that keeps LLM apps running when a model provider goes down.</p>
+        <p class="metric"><strong>257<small>req/s</small></strong><span>at 3.4&nbsp;ms p99 with zero failed requests, in a local k6 test against the mock provider</span></p>
+        <ul class="chips">
+          <li>Go 1.26</li><li>Redis</li><li>PostgreSQL</li><li>Prometheus</li><li>Grafana</li><li>k6</li>
+        </ul>
+        <details>
+          <summary>How it works</summary>
           <p>
             Relay speaks the same API as OpenAI, so an app switches to it by changing one URL.
             Behind that URL it handles the parts nobody wants to write twice: API keys, rate
@@ -161,65 +191,47 @@
             <li>Retries stop once the first byte of a stream has gone out, so a client never receives the same response twice.</li>
             <li>If Postgres or Redis is unreachable, only the features that need them switch off. The gateway keeps serving.</li>
           </ul>
-        </div>
-        <aside class="project-side">
-          <p class="metric"><strong>257<small>req/s</small></strong><span>at 3.4&nbsp;ms p99 with zero failed requests, in a local k6 test against the mock provider</span></p>
-          <h4 class="label">Built with</h4>
-          <ul class="chips">
-            <li>Go 1.26</li><li>chi</li><li>Redis</li><li>PostgreSQL</li><li>Prometheus</li><li>Grafana</li><li>k6</li><li>Next.js</li>
-          </ul>
-        </aside>
-      </div>
-    </article>
+        </details>
+        <a href="https://github.com/TECHMINEs/Relay" class="card-link" target="_blank" rel="noopener">Code on GitHub</a>
+      </article>
 
-    <!-- DevPulse -->
-    <article class="project reveal">
-      <header class="project-head">
-        <span class="project-num">03</span>
-        <div class="project-title">
-          <h3>DevPulse</h3>
-          <p class="project-type">Full-stack · Machine learning</p>
-        </div>
-        <a href="https://github.com/TECHMINEs/DevPulse" class="btn btn--small" target="_blank" rel="noopener">Code on GitHub</a>
-      </header>
-      <div class="project-grid">
-        <div class="project-body">
-          <p class="project-tagline">Reads your GitHub history and warns you before burnout does.</p>
+      <!-- DevPulse -->
+      <article class="card spot reveal">
+        <div class="card-top"><span>03 / 05</span><span>Full-stack · ML</span></div>
+        <h3>DevPulse</h3>
+        <p class="card-tagline">Reads your GitHub history and warns you before burnout does.</p>
+        <p class="metric"><strong>0–100</strong><span>wellness score from commit timing, streaks and volume, with a 7-day forecast</span></p>
+        <ul class="chips">
+          <li>React 18</li><li>Node.js</li><li>Socket.io</li><li>FastAPI</li><li>scikit-learn</li>
+        </ul>
+        <details>
+          <summary>How it works</summary>
           <p>
-            DevPulse looks at how you work, not how much: late nights, weekend commits, long
-            streaks and sprint-then-crash cycles. It turns that into a score you can watch
-            before the pattern becomes a problem.
+            DevPulse looks at the shape of your work: late nights, weekend commits, long streaks
+            and sprint-then-crash cycles. It turns that into a score you can watch before the
+            pattern becomes a problem.
           </p>
           <ul class="points">
             <li>Sign in with GitHub and a background worker imports your repos and commits, streaming progress live over Socket.io.</li>
-            <li>A separate Python service (FastAPI and scikit-learn) scores your wellness and forecasts the next seven days. The models are trained on synthetic data for now.</li>
+            <li>A separate Python service scores your wellness and forecasts the next seven days. The models are trained on synthetic data for now.</li>
             <li>GitHub access tokens are encrypted at rest with AES-256-GCM and never appear in an API response.</li>
             <li>Commit heatmaps, nine achievements, team leaderboards, PDF reports and a Monday-morning digest email.</li>
           </ul>
-        </div>
-        <aside class="project-side">
-          <p class="metric"><strong>0–100</strong><span>wellness score from commit timing, streaks and volume, with a 7-day forecast</span></p>
-          <h4 class="label">Built with</h4>
-          <ul class="chips">
-            <li>React 18</li><li>Vite</li><li>Node.js</li><li>Express</li><li>Socket.io</li><li>Python</li><li>FastAPI</li><li>scikit-learn</li><li>SQLite</li>
-          </ul>
-        </aside>
-      </div>
-    </article>
+        </details>
+        <a href="https://github.com/TECHMINEs/DevPulse" class="card-link" target="_blank" rel="noopener">Code on GitHub</a>
+      </article>
 
-    <!-- Nexora -->
-    <article class="project reveal">
-      <header class="project-head">
-        <span class="project-num">04</span>
-        <div class="project-title">
-          <h3>Nexora</h3>
-          <p class="project-type">Frontend · Risk modelling</p>
-        </div>
-        <a href="https://github.com/TECHMINEs/Nexora" class="btn btn--small" target="_blank" rel="noopener">Code on GitHub</a>
-      </header>
-      <div class="project-grid">
-        <div class="project-body">
-          <p class="project-tagline">Works out what fails first at a factory, before a flood finds out for real.</p>
+      <!-- Nexora -->
+      <article class="card spot reveal">
+        <div class="card-top"><span>04 / 05</span><span>Frontend · Risk modelling</span></div>
+        <h3>Nexora</h3>
+        <p class="card-tagline">Works out what fails first at a factory, before a flood finds out for real.</p>
+        <p class="metric"><strong>377</strong><span>golden-value tests across 16 engines. Change one formula and the build fails.</span></p>
+        <ul class="chips">
+          <li>Next.js 14</li><li>TypeScript</li><li>Tailwind CSS</li><li>Radix UI</li><li>Recharts</li>
+        </ul>
+        <details>
+          <summary>How it works</summary>
           <p>
             Nexora models how floods, cyclones, toxic releases and grid outages would hit a
             specific facility: which assets fail, what each failure takes down with it, and
@@ -231,30 +243,21 @@
             <li>There's no backend. Sixteen pure calculation engines run in the browser, and the same input always gives the same answer.</li>
             <li>The facilities in the demo are synthetic, and the app says so on every page.</li>
           </ul>
-        </div>
-        <aside class="project-side">
-          <p class="metric"><strong>377</strong><span>golden-value tests across 16 engines. Change one formula and the build fails.</span></p>
-          <h4 class="label">Built with</h4>
-          <ul class="chips">
-            <li>Next.js 14</li><li>TypeScript (strict)</li><li>Tailwind CSS</li><li>Radix UI</li><li>Recharts</li>
-          </ul>
-        </aside>
-      </div>
-    </article>
+        </details>
+        <a href="https://github.com/TECHMINEs/Nexora" class="card-link" target="_blank" rel="noopener">Code on GitHub</a>
+      </article>
 
-    <!-- AutoLine -->
-    <article class="project reveal">
-      <header class="project-head">
-        <span class="project-num">05</span>
-        <div class="project-title">
-          <h3>AutoLine</h3>
-          <p class="project-type">Full-stack · Databases</p>
-        </div>
-        <a href="https://github.com/TECHMINEs/AutoLine" class="btn btn--small" target="_blank" rel="noopener">Code on GitHub</a>
-      </header>
-      <div class="project-grid">
-        <div class="project-body">
-          <p class="project-tagline">A car plant's production, parts and quality checks on one dashboard.</p>
+      <!-- AutoLine -->
+      <article class="card spot reveal">
+        <div class="card-top"><span>05 / 05</span><span>Full-stack · Databases</span></div>
+        <h3>AutoLine</h3>
+        <p class="card-tagline">A car plant's production, parts and quality checks on one dashboard.</p>
+        <p class="metric"><strong>0</strong><span>queries rewritten to move from Oracle to SQLite. A translation layer handles the dialect.</span></p>
+        <ul class="chips">
+          <li>React 19</li><li>Express 5</li><li>SQLite</li><li>Tailwind CSS</li><li>PDFKit</li>
+        </ul>
+        <details>
+          <summary>How it works</summary>
           <p>
             This was my Database Systems course project. It tracks what each production line is
             building, which parts are running low and what failed inspection.
@@ -265,54 +268,10 @@
             <li>Bulk stock updates and purchase orders are all-or-nothing transactions, with PDF bills generated on the server.</li>
             <li>Admins, managers and operators each get their own view and permissions.</li>
           </ul>
-        </div>
-        <aside class="project-side">
-          <p class="metric"><strong>0</strong><span>queries rewritten to move from Oracle to SQLite. The translation layer handles the dialect.</span></p>
-          <h4 class="label">Built with</h4>
-          <ul class="chips">
-            <li>React 19</li><li>Vite</li><li>Tailwind CSS</li><li>Express 5</li><li>SQLite</li><li>PDFKit</li>
-          </ul>
-        </aside>
-      </div>
-    </article>
-  </div>
-</section>
+        </details>
+        <a href="https://github.com/TECHMINEs/AutoLine" class="card-link" target="_blank" rel="noopener">Code on GitHub</a>
+      </article>
 
-<!-- ================= ABOUT ================= -->
-<section id="about">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="section-num">02</span>
-      <h2>About</h2>
-    </div>
-    <div class="about">
-      <div class="about-text reveal">
-        <p>
-          I grew up in Faridabad and moved to Manipal in 2024 for engineering. Somewhere in my
-          first year I worked out that I enjoy both halves of building something: making it work,
-          and getting people to care that it exists.
-        </p>
-        <p>
-          So I do both. In code I'm drawn to the failure cases: a provider going down, a record
-          being quietly changed, a factory losing power. On the business side I lead the BD and
-          PR division at Manipal The Talk Network, where I own the finances and sign off on every
-          partnership. I also work in the founder's office at D.S. Design Sense, an architectural
-          design firm, on client deals from the first conversation to closure.
-        </p>
-        <p>
-          Alongside the B.Tech I'm doing a BBA in Digital Business and Entrepreneurship at IIM
-          Bangalore, because I'd like to run a product one day and that takes more than code.
-          Right now I'm most curious about AI agents that automate real workflows, especially
-          in finance.
-        </p>
-      </div>
-
-      <dl class="facts reveal">
-        <div><dt class="label">Based in</dt><dd>Manipal, Karnataka</dd></div>
-        <div><dt class="label">Studying</dt><dd>B.Tech IT at MIT Manipal (2028) and BBA at IIM Bangalore (2029)</dd></div>
-        <div><dt class="label">Curious about</dt><dd>AI agents, workflow automation, fintech</dd></div>
-        <div><dt class="label">Open to</dt><dd>Product and software internships</dd></div>
-      </dl>
     </div>
   </div>
 </section>
@@ -320,14 +279,16 @@
 <!-- ================= EXPERIENCE ================= -->
 <section id="experience">
   <div class="wrap">
-    <div class="section-head reveal">
-      <span class="section-num">03</span>
-      <h2>Experience</h2>
-      <p>Where I've worked and what I was responsible for.</p>
+    <div class="section-head">
+      <div>
+        <p class="section-label reveal"><span>03</span>Experience</p>
+        <h2 class="statement reveal">Where I've worked, <span>and what I was responsible for.</span></h2>
+      </div>
     </div>
 
     <div class="resume">
-      <div class="orgs">
+      <div class="orgs" id="orgs">
+        <span class="rail-fill" aria-hidden="true"></span>
 
         <article class="org reveal">
           <h3>D.S. Design Sense LLP</h3>
@@ -416,8 +377,8 @@
         </article>
       </div>
 
-      <aside class="education reveal">
-        <h3 class="label col-title">Education</h3>
+      <aside class="education spot reveal">
+        <h3 class="label">Education</h3>
         <div class="school">
           <h4>Indian Institute of Management Bangalore</h4>
           <p>BBA, Digital Business &amp; Entrepreneurship</p>
@@ -441,14 +402,15 @@
 <!-- ================= SKILLS ================= -->
 <section id="skills">
   <div class="wrap">
-    <div class="section-head reveal">
-      <span class="section-num">04</span>
-      <h2>Skills</h2>
-      <p>Everything on the engineering side is something I've shipped a project with.</p>
+    <div class="section-head">
+      <div>
+        <p class="section-label reveal"><span>04</span>Skills</p>
+        <h2 class="statement reveal">Two toolkits. <span>One for the build, one for the business.</span></h2>
+      </div>
     </div>
 
     <div class="skills">
-      <div class="skill-panel reveal">
+      <div class="skill-panel spot reveal">
         <h3>Engineering</h3>
         <dl>
           <div><dt class="label">Languages</dt>
@@ -462,7 +424,7 @@
         </dl>
       </div>
 
-      <div class="skill-panel reveal">
+      <div class="skill-panel spot reveal">
         <h3>Business &amp; product</h3>
         <dl>
           <div><dt class="label">Business &amp; finance</dt>
@@ -479,14 +441,23 @@
   </div>
 </section>
 
+<!-- Large outlined lettering that drifts past before the contact block -->
+<div class="banner" aria-hidden="true">
+  <div class="banner-track">
+    <p>Internships <i>✦</i> Partnerships <i>✦</i> Good questions <i>✦</i></p>
+    <p>Internships <i>✦</i> Partnerships <i>✦</i> Good questions <i>✦</i></p>
+  </div>
+</div>
+
 <!-- ================= CONTACT ================= -->
 <section id="contact">
-  <div class="wrap contact reveal">
-    <p class="eyebrow">05 <span>/</span> Contact</p>
-    <h2>Let's talk.</h2>
-    <p class="contact-lead">Hiring an intern, looking for a partner on a campus campaign, or curious about one of the projects? Email is the fastest way to reach me.</p>
-    <a href="mailto:Pranavjmit@gmail.com" class="big-email">Pranavjmit@gmail.com</a>
-    <div class="contact-links">
+  <div class="wrap contact">
+    <div class="reveal">
+      <p class="eyebrow">Have an internship, a partnership or a question?</p>
+      <h2>Let's talk.</h2>
+      <a href="mailto:Pranavjmit@gmail.com" class="big-email">Pranavjmit@gmail.com</a>
+    </div>
+    <div class="contact-links reveal">
       <a href="https://www.linkedin.com/in/pranavjangid" class="btn" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/TECHMINEs" class="btn" target="_blank" rel="noopener">GitHub</a>
       <a href="resume.pdf" class="btn" download="PranavJangid_CV.pdf">Download CV</a>
@@ -507,14 +478,34 @@
 
 <script>
   var root = document.documentElement;
+  var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Fade sections in as they scroll into view
+  // Fade things in as they scroll into view
   var revealer = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('visible'); revealer.unobserve(e.target); }
+      if (!e.isIntersecting) return;
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('[data-count]').forEach(countUp);
+      revealer.unobserve(e.target);
     });
-  }, { threshold: 0.06 });
+  }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(function (el) { revealer.observe(el); });
+
+  // Count a stat up from zero the first time it appears
+  function countUp(el) {
+    var target = Number(el.dataset.count);
+    var before = el.dataset.prefix || '', after = el.dataset.suffix || '';
+    if (calm) return;
+    var start = null;
+    function tick(now) {
+      if (start === null) start = now;
+      var t = Math.min((now - start) / 900, 1);
+      var eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = before + Math.round(target * eased) + after;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
 
   // Highlight the nav link for the section on screen
   var links = Array.from(document.querySelectorAll('.nav-links a'));
@@ -526,19 +517,42 @@
   }, { rootMargin: '-40% 0px -55% 0px' });
   document.querySelectorAll('main section[id]').forEach(function (s) { spy.observe(s); });
 
-  // Close the mobile menu after a link is tapped
+  // Close the phone menu after a link is tapped
   var toggle = document.getElementById('nav-toggle');
   links.forEach(function (a) { a.addEventListener('click', function () { toggle.checked = false; }); });
 
-  // Header shadow and back-to-top button after scrolling
+  // On scroll: fill the progress bar and the timeline, and show the back-to-top button
   var header = document.getElementById('site-header');
+  var bar = document.getElementById('scroll-bar');
   var toTop = document.getElementById('to-top');
+  var orgs = document.getElementById('orgs');
+  var waiting = false;
+
   function onScroll() {
+    waiting = false;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.setProperty('--p', max > 0 ? window.scrollY / max : 0);
     header.classList.toggle('scrolled', window.scrollY > 8);
     toTop.classList.toggle('show', window.scrollY > 700);
+
+    var box = orgs.getBoundingClientRect();
+    var done = (window.innerHeight * 0.6 - box.top) / box.height;
+    orgs.style.setProperty('--fill', Math.max(0, Math.min(1, done)));
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', function () {
+    if (!waiting) { waiting = true; requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  window.addEventListener('resize', onScroll);
   onScroll();
+
+  // A soft light that follows the pointer across cards
+  document.querySelectorAll('.spot').forEach(function (card) {
+    card.addEventListener('pointermove', function (e) {
+      var box = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - box.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - box.top) + 'px');
+    });
+  });
 
   // Light / dark switch (remembers the choice)
   document.getElementById('theme-toggle').addEventListener('click', function () {
