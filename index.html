@@ -5,12 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pranav Jangid | TECHMINES</title>
 <meta name="description" content="Pranav Jangid (TECHMINES). B.Tech IT at MIT Manipal and BBA at IIM Bangalore. Five shipped software projects, and head of business development and PR at MTTN.">
+<meta property="og:title" content="Pranav Jangid | TECHMINES">
+<meta property="og:description" content="Building software, and the case for it. B.Tech IT at MIT Manipal, BBA at IIM Bangalore.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://techmines.github.io/">
 <link rel="icon" href="profile.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 
 <script>
   // Pick the theme before the page paints, so there's no flash.
@@ -25,6 +29,9 @@
 </script>
 </head>
 <body>
+
+<!-- Skip link for keyboard / screen reader users -->
+<a href="#main" class="skip-link">Skip to main content</a>
 
 <!-- Backdrop behind the whole page: colour drifting along both edges, a faint grid, and thin lines
      with a pulse of light travelling along each one. It stays fixed while the page scrolls. -->
@@ -57,26 +64,29 @@
       </span>
     </a>
 
-    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Open menu">
+    <!-- Accessible mobile menu button (replaces checkbox hack) -->
+    <button type="button" class="icon-btn nav-burger" id="nav-burger" aria-expanded="false" aria-controls="nav-links">
+      <span></span>
+    </button>
 
-    <ul class="nav-links">
+    <ul class="nav-links" id="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#contact" class="nav-cta">Let's talk</a></li>
     </ul>
 
-    <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-label="Switch between light and dark">
+    <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-label="Switch to light theme">
       <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
     </button>
-    <label for="nav-toggle" class="icon-btn nav-burger" aria-hidden="true"><span></span></label>
   </nav>
   <div class="scroll-bar" id="scroll-bar"></div>
 </header>
 
-<main>
+<main id="main">
 
 <!-- ================= INTRO ================= -->
 <section id="top">
@@ -89,6 +99,7 @@
       </h1>
       <p class="tagline">Building software, <span>and the case for it.</span></p>
       <p class="alias">Also known as <strong>TECHMINES</strong></p>
+      <p class="degrees">B.Tech IT, MIT Manipal · BBA (DBE), IIM Bangalore</p>
       <p class="lead">
         I study engineering at MIT Manipal and business at IIM Bangalore. I build
         backend-heavy software, and I lead business development for Manipal's largest
@@ -96,7 +107,7 @@
       </p>
       <div class="hero-actions">
         <a href="#projects" class="btn btn--solid">See my work</a>
-        <a href="resume.pdf" class="btn" download="PranavJangid_CV.pdf">Download CV</a>
+        <a href="resume.pdf" class="btn" target="_blank" rel="noopener">View CV</a>
         <a href="https://github.com/TECHMINEs" class="text-link" target="_blank" rel="noopener">GitHub</a>
         <a href="https://www.linkedin.com/in/pranavjangid" class="text-link" target="_blank" rel="noopener">LinkedIn</a>
       </div>
@@ -111,12 +122,17 @@
   </div>
 </section>
 
-<!-- Scrolling tape of what I work on. The second copy makes the loop seamless. -->
+<!-- Scrolling tape of what I work on. The second copy makes the loop seamless.
+     Button pauses/resumes for keyboard and touch users. -->
 <div class="tape" aria-label="What I work on">
   <div class="tape-track">
     <p>Backend systems <i>✦</i> Business development <i>✦</i> Product <i>✦</i> AI agents <i>✦</i> Partnerships <i>✦</i> Reliability <i>✦</i> Fintech <i>✦</i> Sponsorship strategy <i>✦</i></p>
     <p aria-hidden="true">Backend systems <i>✦</i> Business development <i>✦</i> Product <i>✦</i> AI agents <i>✦</i> Partnerships <i>✦</i> Reliability <i>✦</i> Fintech <i>✦</i> Sponsorship strategy <i>✦</i></p>
   </div>
+  <button type="button" class="tape-pause" id="tape-pause" aria-label="Pause scrolling text">
+    <svg class="pause-icon" viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><rect x="3" y="2" width="4" height="12"/><rect x="9" y="2" width="4" height="12"/></svg>
+    <svg class="play-icon" viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M4 2l10 6-10 6z"/></svg>
+  </button>
 </div>
 
 <!-- ================= ABOUT ================= -->
@@ -141,10 +157,10 @@
       </div>
 
       <ul class="stats reveal">
-        <li><strong data-count="5">5</strong><span>projects shipped, all public with passing CI</span></li>
-        <li><strong data-count="25" data-suffix="k+">25k+</strong><span>followers at MTTN, where I head BD and PR</span></li>
-        <li><strong data-count="15" data-prefix="~">~15</strong><span>people led across four teams</span></li>
-        <li><strong data-count="10" data-suffix="+">10+</strong><span>brand stakeholders in the MAHE MUN pipeline</span></li>
+        <li><strong>5</strong><span>projects shipped, all public on GitHub</span></li>
+        <li><strong>25k+</strong><span>followers at MTTN, where I head BD and PR</span></li>
+        <li><strong>~15</strong><span>people led across four teams</span></li>
+        <li><strong>10+</strong><span>brand stakeholders in the MAHE MUN pipeline</span></li>
       </ul>
     </div>
   </div>
@@ -156,9 +172,9 @@
     <div class="section-head">
       <div>
         <p class="section-label reveal"><span>02</span>Selected work</p>
-        <h2 class="statement reveal">Five projects. <span>All public, all with passing CI.</span></h2>
+        <h2 class="statement reveal">Five projects. <span>All public on GitHub.</span></h2>
       </div>
-      <p class="section-note reveal">Open any card to see how it works.</p>
+      <p class="section-note reveal">Expand any project to see how it works.</p>
     </div>
 
     <div class="cards">
@@ -168,6 +184,7 @@
         <div class="card-top"><span>01 / 05</span><span>Full-stack · Blockchain</span></div>
         <h3>ChainProof</h3>
         <p class="card-tagline">Chain of custody for forensic evidence, where tampering shows up straight away.</p>
+        <p class="card-problem"><strong>Problem:</strong> Evidence passes through many hands between a crime scene and a courtroom, and every hand-off is a chance for someone to question it.</p>
         <p class="metric"><strong>3</strong><span>independent records checked against each other: database, IPFS and blockchain</span></p>
         <ul class="chips">
           <li>Next.js 14</li><li>TypeScript</li><li>PostgreSQL</li><li>Prisma</li><li>Redis</li><li>Solidity</li><li>Hardhat</li><li>snarkjs</li><li>Docker</li>
@@ -175,8 +192,7 @@
         <details>
           <summary>How it works</summary>
           <p>
-            Evidence passes through many hands between a crime scene and a courtroom, and every
-            hand-off is a chance for someone to question it. ChainProof records each one in three
+            ChainProof records each hand-off in three
             independent places, so a change to any of them stands out.
           </p>
           <ul class="points">
@@ -186,7 +202,7 @@
             <li>Transfers carry a Groth16 zero-knowledge proof linking both officers. I haven't published the circuit files yet, so the demo labels those proofs as simulated.</li>
           </ul>
         </details>
-        <a href="https://github.com/TECHMINEs/ChainProof" class="card-link" target="_blank" rel="noopener">Code on GitHub</a>
+        <a href="https://github.com/TECHMINEs/ChainProof" class="card-link" target="_blank" rel="noopener">ChainProof on GitHub<!-- icon injected by CSS --></a>
       </article>
 
       <!-- Relay -->
@@ -212,7 +228,7 @@
             <li>If Postgres or Redis is unreachable, only the features that need them switch off. The gateway keeps serving.</li>
           </ul>
         </details>
-        <a href="https://github.com/TECHMINEs/Relay" class="card-link" target="_blank" rel="noopener">Code on GitHub</a>
+        <a href="https://github.com/TECHMINEs/Relay" class="card-link" target="_blank" rel="noopener">Relay on GitHub<!-- icon injected by CSS --></a>
       </article>
 
       <!-- DevPulse -->
@@ -220,7 +236,7 @@
         <div class="card-top"><span>03 / 05</span><span>Full-stack · ML</span></div>
         <h3>DevPulse</h3>
         <p class="card-tagline">Reads your GitHub history and warns you before burnout does.</p>
-        <p class="metric"><strong>0–100</strong><span>wellness score from commit timing, streaks and volume, with a 7-day forecast</span></p>
+        <p class="metric"><strong>0–100</strong><span>experimental wellness score from commit timing, streaks and volume, with a 7-day forecast (trained on synthetic data)</span></p>
         <ul class="chips">
           <li>React 18</li><li>Node.js</li><li>Socket.io</li><li>FastAPI</li><li>scikit-learn</li>
         </ul>
@@ -238,7 +254,7 @@
             <li>Commit heatmaps, nine achievements, team leaderboards, PDF reports and a Monday-morning digest email.</li>
           </ul>
         </details>
-        <a href="https://github.com/TECHMINEs/DevPulse" class="card-link" target="_blank" rel="noopener">Code on GitHub</a>
+        <a href="https://github.com/TECHMINEs/DevPulse" class="card-link" target="_blank" rel="noopener">DevPulse on GitHub<!-- icon injected by CSS --></a>
       </article>
 
       <!-- Nexora -->
@@ -264,7 +280,7 @@
             <li>The facilities in the demo are synthetic, and the app says so on every page.</li>
           </ul>
         </details>
-        <a href="https://github.com/TECHMINEs/Nexora" class="card-link" target="_blank" rel="noopener">Code on GitHub</a>
+        <a href="https://github.com/TECHMINEs/Nexora" class="card-link" target="_blank" rel="noopener">Nexora on GitHub<!-- icon injected by CSS --></a>
       </article>
 
       <!-- AutoLine -->
@@ -289,7 +305,7 @@
             <li>Admins, managers and operators each get their own view and permissions.</li>
           </ul>
         </details>
-        <a href="https://github.com/TECHMINEs/AutoLine" class="card-link" target="_blank" rel="noopener">Code on GitHub</a>
+        <a href="https://github.com/TECHMINEs/AutoLine" class="card-link" target="_blank" rel="noopener">AutoLine on GitHub<!-- icon injected by CSS --></a>
       </article>
 
     </div>
@@ -315,7 +331,7 @@
           <p class="org-note">Architectural design firm</p>
           <ol class="roles">
             <li class="current">
-              <div class="role-head"><h4>Senior Associate Intern</h4><span class="role-date">Dec 2025 – now</span></div>
+              <div class="role-head"><h4>Senior Associate Intern</h4><span class="role-date">Dec 2025 – present</span></div>
               <ul class="points">
                 <li>Work in the founder's office, alongside the founder on client deals from the first conversation to closure, and handle the communication in between.</li>
                 <li>Help run and configure the firm's CRM and the client workflows built on it.</li>
@@ -335,7 +351,7 @@
           <p class="org-note">Manipal's largest student-run media organisation, 25k+ followers</p>
           <ol class="roles">
             <li class="current">
-              <div class="role-head"><h4>Head, Business Development &amp; PR</h4><span class="role-date">Aug 2026 – now</span></div>
+              <div class="role-head"><h4>Head, Business Development &amp; PR</h4><span class="role-date">Aug 2026 – present</span></div>
               <ul class="points">
                 <li>Lead the division as the senior-most Board member, in my third year with MTTN.</li>
                 <li>Own the finances end to end: business strategy, sponsorship targets, budget approvals, closing deals and collecting payment.</li>
@@ -364,7 +380,7 @@
           <p class="org-note">One of South India's largest collegiate MUN conferences</p>
           <ol class="roles">
             <li class="current">
-              <div class="role-head"><h4>Under-Secretary General, Sponsorships</h4><span class="role-date">Jul 2025 – now</span></div>
+              <div class="role-head"><h4>Under-Secretary General, Sponsorships</h4><span class="role-date">Jul 2025 – present</span></div>
               <ul class="points">
                 <li>Manage the sponsorship pipeline and financial planning in the Directorate of Finance, working with more than ten brand stakeholders.</li>
               </ul>
@@ -397,7 +413,7 @@
         </article>
       </div>
 
-      <aside class="education spot reveal">
+      <aside class="education-sidebar spot reveal">
         <h3 class="label">Education</h3>
         <div class="school">
           <h4>Indian Institute of Management Bangalore</h4>
@@ -419,12 +435,45 @@
   </div>
 </section>
 
+<!-- ================= EDUCATION (anchor target for navigation) ================= -->
+<section id="education" class="education-section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="section-label reveal"><span>04</span>Education</p>
+        <h2 class="statement reveal">Two degrees. <span>Engineering meets business.</span></h2>
+      </div>
+    </div>
+
+    <div class="education-cards reveal">
+      <div class="edu-card spot">
+        <h3>Indian Institute of Management Bangalore</h3>
+        <p class="edu-degree">BBA, Digital Business &amp; Entrepreneurship</p>
+        <span class="role-date">Graduating 2029</span>
+        <p class="edu-note">Business strategy, entrepreneurship and digital-business foundations alongside the engineering degree at MIT Manipal.</p>
+      </div>
+      <div class="edu-card spot">
+        <h3>Manipal Institute of Technology</h3>
+        <p class="edu-degree">B.Tech, Information Technology</p>
+        <span class="role-date">Jun 2024 – May 2028</span>
+        <p class="edu-note">Core curriculum in systems, databases, algorithms and software engineering. Five independent projects built and shipped during the programme.</p>
+      </div>
+      <div class="edu-card spot">
+        <h3>MVN and MRIS, Faridabad</h3>
+        <p class="edu-degree">CBSE, Senior Secondary</p>
+        <span class="role-date">Finished 2024</span>
+        <p class="edu-note">Head boy in grade 10.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= SKILLS ================= -->
 <section id="skills">
   <div class="wrap">
     <div class="section-head">
       <div>
-        <p class="section-label reveal"><span>04</span>Skills</p>
+        <p class="section-label reveal"><span>05</span>Skills</p>
         <h2 class="statement reveal">Two toolkits. <span>One for the build, one for the business.</span></h2>
       </div>
     </div>
@@ -475,11 +524,21 @@
     <div class="reveal">
       <p class="eyebrow">Have an internship, a partnership or a question?</p>
       <h2>Let's talk.</h2>
-      <a href="mailto:Pjangid.work@gmail.com" class="big-email">Pjangid.work@gmail.com</a>
+      <div class="contact-email-row">
+        <a href="mailto:Pjangid.work@gmail.com" class="big-email">Pjangid.work@gmail.com</a>
+        <button type="button" class="copy-email" id="copy-email" data-email="Pjangid.work@gmail.com" aria-label="Copy email address">
+          <svg class="copy-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><rect x="6" y="6" width="11" height="11" rx="1"/><path d="M3 14V4a1 1 0 0 1 1-1h10"/></svg>
+          <svg class="check-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M4 10l4 4 8-8"/></svg>
+          <span class="copy-label">Copy</span>
+        </button>
+      </div>
     </div>
     <div class="contact-links reveal">
       <a href="https://www.linkedin.com/in/pranavjangid" class="btn" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/TECHMINEs" class="btn" target="_blank" rel="noopener">GitHub</a>
+      <a href="tel:+919899992858" class="btn">+91 98999 92858</a>
+      <a href="https://www.instagram.com/_PranavJangid/" class="btn" target="_blank" rel="noopener">@_PranavJangid</a>
+      <a href="resume.pdf" class="btn" target="_blank" rel="noopener">View CV</a>
       <a href="resume.pdf" class="btn" download="PranavJangid_CV.pdf">Download CV</a>
     </div>
   </div>
@@ -490,7 +549,7 @@
 <footer class="site-footer">
   <div class="wrap footer-row">
     <span>Created by Pranav Jangid | <a href="https://github.com/TECHMINEs" target="_blank" rel="noopener">TECHMINES</a></span>
-    <span>Plain HTML and CSS on GitHub Pages. Updated November 2026.</span>
+    <span>HTML, CSS and vanilla JS on GitHub Pages. Updated November 2026.</span>
   </div>
 </footer>
 
@@ -500,48 +559,69 @@
   var root = document.documentElement;
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Fade things in as they scroll into view
-  var revealer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('visible');
-      e.target.querySelectorAll('[data-count]').forEach(countUp);
-      revealer.unobserve(e.target);
-    });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(function (el) { revealer.observe(el); });
+  // ── Fail-safe: if the IntersectionObserver fails or never fires, make content visible ──
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      document.querySelectorAll('.reveal:not(.visible)').forEach(function (el) {
+        el.classList.add('visible');
+      });
+    }, 3000);
+  });
 
-  // Count a stat up from zero the first time it appears
-  function countUp(el) {
-    var target = Number(el.dataset.count);
-    var before = el.dataset.prefix || '', after = el.dataset.suffix || '';
-    if (calm) return;
-    var start = null;
-    function tick(now) {
-      if (start === null) start = now;
-      var t = Math.min((now - start) / 900, 1);
-      var eased = 1 - Math.pow(1 - t, 3);
-      el.textContent = before + Math.round(target * eased) + after;
-      if (t < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
+  // ── Fade things in as they scroll into view ──
+  if ('IntersectionObserver' in window) {
+    var revealer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('visible');
+        revealer.unobserve(e.target);
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(function (el) { revealer.observe(el); });
+  } else {
+    // No IntersectionObserver – show everything immediately
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
   }
 
-  // Highlight the nav link for the section on screen
+  // ── Highlight the nav link for the section on screen ──
   var links = Array.from(document.querySelectorAll('.nav-links a'));
-  var spy = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      links.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id); });
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id); });
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    document.querySelectorAll('main section[id]').forEach(function (s) { spy.observe(s); });
+  }
+
+  // ── Mobile menu: proper button with aria-expanded ──
+  var burger = document.getElementById('nav-burger');
+  var navLinks = document.getElementById('nav-links');
+
+  burger.addEventListener('click', function () {
+    var expanded = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!expanded));
+    navLinks.classList.toggle('open', !expanded);
+  });
+
+  // Close menu on link click or Escape
+  links.forEach(function (a) {
+    a.addEventListener('click', function () {
+      burger.setAttribute('aria-expanded', 'false');
+      navLinks.classList.remove('open');
     });
-  }, { rootMargin: '-40% 0px -55% 0px' });
-  document.querySelectorAll('main section[id]').forEach(function (s) { spy.observe(s); });
+  });
 
-  // Close the phone menu after a link is tapped
-  var toggle = document.getElementById('nav-toggle');
-  links.forEach(function (a) { a.addEventListener('click', function () { toggle.checked = false; }); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+      burger.setAttribute('aria-expanded', 'false');
+      navLinks.classList.remove('open');
+      burger.focus();
+    }
+  });
 
-  // On scroll: fill the progress bar and the timeline, and show the back-to-top button
+  // ── On scroll: fill the progress bar and the timeline, and show the back-to-top button ──
   var header = document.getElementById('site-header');
   var bar = document.getElementById('scroll-bar');
   var backdrop = document.getElementById('backdrop');
@@ -554,7 +634,7 @@
     var max = document.documentElement.scrollHeight - window.innerHeight;
     var progress = max > 0 ? window.scrollY / max : 0;
     bar.style.setProperty('--p', progress);
-    backdrop.style.setProperty('--p', progress);   // the backdrop's colour drifts as you scroll
+    backdrop.style.setProperty('--p', progress);
     header.classList.toggle('scrolled', window.scrollY > 8);
     toTop.classList.toggle('show', window.scrollY > 700);
 
@@ -568,7 +648,7 @@
   window.addEventListener('resize', onScroll);
   onScroll();
 
-  // A soft light that follows the pointer across cards
+  // ── A soft light that follows the pointer across cards ──
   document.querySelectorAll('.spot').forEach(function (card) {
     card.addEventListener('pointermove', function (e) {
       var box = card.getBoundingClientRect();
@@ -577,13 +657,79 @@
     });
   });
 
-  // Light / dark switch (remembers the choice)
-  document.getElementById('theme-toggle').addEventListener('click', function () {
+  // ── Light / dark switch (remembers the choice, announces correctly) ──
+  var themeBtn = document.getElementById('theme-toggle');
+  function updateThemeLabel() {
+    var isLight = root.classList.contains('is-light');
+    themeBtn.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+  }
+  updateThemeLabel();
+
+  themeBtn.addEventListener('click', function () {
     var next = root.classList.contains('is-light') ? 'dark' : 'light';
     root.setAttribute('data-theme', next);
     root.classList.toggle('is-light', next === 'light');
     try { localStorage.setItem('theme', next); } catch (e) {}
+    updateThemeLabel();
   });
+
+  // ── Tape pause/play button ──
+  var tapeBtn = document.getElementById('tape-pause');
+  var tapeTrack = document.querySelector('.tape-track');
+  if (tapeBtn && tapeTrack) {
+    tapeBtn.addEventListener('click', function () {
+      var paused = tapeTrack.style.animationPlayState === 'paused';
+      tapeTrack.style.animationPlayState = paused ? 'running' : 'paused';
+      tapeBtn.setAttribute('aria-label', paused ? 'Pause scrolling text' : 'Resume scrolling text');
+      tapeBtn.classList.toggle('is-paused', !paused);
+    });
+  }
+
+  // ── Copy email button ──
+  var copyBtn = document.getElementById('copy-email');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function () {
+      var email = copyBtn.getAttribute('data-email');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(function () {
+          copyBtn.classList.add('copied');
+          copyBtn.querySelector('.copy-label').textContent = 'Copied';
+          setTimeout(function () {
+            copyBtn.classList.remove('copied');
+            copyBtn.querySelector('.copy-label').textContent = 'Copy';
+          }, 2000);
+        }).catch(function () {
+          fallbackCopy(email);
+        });
+      } else {
+        fallbackCopy(email);
+      }
+    });
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      copyBtn.classList.add('copied');
+      copyBtn.querySelector('.copy-label').textContent = 'Copied';
+      setTimeout(function () {
+        copyBtn.classList.remove('copied');
+        copyBtn.querySelector('.copy-label').textContent = 'Copy';
+      }, 2000);
+    } catch (e) {
+      copyBtn.querySelector('.copy-label').textContent = 'Select the email above';
+      setTimeout(function () {
+        copyBtn.querySelector('.copy-label').textContent = 'Copy';
+      }, 3000);
+    }
+    document.body.removeChild(ta);
+  }
 </script>
 </body>
 </html>
