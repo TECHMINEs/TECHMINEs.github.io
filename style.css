@@ -1566,12 +1566,14 @@ h1 em {
 }
 
 #contact .eyebrow,
-#contact h2 { color: var(--on-red); }
+#contact h2,
+#contact .contact-heading { color: var(--on-red); }
 
-#contact h2 {
-  margin-top: 0.9rem;
-  font-size: clamp(3.2rem, 10vw, 7rem);
-  line-height: 0.95;
+#contact h2,
+#contact .contact-heading {
+  margin-top: 0.5rem;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  line-height: 1;
   text-transform: uppercase;
 }
 
@@ -1580,24 +1582,29 @@ h1 em {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   flex-wrap: wrap;
+  max-width: 100%;
 }
 
+.contact-email,
 .big-email {
   display: inline-block;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.4rem, 4vw, 2.6rem);
-  line-height: 1.1;
+  font-size: clamp(1.15rem, 3vw, 1.85rem);
+  line-height: 1.15;
   color: var(--on-red);
   text-decoration: underline;
-  text-decoration-thickness: 3px;
+  text-decoration-thickness: 2px;
   text-underline-offset: 0.2em;
   overflow-wrap: anywhere;
+  word-break: break-all;
+  max-width: 100%;
   transition: text-underline-offset 0.2s ease;
 }
 
+.contact-email:hover,
 .big-email:hover { text-underline-offset: 0.36em; }
 
 /* Copy email button */
@@ -1616,6 +1623,7 @@ h1 em {
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.15s ease;
+  white-space: nowrap;
 }
 
 .copy-email:hover {
@@ -1629,10 +1637,22 @@ h1 em {
 .contact-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: 0.55rem;
+}
+
+.contact-cv {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  width: 100%;
 }
 
 #contact .btn {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.82rem;
   border-color: var(--on-red);
   color: var(--on-red);
 }
@@ -1908,6 +1928,17 @@ html:not(.js) .nav-burger { display: none !important; }
   /* The sticky header is always in reach on a phone, so the corner button isn't needed */
   .to-top { display: none; }
 
+  .contact {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.75rem;
+  }
+
+  .contact-links,
+  .contact-cv {
+    width: 100%;
+  }
+
   .footer-row { padding-right: 0; }
 }
 
@@ -2033,9 +2064,13 @@ html:not(.js) .nav-burger { display: none !important; }
   }
 
   #contact .eyebrow,
-  #contact h2 { color: #1a1a1a; }
+  #contact h2,
+  #contact .contact-heading { color: #1a1a1a; }
 
+  .contact-email,
   .big-email { color: #cc0000; }
+
+  .contact-cv { border-top-color: rgba(0, 0, 0, 0.15); }
 
   #contact .btn {
     border-color: #1a1a1a;
