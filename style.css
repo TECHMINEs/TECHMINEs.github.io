@@ -9,7 +9,7 @@
    5.  Header and navigation
    6.  Page backdrop and intro
    7.  Moving bands (tape and banner)
-   8.  Sections (about, projects, experience, skills, contact)
+   8.  Sections (about, projects, experience, education, skills, contact)
    9.  Footer and back-to-top
    10. Motion (keyframes and scroll reveal)
    11. Responsive rules
@@ -189,6 +189,31 @@ strong { color: var(--text); font-weight: 600; }
 }
 
 
+/* ---------- Skip link ---------- */
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--red);
+  color: var(--on-red);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.skip-link:focus {
+  top: 0.75rem;
+  outline: 3px solid var(--text);
+  outline-offset: 2px;
+}
+
+
 /* ---------- 3. Layout helpers and section headings ---------- */
 
 .wrap {
@@ -310,7 +335,7 @@ main > section {
 
 .btn--solid:hover { box-shadow: 5px 5px 0 var(--text); }
 
-/* Underlined text link with an arrow */
+/* Underlined text link with an inline SVG arrow */
 .text-link {
   font-family: var(--font-display);
   font-weight: 700;
@@ -324,7 +349,23 @@ main > section {
   transition: color 0.15s ease;
 }
 
-.text-link::after { content: " \2197"; color: var(--red); }
+/* Replace Unicode arrow with inline SVG for cross-browser reliability */
+.text-link::after {
+  content: "";
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.3em;
+  vertical-align: -0.05em;
+  background-color: var(--red);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5v7' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5v7' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
 .text-link:hover { color: var(--red); }
 
 /* Tech and skill chips */
@@ -427,6 +468,7 @@ main > section {
 .nav {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   height: var(--head-h);
 }
@@ -435,7 +477,7 @@ main > section {
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  margin-right: auto;
+  flex-shrink: 0;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -476,6 +518,7 @@ main > section {
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  flex-shrink: 0;
 }
 
 .nav-links a {
@@ -488,6 +531,7 @@ main > section {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
+  white-space: nowrap;
   color: var(--body);
   transition: color 0.15s ease;
 }
@@ -516,6 +560,9 @@ main > section {
 .nav-links .nav-cta,
 .nav-links .nav-cta:hover,
 .nav-links .nav-cta.active {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
   margin-left: 0.6rem;
   padding: 0.55rem 1rem;
   background: var(--red);
@@ -523,16 +570,28 @@ main > section {
   font-weight: 700;
 }
 
-.nav-links .nav-cta::after { content: " \2197"; }
-
-/* The checkbox drives the phone menu; it is never shown itself */
-.nav-toggle {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
+/* SVG arrow icon for the CTA */
+.nav-links .nav-cta::after {
+  content: "";
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.35em;
+  vertical-align: -0.05em;
+  background-color: var(--on-red);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5v7' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5v7' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
-.nav-burger { display: none; }
+/* Mobile nav: button-driven instead of checkbox hack */
+.nav-burger {
+  display: none;
+  border: none;
+}
 
 .nav-burger span,
 .nav-burger span::before,
@@ -591,10 +650,7 @@ main > section {
   mix-blend-mode: overlay;
 }
 
-/* Two blurred blobs of colour, one on each edge of the screen. Each one drifts
-   on its own (the animation) and also slides along its edge as the page scrolls
-   (--p goes from 0 to 1). They stay off to the sides so the middle, where the
-   text is, remains clean. */
+/* Two blurred blobs of colour, one on each edge of the screen. */
 .blob {
   position: absolute;
   width: clamp(280px, 40vw, 560px);
@@ -672,12 +728,14 @@ main > section {
 .status,
 .tagline,
 .alias,
+.degrees,
 .lead,
 .hero-actions,
 .hero-logo { animation: rise 0.9s var(--ease) backwards; }
 
 .tagline      { animation-delay: 0.30s; }
 .alias        { animation-delay: 0.36s; }
+.degrees      { animation-delay: 0.40s; }
 .lead         { animation-delay: 0.44s; }
 .hero-actions { animation-delay: 0.54s; }
 .hero-logo    { animation-delay: 0.25s; }
@@ -750,8 +808,17 @@ h1 em {
 
 .alias strong { color: var(--red); font-weight: 700; }
 
+/* Compact degree line in the hero */
+.degrees {
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--dim);
+}
+
 .lead {
-  margin-top: 1.6rem;
+  margin-top: 1.4rem;
   font-size: clamp(1.05rem, 1.5vw, 1.2rem);
   line-height: 1.6;
   color: var(--body);
@@ -852,7 +919,31 @@ h1 em {
 
 .tape i { margin-inline: 1.5rem; opacity: 0.7; }
 
-.tape:hover .tape-track { animation-play-state: paused; }
+/* Pause button for the tape */
+.tape-pause {
+  position: absolute;
+  right: 4%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--on-red);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.tape:hover .tape-pause,
+.tape:focus-within .tape-pause,
+.tape-pause:focus { opacity: 1; }
+
+.tape-pause .play-icon { display: none; }
+.tape-pause.is-paused .play-icon { display: block; }
+.tape-pause.is-paused .pause-icon { display: none; }
 
 /* Huge outlined lettering before the contact block */
 .banner {
@@ -924,10 +1015,13 @@ h1 em {
 }
 
 /* --- Projects --- */
+
+/* Grid layout: cards align to top so expanding details in one doesn't stretch neighbours */
 .cards {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 1.25rem;
+  align-items: start;
 }
 
 .card {
@@ -978,6 +1072,23 @@ h1 em {
   font-size: 1.05rem;
   line-height: 1.5;
   color: var(--body);
+}
+
+/* Problem statement in project cards */
+.card-problem {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--dim);
+}
+
+.card-problem strong {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
 .metric {
@@ -1060,6 +1171,7 @@ h1 em {
   animation: rise 0.45s var(--ease) backwards;
 }
 
+/* Replace Unicode arrow with inline SVG for cross-browser reliability */
 .card-link {
   align-self: flex-start;
   margin-top: auto;
@@ -1074,9 +1186,19 @@ h1 em {
 }
 
 .card-link::after {
-  content: "\2197";
+  content: "";
   display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
   margin-left: 0.4rem;
+  vertical-align: -0.05em;
+  background-color: currentColor;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5v7' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 12.5L12.5 3.5M12.5 3.5H5.5M12.5 3.5v7' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
   transition: transform 0.2s var(--ease);
 }
 
@@ -1104,6 +1226,14 @@ h1 em {
   max-width: 36ch;
   font-size: 1.25rem;
   font-weight: 500;
+}
+
+.card--featured .card-problem {
+  color: color-mix(in srgb, var(--on-red) 80%, transparent);
+}
+
+.card--featured .card-problem strong {
+  color: var(--on-red);
 }
 
 .card--featured h3,
@@ -1228,7 +1358,8 @@ h1 em {
 
 .roles .points li { font-size: 1rem; }
 
-.education {
+/* Education sidebar in experience section */
+.education-sidebar {
   position: sticky;
   top: calc(var(--head-h) + 1.5rem);
   border: 1px solid var(--line);
@@ -1243,6 +1374,51 @@ h1 em {
 .school { padding-block: 1rem; }
 .school + .school { border-top: 1px solid var(--line); }
 .school p { margin: 0.3rem 0 0.35rem; font-size: 1rem; }
+
+/* --- Education (standalone section) --- */
+.education-section {
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.education-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.edu-card {
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--red);
+  background: color-mix(in srgb, var(--panel) 74%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+  padding: 1.4rem 1.5rem;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+
+.edu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 50px -20px var(--glow);
+}
+
+.edu-card h3 {
+  font-size: 1.15rem;
+  text-transform: uppercase;
+}
+
+.edu-degree {
+  margin: 0.4rem 0 0.3rem;
+  font-size: 1rem;
+  color: var(--body);
+}
+
+.edu-note {
+  margin-top: 0.6rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--dim);
+}
 
 /* --- Skills --- */
 .skills {
@@ -1304,9 +1480,17 @@ h1 em {
   text-transform: uppercase;
 }
 
+/* Email with copy button */
+.contact-email-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
 .big-email {
   display: inline-block;
-  margin-top: 1.5rem;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(1.4rem, 4vw, 2.6rem);
@@ -1320,6 +1504,32 @@ h1 em {
 }
 
 .big-email:hover { text-underline-offset: 0.36em; }
+
+/* Copy email button */
+.copy-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.7rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--on-red);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.copy-email:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.copy-email .check-icon { display: none; }
+.copy-email.copied .check-icon { display: block; }
+.copy-email.copied .copy-icon { display: none; }
 
 .contact-links {
   display: flex;
@@ -1453,6 +1663,9 @@ h1 em {
   .card:nth-child(2) { grid-column: span 6; }
 
   .card--featured { grid-column: span 12; }
+
+  .education-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .education-cards .edu-card:last-child { grid-column: span 2; }
 }
 
 @media (max-width: 960px) {
@@ -1466,22 +1679,16 @@ h1 em {
     margin: 1rem 0 0 1rem;
   }
 
-  .education { position: static; }
+  .education-sidebar { position: static; }
 
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (max-width: 760px) {
-  :root { --head-h: 68px; }
-
-  body { font-size: 1rem; }
-
-  .brand img { width: 46px; height: 46px; }
-  .brand-name { font-size: 1.05rem; }
-
+@media (max-width: 900px) {
   .nav-burger { display: inline-grid; }
 
-  /* Phone menu: a panel that drops down under the header */
+  /* Phone & tablet menu: a panel that drops down under the header.
+     Uses aria-expanded on the button instead of a checkbox. */
   .nav-links {
     position: absolute;
     top: 100%;
@@ -1494,6 +1701,11 @@ h1 em {
     padding: 0.5rem 1.25rem 1rem;
     background: var(--bg);
     border-bottom: 3px solid var(--red);
+  }
+
+  .nav-links.open {
+    display: flex;
+    animation: rise 0.3s var(--ease) backwards;
   }
 
   .nav-links a,
@@ -1514,15 +1726,19 @@ h1 em {
   .nav-links .nav-cta:hover,
   .nav-links .nav-cta.active { color: var(--red); }
 
-  .nav-toggle:checked ~ .nav-links {
-    display: flex;
-    animation: rise 0.3s var(--ease) backwards;
-  }
-
   /* Burger turns into a cross while the menu is open */
-  .nav-toggle:checked ~ .nav-burger span { background: transparent; }
-  .nav-toggle:checked ~ .nav-burger span::before { transform: translateY(6px) rotate(45deg); }
-  .nav-toggle:checked ~ .nav-burger span::after  { transform: translateY(-6px) rotate(-45deg); }
+  .nav-burger[aria-expanded="true"] span { background: transparent; }
+  .nav-burger[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+  .nav-burger[aria-expanded="true"] span::after  { transform: translateY(-6px) rotate(-45deg); }
+}
+
+@media (max-width: 760px) {
+  :root { --head-h: 68px; }
+
+  body { font-size: 1rem; }
+
+  .brand img { width: 46px; height: 46px; }
+  .brand-name { font-size: 1.05rem; }
 
   .section-head { display: block; }
   .section-note { margin-top: 1rem; white-space: normal; }
@@ -1543,6 +1759,11 @@ h1 em {
 
   .skills { grid-template-columns: minmax(0, 1fr); }
   .skill-panel { padding: 1.3rem 1.25rem 0.4rem; }
+
+  .education-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .education-cards .edu-card:last-child { grid-column: span 1; }
 
   .hero-actions .btn { flex: 1 1 100%; }
 
@@ -1572,17 +1793,180 @@ h1 em {
   }
 
   .js .reveal { opacity: 1; }
+
+  /* Keep tape/banner static when motion is reduced */
+  .tape-track,
+  .banner-track { animation: none !important; }
 }
 
 @media print {
+  /* Hide non-essential elements */
   .site-header,
   .to-top,
   .backdrop,
   .tape,
   .banner,
-  .hero-actions { display: none; }
+  .hero-actions,
+  .skip-link,
+  .tape-pause,
+  .copy-email { display: none; }
 
   .js .reveal { opacity: 1; }
 
-  body { background: #fff; color: #000; }
+  /* Reset all theme-dependent colours for readable print output */
+  :root,
+  :root[data-theme="light"],
+  :root[data-theme="dark"] {
+    --bg: #ffffff;
+    --bg-2: #ffffff;
+    --panel: #ffffff;
+    --panel-2: #f5f5f5;
+    --line: #cccccc;
+    --stroke: #999999;
+    --text: #000000;
+    --body: #1a1a1a;
+    --dim: #555555;
+    --mute: #777777;
+    --red: #cc0000;
+    --red-2: #aa0000;
+    --on-red: #ffffff;
+    --green: #006600;
+    --shadow: none;
+    --lift: none;
+    --glow: transparent;
+    --glow-soft: transparent;
+    --spot: transparent;
+  }
+
+  body {
+    background: #fff;
+    color: #1a1a1a;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  /* Ensure cards and panels print without backdrop effects */
+  .card,
+  .skill-panel,
+  .education-sidebar,
+  .edu-card {
+    background: #fff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    break-inside: avoid;
+  }
+
+  /* Ensure featured card is readable when printed */
+  .card--featured {
+    background: #fff;
+    color: #000;
+    border: 2px solid #cc0000;
+  }
+
+  .card--featured h3,
+  .card--featured .card-top,
+  .card--featured .card-top span:first-child,
+  .card--featured .card-tagline,
+  .card--featured .card-problem,
+  .card--featured .card-problem strong,
+  .card--featured .metric strong,
+  .card--featured .metric span,
+  .card--featured summary,
+  .card--featured .card-link,
+  .card--featured details,
+  .card--featured .chips li { color: #1a1a1a; }
+
+  .card--featured .chips li {
+    border-color: #ccc;
+    background: #fff;
+  }
+
+  .card--featured summary::before {
+    border-color: #cc0000;
+    color: #cc0000;
+  }
+
+  .card--featured .points li::before { background: #cc0000; }
+
+  /* Contact section: print-friendly */
+  #contact {
+    background: #fff;
+    color: #1a1a1a;
+  }
+
+  #contact .eyebrow,
+  #contact h2 { color: #1a1a1a; }
+
+  .big-email { color: #cc0000; }
+
+  #contact .btn {
+    border-color: #1a1a1a;
+    color: #1a1a1a;
+  }
+
+  /* Expand all details for print */
+  details { open: true; }
+  details[open] summary::before { content: "\2212"; }
+
+  /* Show link URLs in print */
+  .card-link::after,
+  .text-link::after { content: none; }
+
+  /* Logo: no animation effects */
+  .frame,
+  .frame::before {
+    background: none;
+    animation: none;
+    filter: none;
+  }
+
+  .frame { border: 2px solid #cc0000; }
+
+  .hero-badge { animation: none; }
+
+  /* Footer */
+  .site-footer {
+    background: #fff;
+    color: #555;
+    border-top: 1px solid #ccc;
+  }
+
+  .site-footer a { color: #cc0000; }
+
+  /* Stats gradient becomes solid red text */
+  .stats strong {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: #cc0000;
+  }
+
+  h1 em {
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    color: #cc0000;
+    filter: none;
+  }
+
+  /* Status dot */
+  .status-dot { animation: none; }
+  .status { background: #f5f5f5; border-color: #ccc; }
+
+  /* Ensure page breaks work well */
+  .org,
+  .edu-card { break-inside: avoid; }
+
+  /* Hide decorative elements */
+  .spot::before { display: none; }
+
+  /* Remove transforms */
+  .card:hover,
+  .skill-panel:hover,
+  .edu-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }
