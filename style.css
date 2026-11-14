@@ -1045,7 +1045,7 @@ h1 em {
 .card:nth-child(2) { grid-column: span 5; }
 
 .card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-3px);
   border-color: var(--red);
   box-shadow: var(--lift);
 }
@@ -1434,8 +1434,8 @@ h1 em {
 }
 
 .edu-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 50px -20px var(--glow);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px -20px var(--glow);
 }
 
 .edu-card h3 {
@@ -1475,8 +1475,8 @@ h1 em {
 }
 
 .skill-panel:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 50px -20px var(--glow);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px -20px var(--glow);
 }
 
 .skill-panel h3 { font-size: 1.7rem; text-transform: uppercase; }
