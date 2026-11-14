@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 
 <script>
   // Pick the theme before the page paints, so there's no flash.
@@ -182,10 +182,10 @@
       <!-- ChainProof -->
       <article class="card card--featured spot reveal" data-project="chainproof">
         <div class="card-top"><span>01 / 05</span><span>Full-stack · Blockchain</span></div>
-        <div class="card-brand-mark">
-          <img src="logos/chainproof/mark.svg" alt="ChainProof logo" class="card-logo" width="48" height="48" loading="lazy">
+        <div class="card-identity">
+          <img src="logos/chainproof/mark.svg" alt="ChainProof logo" class="card-logo" width="72" height="72" loading="lazy">
+          <h3 class="card-title">ChainProof</h3>
         </div>
-        <h3>ChainProof</h3>
         <p class="card-tagline">Chain of custody for forensic evidence, where tampering shows up straight away.</p>
         <p class="card-problem"><strong>Problem:</strong> Evidence passes through many hands between a crime scene and a courtroom, and every hand-off is a chance for someone to question it.</p>
         <p class="metric"><strong>3</strong><span>independent records checked against each other: database, IPFS and blockchain</span></p>
@@ -205,16 +205,18 @@
             <li>Transfers carry a Groth16 zero-knowledge proof linking both officers. I haven't published the circuit files yet, so the demo labels those proofs as simulated.</li>
           </ul>
         </details>
-        <a href="https://github.com/TECHMINEs/ChainProof" class="card-link" target="_blank" rel="noopener">ChainProof on GitHub<!-- icon injected by CSS --></a>
+        <div class="card-actions">
+          <a href="https://github.com/TECHMINEs/ChainProof" class="card-link" target="_blank" rel="noopener">ChainProof on GitHub<!-- icon injected by CSS --></a>
+        </div>
       </article>
 
       <!-- Relay -->
       <article class="card spot reveal" data-project="relay">
         <div class="card-top"><span>02 / 05</span><span>Backend · Infrastructure</span></div>
-        <div class="card-brand-mark">
-          <img src="logos/relay/mark.svg" alt="Relay logo" class="card-logo" width="40" height="40" loading="lazy">
+        <div class="card-identity">
+          <img src="logos/relay/mark.svg" alt="Relay logo" class="card-logo" width="72" height="72" loading="lazy">
+          <h3 class="card-title">Relay</h3>
         </div>
-        <h3>Relay</h3>
         <p class="card-tagline">A gateway that keeps LLM apps running when a model provider goes down.</p>
         <p class="metric"><strong>257<small>req/s</small></strong><span>at 3.4&nbsp;ms p99 with zero failed requests, in a local k6 test against the mock provider</span></p>
         <ul class="chips">
@@ -234,16 +236,18 @@
             <li>If Postgres or Redis is unreachable, only the features that need them switch off. The gateway keeps serving.</li>
           </ul>
         </details>
-        <a href="https://github.com/TECHMINEs/Relay" class="card-link" target="_blank" rel="noopener">Relay on GitHub<!-- icon injected by CSS --></a>
+        <div class="card-actions">
+          <a href="https://github.com/TECHMINEs/Relay" class="card-link" target="_blank" rel="noopener">Relay on GitHub<!-- icon injected by CSS --></a>
+        </div>
       </article>
 
       <!-- DevPulse -->
       <article class="card spot reveal" data-project="devpulse">
         <div class="card-top"><span>03 / 05</span><span>Full-stack · ML</span></div>
-        <div class="card-brand-mark">
-          <img src="logos/devpulse/mark.svg" alt="DevPulse logo" class="card-logo" width="40" height="40" loading="lazy">
+        <div class="card-identity">
+          <img src="logos/devpulse/mark.svg" alt="DevPulse logo" class="card-logo" width="72" height="72" loading="lazy">
+          <h3 class="card-title">DevPulse</h3>
         </div>
-        <h3>DevPulse</h3>
         <p class="card-tagline">Analyzes work patterns from GitHub commit history to surface fatigue trends.</p>
         <p class="metric"><strong>0–100</strong><span>experimental work-pattern score from commit timing, streaks and volume, with a 7-day forecast (trained on synthetic data)</span></p>
         <ul class="chips">
@@ -262,16 +266,18 @@
             <li>Commit heatmaps, nine achievements, team leaderboards, PDF reports and a Monday-morning digest email.</li>
           </ul>
         </details>
-        <a href="https://github.com/TECHMINEs/DevPulse" class="card-link" target="_blank" rel="noopener">DevPulse on GitHub<!-- icon injected by CSS --></a>
+        <div class="card-actions">
+          <a href="https://github.com/TECHMINEs/DevPulse" class="card-link" target="_blank" rel="noopener">DevPulse on GitHub<!-- icon injected by CSS --></a>
+        </div>
       </article>
 
       <!-- Nexora -->
       <article class="card spot reveal" data-project="nexora">
         <div class="card-top"><span>04 / 05</span><span>Frontend · Risk modelling</span></div>
-        <div class="card-brand-mark">
-          <img src="logos/nexora/mark.svg" alt="Nexora logo" class="card-logo" width="40" height="40" loading="lazy">
+        <div class="card-identity">
+          <img src="logos/nexora/mark.svg" alt="Nexora logo" class="card-logo" width="72" height="72" loading="lazy">
+          <h3 class="card-title">Nexora</h3>
         </div>
-        <h3>Nexora</h3>
         <p class="card-tagline">Works out what fails first at a factory, before a flood finds out for real.</p>
         <p class="metric"><strong>377</strong><span>golden-value tests across 16 engines. Change one formula and the build fails.</span></p>
         <ul class="chips">
@@ -291,16 +297,19 @@
             <li>The facilities in the demo are synthetic, and the app says so on every page.</li>
           </ul>
         </details>
-        <a href="https://github.com/TECHMINEs/Nexora" class="card-link" target="_blank" rel="noopener">Nexora on GitHub<!-- icon injected by CSS --></a>
+        <div class="card-actions">
+          <a href="https://techmines.github.io/Nexora/" class="btn btn--solid btn--sm" target="_blank" rel="noopener">Live Demo</a>
+          <a href="https://github.com/TECHMINEs/Nexora" class="card-link" target="_blank" rel="noopener">Source Code<!-- icon injected by CSS --></a>
+        </div>
       </article>
 
       <!-- AutoLine -->
       <article class="card spot reveal" data-project="autoline">
         <div class="card-top"><span>05 / 05</span><span>Full-stack · Databases</span></div>
-        <div class="card-brand-mark">
-          <img src="logos/autoline/mark.svg" alt="AutoLine logo" class="card-logo" width="40" height="40" loading="lazy">
+        <div class="card-identity">
+          <img src="logos/autoline/mark.svg" alt="AutoLine logo" class="card-logo" width="72" height="72" loading="lazy">
+          <h3 class="card-title">AutoLine</h3>
         </div>
-        <h3>AutoLine</h3>
         <p class="card-tagline">A car plant's production, parts and quality checks on one dashboard.</p>
         <p class="metric"><strong>0</strong><span>queries rewritten to move from Oracle to SQLite. A translation layer handles the dialect.</span></p>
         <ul class="chips">
@@ -319,7 +328,9 @@
             <li>Admins, managers and operators each get their own view and permissions.</li>
           </ul>
         </details>
-        <a href="https://github.com/TECHMINEs/AutoLine" class="card-link" target="_blank" rel="noopener">AutoLine on GitHub<!-- icon injected by CSS --></a>
+        <div class="card-actions">
+          <a href="https://github.com/TECHMINEs/AutoLine" class="card-link" target="_blank" rel="noopener">AutoLine on GitHub<!-- icon injected by CSS --></a>
+        </div>
       </article>
 
     </div>

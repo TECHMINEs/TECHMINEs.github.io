@@ -1032,7 +1032,7 @@ h1 em {
   grid-column: span 4;
   display: flex;
   flex-direction: column;
-  padding: 1.6rem;
+  padding: 1.75rem;
   border: 1px solid var(--line);
   /* slightly see-through, with the backdrop blurred behind it */
   background: color-mix(in srgb, var(--panel) 74%, transparent);
@@ -1042,7 +1042,24 @@ h1 em {
   transition: transform 0.3s var(--ease), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:nth-child(2) { grid-column: span 5; }
+/* Balanced Row 1: ChainProof (6 cols) and Relay (6 cols) */
+.card--featured {
+  grid-column: span 6;
+  padding: 1.75rem;
+  border-color: transparent;
+  background: radial-gradient(130% 150% at 0% 0%, var(--red) 35%, var(--red-2));
+  color: var(--on-red);
+  box-shadow: 0 24px 60px -24px var(--glow);
+}
+
+.card[data-project="relay"] { grid-column: span 6; }
+
+/* Balanced Row 2: DevPulse, Nexora, AutoLine (4 cols each) */
+.card[data-project="devpulse"],
+.card[data-project="nexora"],
+.card[data-project="autoline"] {
+  grid-column: span 4;
+}
 
 .card:hover {
   transform: translateY(-3px);
@@ -1064,36 +1081,55 @@ h1 em {
 
 .card-top span:first-child { color: var(--red); }
 
-/* Project authentic branding: mark tile & spacing */
-.card-brand-mark {
-  margin-top: 1.4rem;
-  margin-bottom: 0.6rem;
+/* Project authentic branding: 64-80px logo mark vertically centered beside project name */
+.card-identity {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.85rem;
 }
 
-.card-brand-mark .card-logo {
+.card-logo {
   display: block;
-  width: 40px;
-  height: 40px;
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
   border: 1px solid var(--line);
   background: #000000;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
   transition: transform 0.25s var(--ease), border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.card:hover .card-brand-mark .card-logo {
+.card:hover .card-logo {
   border-color: var(--red);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--red) 35%, transparent);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--red) 40%, transparent);
 }
 
-.card--featured .card-brand-mark .card-logo {
-  width: 46px;
-  height: 46px;
-  border-color: color-mix(in srgb, var(--on-red) 30%, transparent);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+.card--featured .card-logo {
+  border-color: color-mix(in srgb, var(--on-red) 35%, transparent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
-.card--featured:hover .card-brand-mark .card-logo {
+.card--featured:hover .card-logo {
   border-color: var(--on-red);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 2.2vw, 2.05rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.card--featured .card-title {
+  color: var(--on-red);
 }
 
 .card h3 {
@@ -1240,10 +1276,31 @@ h1 em {
 
 .card-link:hover::after { transform: translate(3px, -3px); }
 
-/* The first project is the featured one: wider, and filled with colour */
+/* Card actions container */
+.card-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+.card-actions .card-link {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.btn--sm {
+  padding: 0.55rem 1.15rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+}
+
+/* The first project is the featured one: balanced 6-col span and filled with colour */
 .card--featured {
-  grid-column: span 7;
-  padding: 2rem;
+  grid-column: span 6;
+  padding: 1.75rem;
   border-color: transparent;
   background: radial-gradient(130% 150% at 0% 0%, var(--red) 35%, var(--red-2));
   color: var(--on-red);
@@ -1256,11 +1313,13 @@ h1 em {
   background: radial-gradient(460px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.28), transparent 65%);
 }
 
-.card--featured h3 { font-size: clamp(2.3rem, 4.4vw, 3.3rem); }
+.card--featured .card-title {
+  color: var(--on-red);
+}
 
 .card--featured .card-tagline {
   max-width: 36ch;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 500;
 }
 
@@ -1694,11 +1753,21 @@ h1 em {
 
 /* ---------- 11. Responsive rules ---------- */
 
-@media (max-width: 1000px) {
+@media (max-width: 1080px) {
   .card,
-  .card:nth-child(2) { grid-column: span 6; }
+  .card[data-project="relay"],
+  .card[data-project="devpulse"],
+  .card[data-project="nexora"] {
+    grid-column: span 6;
+  }
 
-  .card--featured { grid-column: span 12; }
+  .card--featured {
+    grid-column: span 12;
+  }
+
+  .card[data-project="autoline"] {
+    grid-column: span 12;
+  }
 
   .education-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .education-cards .edu-card:last-child { grid-column: span 2; }
@@ -1801,13 +1870,25 @@ html:not(.js) .nav-burger { display: none !important; }
   .about-text { grid-template-columns: minmax(0, 1fr); }
 
   .card,
-  .card:nth-child(2),
-  .card--featured {
+  .card[data-project="relay"],
+  .card--featured,
+  .card[data-project="devpulse"],
+  .card[data-project="nexora"],
+  .card[data-project="autoline"] {
     grid-column: span 12;
     padding: 1.35rem;
   }
 
-  .card h3 { margin-top: 1.6rem; }
+  .card-identity {
+    gap: 0.85rem;
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-logo {
+    width: 60px;
+    height: 60px;
+  }
 
   .orgs { padding-left: 1.8rem; }
   .org::before { left: -1.8rem; }
