@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="RELAY logo">
+  <title>RELAY</title>
+  <rect width="64" height="64" fill="#000000"/>
+  <rect x="1.5" y="1.5" width="61" height="61" fill="none" stroke="#FF2626" stroke-width="3"/>
+  <path d="M9 32 L24 32" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M24 32 L24 16 L33 16" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M41 16 L47 16" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M24 32 L24 48 L47 48" fill="none" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M24 32 L45 32" fill="none" stroke="#FF2626" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M42 25 L49 32 L42 39" fill="none" stroke="#FF2626" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <rect x="48" y="12.5" width="7" height="7" fill="#FFFFFF"/>
+  <rect x="48" y="44.5" width="7" height="7" fill="#FFFFFF"/>
+</svg>
