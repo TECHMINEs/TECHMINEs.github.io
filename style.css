@@ -1082,19 +1082,20 @@ h1 em {
 
 /* --- Projects --- */
 
-/* Grid layout: cards align to top so expanding details in one doesn't stretch neighbours */
+/* Two roomy columns keep descriptions, metrics and actions aligned. */
 .cards {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 1.25rem;
-  align-items: start;
+  gap: 1.5rem;
+  align-items: stretch;
 }
 
 .card {
-  grid-column: span 4;
+  grid-column: span 6;
   display: flex;
   flex-direction: column;
-  padding: 1.75rem;
+  min-width: 0;
+  padding: clamp(1.6rem, 2.8vw, 2.3rem);
   border: 1px solid var(--line);
   /* slightly see-through, with the backdrop blurred behind it */
   background: color-mix(in srgb, var(--panel) 74%, transparent);
@@ -1104,10 +1105,8 @@ h1 em {
   transition: transform 0.3s var(--ease), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Balanced Row 1: ChainProof (6 cols) and Relay (6 cols) */
 .card--featured {
   grid-column: span 6;
-  padding: 1.75rem;
   border-color: transparent;
   background: radial-gradient(130% 150% at 0% 0%, var(--red) 35%, var(--red-2));
   color: var(--on-red);
@@ -1116,12 +1115,10 @@ h1 em {
 
 .card[data-project="relay"] { grid-column: span 6; }
 
-/* Balanced Row 2: DevPulse, Nexora, AutoLine (4 cols each) */
 .card[data-project="devpulse"],
-.card[data-project="nexora"],
-.card[data-project="autoline"] {
-  grid-column: span 4;
-}
+.card[data-project="nexora"] { grid-column: span 6; }
+
+.card[data-project="autoline"] { grid-column: 4 / span 6; }
 
 .card:hover {
   transform: translateY(-3px);
@@ -1179,7 +1176,7 @@ h1 em {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
-.card-title {
+.card .card-title {
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(1.65rem, 2.2vw, 2.05rem);
@@ -1194,17 +1191,10 @@ h1 em {
   color: var(--on-red);
 }
 
-.card h3 {
-  margin-top: 0;
-  font-size: 2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
-}
-
 .card-tagline {
-  margin-top: 0.6rem;
-  font-size: 1.05rem;
-  line-height: 1.5;
+  margin-top: 0.25rem;
+  font-size: 1.1rem;
+  line-height: 1.45;
   color: var(--body);
 }
 
@@ -1214,6 +1204,11 @@ h1 em {
   font-size: 0.95rem;
   line-height: 1.5;
   color: var(--dim);
+}
+
+.card--featured .card-problem {
+  max-width: 64ch;
+  text-wrap: balance;
 }
 
 .card-problem strong {
@@ -1226,8 +1221,8 @@ h1 em {
 }
 
 .metric {
-  margin-top: 1.4rem;
-  padding-top: 1.2rem;
+  margin-top: 1.6rem;
+  padding-top: 1.3rem;
   border-top: 1px solid var(--line);
 }
 
@@ -1338,19 +1333,56 @@ h1 em {
 
 .card-link:hover::after { transform: translate(3px, -3px); }
 
-/* Card actions container */
-.card-actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1.1rem;
+/* A plain-language mode label sits directly above the demo action. */
+.card-demo-note {
   margin-top: auto;
-  padding-top: 1.5rem;
+  padding-top: 1.6rem;
+  color: var(--dim);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.card-demo-note strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--red);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.card--featured .card-demo-note,
+.card--featured .card-demo-note strong { color: var(--on-red); }
+
+.card-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding-top: 0.9rem;
+}
+
+.card-actions .card-demo-link {
+  justify-content: space-between;
+  min-height: 3.7rem;
+  padding: 0.95rem 1.2rem;
+  font-size: 1.02rem;
+}
+
+.card-demo-link::after {
+  content: "↗";
+  margin-left: 1rem;
+  font-size: 1.25rem;
+  line-height: 1;
 }
 
 .card-actions .card-link {
   margin-top: 0;
   padding-top: 0;
+  white-space: nowrap;
+  font-size: 0.78rem;
 }
 
 .btn--sm {
@@ -1362,7 +1394,6 @@ h1 em {
 /* The first project is the featured one: balanced 6-col span and filled with colour */
 .card--featured {
   grid-column: span 6;
-  padding: 1.75rem;
   border-color: transparent;
   background: radial-gradient(130% 150% at 0% 0%, var(--red) 35%, var(--red-2));
   color: var(--on-red);
@@ -1875,12 +1906,8 @@ h1 em {
     grid-column: span 6;
   }
 
-  .card--featured {
-    grid-column: span 12;
-  }
-
   .card[data-project="autoline"] {
-    grid-column: span 12;
+    grid-column: 4 / span 6;
   }
 
   .education-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1907,6 +1934,8 @@ h1 em {
 html:not(.js) .nav-burger { display: none !important; }
 
 @media (max-width: 900px) {
+  .cards .card { grid-column: span 12; }
+
   html:not(.js) .nav-links {
     position: static !important;
     display: flex !important;
@@ -2003,6 +2032,9 @@ html:not(.js) .nav-burger { display: none !important; }
     width: 60px;
     height: 60px;
   }
+
+  .card-actions { grid-template-columns: minmax(0, 1fr); }
+  .card-actions .card-link { justify-self: start; padding: 0.3rem 0; }
 
   .orgs { padding-left: 1.8rem; }
   .org::before { left: -1.8rem; }
