@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 
 <script>
   // Pick the theme before the page paints, so there's no flash.
@@ -159,7 +159,7 @@
       <ul class="stats reveal">
         <li><strong>5</strong><span>projects shipped, all public on GitHub</span></li>
         <li><strong>25k+</strong><span>followers at MTTN, where I head BD and PR</span></li>
-        <li><strong>~15</strong><span>people led across four teams</span></li>
+        <li><strong>150</strong><span>people led across four teams</span></li>
         <li><strong>10+</strong><span>brand stakeholders in the MAHE MUN pipeline</span></li>
       </ul>
     </div>
@@ -180,8 +180,11 @@
     <div class="cards">
 
       <!-- ChainProof -->
-      <article class="card card--featured spot reveal">
+      <article class="card card--featured spot reveal" data-project="chainproof">
         <div class="card-top"><span>01 / 05</span><span>Full-stack · Blockchain</span></div>
+        <div class="card-brand-mark">
+          <img src="logos/chainproof/mark.svg" alt="ChainProof logo" class="card-logo" width="48" height="48" loading="lazy">
+        </div>
         <h3>ChainProof</h3>
         <p class="card-tagline">Chain of custody for forensic evidence, where tampering shows up straight away.</p>
         <p class="card-problem"><strong>Problem:</strong> Evidence passes through many hands between a crime scene and a courtroom, and every hand-off is a chance for someone to question it.</p>
@@ -206,8 +209,11 @@
       </article>
 
       <!-- Relay -->
-      <article class="card spot reveal">
+      <article class="card spot reveal" data-project="relay">
         <div class="card-top"><span>02 / 05</span><span>Backend · Infrastructure</span></div>
+        <div class="card-brand-mark">
+          <img src="logos/relay/mark.svg" alt="Relay logo" class="card-logo" width="40" height="40" loading="lazy">
+        </div>
         <h3>Relay</h3>
         <p class="card-tagline">A gateway that keeps LLM apps running when a model provider goes down.</p>
         <p class="metric"><strong>257<small>req/s</small></strong><span>at 3.4&nbsp;ms p99 with zero failed requests, in a local k6 test against the mock provider</span></p>
@@ -232,24 +238,26 @@
       </article>
 
       <!-- DevPulse -->
-      <article class="card spot reveal">
+      <article class="card spot reveal" data-project="devpulse">
         <div class="card-top"><span>03 / 05</span><span>Full-stack · ML</span></div>
+        <div class="card-brand-mark">
+          <img src="logos/devpulse/mark.svg" alt="DevPulse logo" class="card-logo" width="40" height="40" loading="lazy">
+        </div>
         <h3>DevPulse</h3>
-        <p class="card-tagline">Reads your GitHub history and warns you before burnout does.</p>
-        <p class="metric"><strong>0–100</strong><span>experimental wellness score from commit timing, streaks and volume, with a 7-day forecast (trained on synthetic data)</span></p>
+        <p class="card-tagline">Analyzes work patterns from GitHub commit history to surface fatigue trends.</p>
+        <p class="metric"><strong>0–100</strong><span>experimental work-pattern score from commit timing, streaks and volume, with a 7-day forecast (trained on synthetic data)</span></p>
         <ul class="chips">
           <li>React 18</li><li>Node.js</li><li>Socket.io</li><li>FastAPI</li><li>scikit-learn</li>
         </ul>
         <details>
           <summary>How it works</summary>
           <p>
-            DevPulse looks at the shape of your work: late nights, weekend commits, long streaks
-            and sprint-then-crash cycles. It turns that into a score you can watch before the
-            pattern becomes a problem.
+            DevPulse analyzes commit history patterns—late nights, weekend pushes, long streaks
+            and cadence shifts—to compute experimental work-pattern scores and 7-day projections.
           </p>
           <ul class="points">
             <li>Sign in with GitHub and a background worker imports your repos and commits, streaming progress live over Socket.io.</li>
-            <li>A separate Python service scores your wellness and forecasts the next seven days. The models are trained on synthetic data for now.</li>
+            <li>A separate Python service scores your work patterns and forecasts the next seven days. The models are trained on synthetic data for now.</li>
             <li>GitHub access tokens are encrypted at rest with AES-256-GCM and never appear in an API response.</li>
             <li>Commit heatmaps, nine achievements, team leaderboards, PDF reports and a Monday-morning digest email.</li>
           </ul>
@@ -258,8 +266,11 @@
       </article>
 
       <!-- Nexora -->
-      <article class="card spot reveal">
+      <article class="card spot reveal" data-project="nexora">
         <div class="card-top"><span>04 / 05</span><span>Frontend · Risk modelling</span></div>
+        <div class="card-brand-mark">
+          <img src="logos/nexora/mark.svg" alt="Nexora logo" class="card-logo" width="40" height="40" loading="lazy">
+        </div>
         <h3>Nexora</h3>
         <p class="card-tagline">Works out what fails first at a factory, before a flood finds out for real.</p>
         <p class="metric"><strong>377</strong><span>golden-value tests across 16 engines. Change one formula and the build fails.</span></p>
@@ -284,8 +295,11 @@
       </article>
 
       <!-- AutoLine -->
-      <article class="card spot reveal">
+      <article class="card spot reveal" data-project="autoline">
         <div class="card-top"><span>05 / 05</span><span>Full-stack · Databases</span></div>
+        <div class="card-brand-mark">
+          <img src="logos/autoline/mark.svg" alt="AutoLine logo" class="card-logo" width="40" height="40" loading="lazy">
+        </div>
         <h3>AutoLine</h3>
         <p class="card-tagline">A car plant's production, parts and quality checks on one dashboard.</p>
         <p class="metric"><strong>0</strong><span>queries rewritten to move from Oracle to SQLite. A translation layer handles the dialect.</span></p>
@@ -363,7 +377,7 @@
               <div class="role-head"><h4>Subhead, Business Development &amp; PR</h4><span class="role-date">Jul 2025 – Jun 2026</span></div>
               <ul class="points">
                 <li>Ran partnerships end to end (prospecting, pitching and MOU negotiation) with Starbucks, MINISO and other global brands.</li>
-                <li>Led a crew of about 15 across collaborations, content, merchandise and PR.</li>
+                <li>Led a crew of about 150 across collaborations, content, merchandise and PR.</li>
               </ul>
             </li>
             <li>
@@ -416,19 +430,10 @@
       <aside class="education-sidebar spot reveal">
         <h3 class="label">Education</h3>
         <div class="school">
-          <h4>Indian Institute of Management Bangalore</h4>
-          <p>BBA, Digital Business &amp; Entrepreneurship</p>
-          <span class="role-date">Graduating 2029</span>
-        </div>
-        <div class="school">
-          <h4>Manipal Institute of Technology</h4>
-          <p>B.Tech, Information Technology</p>
-          <span class="role-date">Jun 2024 – May 2028</span>
-        </div>
-        <div class="school">
-          <h4>MVN and MRIS, Faridabad</h4>
-          <p>CBSE, Senior Secondary. Head boy in grade 10.</p>
-          <span class="role-date">Finished 2024</span>
+          <h4>Dual-Track Degrees</h4>
+          <p>B.Tech IT at MIT Manipal &amp; BBA (DBE) at IIM Bangalore.</p>
+          <p style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--dim);">Engineering systems paired with digital business foundations.</p>
+          <a href="#education" class="card-link" style="padding-top: 0.85rem; display: inline-flex;">View full education details<!-- icon injected by CSS --></a>
         </div>
       </aside>
     </div>
@@ -529,7 +534,7 @@
         <button type="button" class="copy-email" id="copy-email" data-email="Pjangid.work@gmail.com" aria-label="Copy email address">
           <svg class="copy-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><rect x="6" y="6" width="11" height="11" rx="1"/><path d="M3 14V4a1 1 0 0 1 1-1h10"/></svg>
           <svg class="check-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M4 10l4 4 8-8"/></svg>
-          <span class="copy-label">Copy</span>
+          <span class="copy-label" aria-live="polite">Copy</span>
         </button>
       </div>
     </div>
@@ -549,7 +554,7 @@
 <footer class="site-footer">
   <div class="wrap footer-row">
     <span>Created by Pranav Jangid | <a href="https://github.com/TECHMINEs" target="_blank" rel="noopener">TECHMINES</a></span>
-    <span>HTML, CSS and vanilla JS on GitHub Pages. Updated November 2026.</span>
+    <span>© 2026 Pranav Jangid. All rights reserved.</span>
   </div>
 </footer>
 
@@ -685,19 +690,14 @@
     });
   }
 
-  // ── Copy email button ──
+  // ── Copy email button (confirms success before showing 'Copied') ──
   var copyBtn = document.getElementById('copy-email');
   if (copyBtn) {
     copyBtn.addEventListener('click', function () {
       var email = copyBtn.getAttribute('data-email');
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(email).then(function () {
-          copyBtn.classList.add('copied');
-          copyBtn.querySelector('.copy-label').textContent = 'Copied';
-          setTimeout(function () {
-            copyBtn.classList.remove('copied');
-            copyBtn.querySelector('.copy-label').textContent = 'Copy';
-          }, 2000);
+          setCopySuccess();
         }).catch(function () {
           fallbackCopy(email);
         });
@@ -705,6 +705,17 @@
         fallbackCopy(email);
       }
     });
+  }
+
+  function setCopySuccess() {
+    copyBtn.classList.add('copied');
+    copyBtn.setAttribute('aria-label', 'Email address copied to clipboard');
+    copyBtn.querySelector('.copy-label').textContent = 'Copied';
+    setTimeout(function () {
+      copyBtn.classList.remove('copied');
+      copyBtn.setAttribute('aria-label', 'Copy email address');
+      copyBtn.querySelector('.copy-label').textContent = 'Copy';
+    }, 2000);
   }
 
   function fallbackCopy(text) {
@@ -715,21 +726,37 @@
     document.body.appendChild(ta);
     ta.select();
     try {
-      document.execCommand('copy');
-      copyBtn.classList.add('copied');
-      copyBtn.querySelector('.copy-label').textContent = 'Copied';
-      setTimeout(function () {
-        copyBtn.classList.remove('copied');
-        copyBtn.querySelector('.copy-label').textContent = 'Copy';
-      }, 2000);
+      var successful = document.execCommand('copy');
+      if (successful) {
+        setCopySuccess();
+      } else {
+        throw new Error('execCommand returned false');
+      }
     } catch (e) {
-      copyBtn.querySelector('.copy-label').textContent = 'Select the email above';
+      copyBtn.querySelector('.copy-label').textContent = 'Select above';
       setTimeout(function () {
         copyBtn.querySelector('.copy-label').textContent = 'Copy';
       }, 3000);
     }
     document.body.removeChild(ta);
   }
+
+  // ── Open all details before printing, restore disclosure states afterward ──
+  window.addEventListener('beforeprint', function () {
+    document.querySelectorAll('details').forEach(function (d) {
+      d.setAttribute('data-was-open', d.open ? 'true' : 'false');
+      d.open = true;
+    });
+  });
+
+  window.addEventListener('afterprint', function () {
+    document.querySelectorAll('details').forEach(function (d) {
+      if (d.getAttribute('data-was-open') !== 'true') {
+        d.open = false;
+      }
+      d.removeAttribute('data-was-open');
+    });
+  });
 </script>
 </body>
 </html>

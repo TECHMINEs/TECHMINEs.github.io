@@ -941,6 +941,10 @@ h1 em {
 .tape:focus-within .tape-pause,
 .tape-pause:focus { opacity: 1; }
 
+@media (hover: none) {
+  .tape-pause { opacity: 0.85; }
+}
+
 .tape-pause .play-icon { display: none; }
 .tape-pause.is-paused .play-icon { display: block; }
 .tape-pause.is-paused .pause-icon { display: none; }
@@ -1060,8 +1064,40 @@ h1 em {
 
 .card-top span:first-child { color: var(--red); }
 
+/* Project authentic branding: mark tile & spacing */
+.card-brand-mark {
+  margin-top: 1.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.card-brand-mark .card-logo {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  background: #000000;
+  transition: transform 0.25s var(--ease), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover .card-brand-mark .card-logo {
+  border-color: var(--red);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--red) 35%, transparent);
+}
+
+.card--featured .card-brand-mark .card-logo {
+  width: 46px;
+  height: 46px;
+  border-color: color-mix(in srgb, var(--on-red) 30%, transparent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.card--featured:hover .card-brand-mark .card-logo {
+  border-color: var(--on-red);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+}
+
 .card h3 {
-  margin-top: 2.25rem;
+  margin-top: 0;
   font-size: 2rem;
   text-transform: uppercase;
   letter-spacing: 0.01em;
@@ -1684,7 +1720,26 @@ h1 em {
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+/* Accessible fallback when JS is disabled: keep navigation visible */
+html:not(.js) .nav-burger { display: none !important; }
+
 @media (max-width: 900px) {
+  html:not(.js) .nav-links {
+    position: static !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem 1rem !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0.5rem 0 !important;
+  }
+  html:not(.js) .nav-links a {
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.95rem !important;
+    border-bottom: none !important;
+  }
+
   .nav-burger { display: inline-grid; }
 
   /* Phone & tablet menu: a panel that drops down under the header.
@@ -1907,7 +1962,7 @@ h1 em {
   }
 
   /* Expand all details for print */
-  details { open: true; }
+  details[open] > :not(summary) { display: block !important; }
   details[open] summary::before { content: "\2212"; }
 
   /* Show link URLs in print */
