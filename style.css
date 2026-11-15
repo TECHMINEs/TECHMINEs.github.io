@@ -1608,6 +1608,34 @@ h1 em {
   color: var(--dim);
 }
 
+.schooling-list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.schooling-list li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.2rem 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--line);
+}
+
+.school-name {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.school-years {
+  color: var(--dim);
+  font-size: 0.85rem;
+}
+
 /* --- Skills --- */
 .skills {
   display: grid;
