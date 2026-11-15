@@ -98,19 +98,11 @@
       <li><a href="#contact" class="nav-cta">Let's talk</a></li>
     </ul>
 
-    <div class="sound-control">
-      <button type="button" class="icon-btn sound-toggle" id="sound-toggle" aria-label="Play TECHMINES soundtrack" aria-pressed="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="sound-wave" d="M16 8c2 2 2 6 0 8M19 5c4 4 4 10 0 14"/></svg>
-        <span class="sound-meter" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="sound-label">Sound off</span>
-      </button>
-      <div class="sound-panel" role="group" aria-label="Soundtrack volume">
-        <span>ARPENT / STUDIO EDIT</span>
-        <label for="sound-volume">Volume</label>
-        <input id="sound-volume" type="range" min="0" max="100" value="28" aria-label="Soundtrack volume">
-      </div>
-      <audio id="soundtrack" src="audio/arpent-studio.mp3" preload="none" loop></audio>
-    </div>
+    <button type="button" class="icon-btn jukebox-trigger" id="jukebox-trigger" aria-label="Open TECHMINES audio deck" aria-expanded="false" aria-controls="jukebox">
+      <span class="deck-trigger-glyph" aria-hidden="true">◈</span>
+      <span class="deck-trigger-text"><strong>TM / AUDIO</strong><small id="deck-trigger-status">READY</small></span>
+      <span class="deck-trigger-progress" aria-hidden="true"><i id="deck-trigger-fill"></i></span>
+    </button>
 
     <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-label="Switch to light theme">
       <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -119,6 +111,35 @@
   </nav>
   <div class="scroll-bar" id="scroll-bar"></div>
 </header>
+
+<aside class="jukebox" id="jukebox" role="region" aria-label="TECHMINES audio deck" hidden>
+  <div class="deck-head">
+    <span>TECHMINES <b>/</b> SIGNAL DECK 01</span>
+    <span class="deck-head-state" id="deck-state">STANDBY</span>
+    <button type="button" id="jukebox-close" aria-label="Close audio deck">×</button>
+  </div>
+  <div class="deck-face">
+    <div class="deck-mark" aria-hidden="true"><span>TM</span><i></i><small>12 / REDLINE</small></div>
+    <div class="deck-readout">
+      <p>LOADED TRACK <span>01 / 01</span></p>
+      <strong>ARPENT <em>/ STUDIO EDIT</em></strong>
+      <span class="deck-artist">Kevin MacLeod · TECHMINES site edit</span>
+      <div class="deck-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+  </div>
+  <div class="deck-timeline">
+    <label for="sound-seek">TRACK POSITION</label>
+    <input id="sound-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek within Arpent Studio Edit" disabled>
+    <div class="deck-times"><time id="deck-current">0:00</time><span>ARPENT / STUDIO EDIT</span><time id="deck-duration">--:--</time></div>
+  </div>
+  <div class="deck-controls">
+    <button type="button" class="deck-play" id="sound-toggle" aria-label="Play Arpent Studio Edit" aria-pressed="false"><span class="deck-play-glyph" aria-hidden="true">▶</span><span class="sound-label">PLAY</span></button>
+    <button type="button" class="deck-mute" id="sound-mute" aria-label="Mute soundtrack" aria-pressed="false"><span aria-hidden="true">◖))</span></button>
+    <div class="deck-volume"><label for="sound-volume">LEVEL</label><input id="sound-volume" type="range" min="0" max="100" value="40" aria-label="Soundtrack volume"><output id="sound-percent" for="sound-volume">40%</output></div>
+  </div>
+  <p class="deck-credit">Opt-in audio · Stops when this tab is hidden. <span id="deck-volume-note"></span></p>
+  <audio id="soundtrack" src="audio/arpent-studio.mp3" preload="none" loop></audio>
+</aside>
 
 <main id="main">
 
