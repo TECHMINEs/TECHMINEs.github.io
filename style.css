@@ -196,7 +196,7 @@ strong { color: var(--text); font-weight: 600; }
   position: fixed;
   top: -100%;
   left: 1rem;
-  z-index: 100;
+  z-index: 250;
   padding: 0.75rem 1.25rem;
   background: var(--red);
   color: var(--on-red);
@@ -207,6 +207,42 @@ strong { color: var(--text); font-weight: 600; }
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
+/* A first-visit brand entrance, never a fake loading meter. The page does not depend on it. */
+.launch { display: none; }
+.show-launch .launch {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: #050505;
+  color: #fff;
+  animation: launch-failsafe 2.5s forwards;
+}
+.show-launch .launch.is-leaving { animation: none; opacity: 0; pointer-events: none; transition: opacity 0.22s ease; }
+.launch-inner { width: min(100%, 640px); }
+.launch-top {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #444;
+  padding-bottom: 0.7rem;
+  color: #aaa;
+  font: 600 0.7rem var(--font-mono);
+  letter-spacing: 0.18em;
+}
+.launch-lockup { display: flex; align-items: center; gap: clamp(1rem, 4vw, 2rem); padding: 2.4rem 0; }
+.launch-lockup img { width: clamp(64px, 12vw, 96px); border: 2px solid #FF2626; }
+.launch-eyebrow { display: block; color: #FF2626; font: 700 0.75rem var(--font-mono); letter-spacing: 0.18em; }
+.launch-lockup strong { display: block; margin-top: 0.5rem; font: 700 clamp(2.2rem, 9vw, 5rem)/0.86 var(--font-display); letter-spacing: -0.025em; }
+.launch-track { position: relative; display: flex; justify-content: space-between; height: 3px; background: #393939; }
+.launch-track::after { content: ""; position: absolute; inset: 0; background: #FF2626; transform: scaleX(0); transform-origin: left; animation: launch-trace 1.2s cubic-bezier(.2,.65,.2,1) forwards; }
+.launch-track i { position: relative; z-index: 1; width: 10px; height: 10px; margin-top: -3px; border: 2px solid #FF2626; background: #050505; }
+.launch button { display: block; margin: 1.3rem 0 0 auto; padding: 0.45rem; border: 0; background: none; color: #ccc; font: 600 0.8rem var(--font-mono); cursor: pointer; }
+.launch button:hover { color: #fff; text-decoration: underline; }
+@keyframes launch-trace { to { transform: scaleX(1); } }
+@keyframes launch-failsafe { 0%, 70% { opacity: 1; pointer-events: auto; } 100% { opacity: 0; pointer-events: none; visibility: hidden; } }
 
 .skip-link:focus {
   top: 0.75rem;
@@ -655,6 +691,45 @@ main > section {
   border: none;
 }
 
+/* Sound stays opt-in. This control is distinct from the theme switch. */
+html:not(.js) .sound-control { display: none; }
+.sound-control { position: relative; flex: none; margin-left: auto; }
+.sound-toggle { width: auto; min-width: 44px; display: inline-flex; gap: 0.45rem; padding: 0 0.65rem; }
+.sound-toggle[aria-pressed="true"] { color: var(--red); border-color: var(--red); }
+.sound-toggle[aria-pressed="false"] .sound-wave { opacity: 0.25; }
+.sound-meter { display: flex; align-items: end; gap: 2px; height: 14px; }
+.sound-meter i { width: 2px; height: 4px; background: currentColor; }
+.sound-toggle[aria-pressed="true"] .sound-meter i { animation: sound-bars .72s ease-in-out infinite alternate; }
+.sound-toggle[aria-pressed="true"] .sound-meter i:nth-child(2) { animation-delay: -.42s; }
+.sound-toggle[aria-pressed="true"] .sound-meter i:nth-child(3) { animation-delay: -.2s; }
+@keyframes sound-bars { to { height: 13px; } }
+.sound-label { font: 700 0.65rem var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+.sound-panel {
+  position: absolute;
+  z-index: 60;
+  top: 100%;
+  right: 0;
+  width: 240px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.4rem 0.8rem;
+  padding: 1rem;
+  border: 1px solid var(--stroke);
+  background: var(--panel);
+  color: var(--body);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity .15s ease, transform .15s ease, visibility .15s ease;
+}
+.sound-control:hover .sound-panel,
+.sound-control:focus-within .sound-panel { opacity: 1; visibility: visible; pointer-events: auto; transform: none; }
+.sound-panel span { grid-column: 1 / -1; color: var(--red); font: 700 0.65rem var(--font-mono); letter-spacing: .08em; }
+.sound-panel label { font: 600 0.8rem var(--font-body); }
+.sound-panel input { grid-column: 1 / -1; width: 100%; accent-color: var(--red); cursor: pointer; }
+
 .nav-burger span,
 .nav-burger span::before,
 .nav-burger span::after {
@@ -1081,6 +1156,18 @@ h1 em {
 }
 
 /* --- Projects --- */
+
+.case-route { margin: -0.3rem 0 2rem; border: 1px solid var(--line); background: var(--panel); }
+.case-route > p { max-width: none; display: flex; justify-content: space-between; gap: 0.7rem; padding: 0.7rem 1rem; border-bottom: 1px solid var(--line); color: var(--dim); font: 700 0.68rem var(--font-mono); letter-spacing: .09em; }
+.case-route > p span { color: var(--red); }
+.case-route-links { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.case-route-links a { display: flex; flex-direction: column; gap: .35rem; min-width: 0; padding: 1rem; border-right: 1px solid var(--line); text-decoration: none; transition: background .2s ease, color .2s ease; }
+.case-route-links a:last-child { border-right: 0; }
+.case-route-links a:hover, .case-route-links a:focus-visible { background: var(--red); color: var(--on-red); }
+.case-route-links a span { font: 700 .64rem var(--font-mono); letter-spacing: .03em; color: var(--red); }
+.case-route-links a strong { font: 600 1rem/1.2 var(--font-display); color: var(--text); }
+.case-route-links a:hover span, .case-route-links a:hover strong, .case-route-links a:focus-visible span, .case-route-links a:focus-visible strong { color: var(--on-red); }
+.card[id] { scroll-margin-top: calc(var(--head-h) + 1.5rem); }
 
 /* Two roomy columns keep descriptions, metrics and actions aligned. */
 .cards {
@@ -1927,6 +2014,12 @@ h1 em {
 /* ---------- 11. Responsive rules ---------- */
 
 @media (max-width: 1080px) {
+  .brand img { width: 46px; height: 46px; }
+  .brand-name { font-size: 1rem; }
+  .nav-links a { padding-inline: .5rem; font-size: .85rem; }
+  .nav-links a:not(.nav-cta)::after { left: .5rem; right: .5rem; }
+  .sound-label { display: none; }
+  .sound-toggle { width: 44px; justify-content: center; padding: 0; }
   .card,
   .card[data-project="relay"],
   .card[data-project="devpulse"],
@@ -1956,6 +2049,8 @@ h1 em {
   .education-sidebar { position: static; }
 
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case-route-links { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .case-route-links a { border-bottom: 1px solid var(--line); }
 }
 
 /* Accessible fallback when JS is disabled: keep navigation visible */
@@ -2034,6 +2129,10 @@ html:not(.js) .nav-burger { display: none !important; }
 
   .brand img { width: 46px; height: 46px; }
   .brand-name { font-size: 1.05rem; }
+  .sound-label { display: none; }
+  .sound-toggle { width: 44px; justify-content: center; padding: 0; }
+  .case-route-links { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
+  .case-route-links a { flex: 0 0 42%; min-width: 145px; scroll-snap-align: start; border-bottom: 0; }
 
   .section-head { display: block; }
   .section-note { margin-top: 1rem; white-space: normal; }
@@ -2097,6 +2196,7 @@ html:not(.js) .nav-burger { display: none !important; }
 
 @media (max-width: 350px) {
   .brand-tag { display: none; }
+  .brand-name { font-size: .9rem; }
 }
 
 
@@ -2117,11 +2217,15 @@ html:not(.js) .nav-burger { display: none !important; }
   /* Keep tape/banner static when motion is reduced */
   .tape-track,
   .banner-track { animation: none !important; }
+  .launch { display: none !important; }
 }
 
 @media print {
   /* Hide non-essential elements */
   .site-header,
+  .launch,
+  .sound-control,
+  .case-route,
   .to-top,
   .backdrop,
   .tape,

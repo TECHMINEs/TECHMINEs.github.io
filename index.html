@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 
 <script>
   // Pick the theme before the page paints, so there's no flash.
@@ -25,6 +25,14 @@
     if (saved) root.setAttribute('data-theme', saved);
     var light = saved ? saved === 'light' : window.matchMedia('(prefers-color-scheme: light)').matches;
     root.classList.toggle('is-light', light);
+    // A brief identity entrance on the first direct visit in this tab only.
+    try {
+      if (!location.hash && !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+          !sessionStorage.getItem('techmines-intro')) {
+        root.classList.add('show-launch');
+        sessionStorage.setItem('techmines-intro', '1');
+      }
+    } catch (e) {} // Storage restrictions should never block the page.
   })();
 </script>
 </head>
@@ -32,6 +40,18 @@
 
 <!-- Skip link for keyboard / screen reader users -->
 <a href="#main" class="skip-link">Skip to main content</a>
+
+<div class="launch" id="launch" role="region" aria-label="TECHMINES introduction">
+  <div class="launch-inner">
+    <div class="launch-top"><span>TECHMINES / 2026</span><span>01 — 05</span></div>
+    <div class="launch-lockup">
+      <img src="profile.jpg" alt="" width="96" height="96">
+      <div><span class="launch-eyebrow">PRANAV JANGID</span><strong>BUILD.<br>VERIFY.<br>SHIP.</strong></div>
+    </div>
+    <div class="launch-track" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <button type="button" id="launch-skip">Skip intro <span aria-hidden="true">↗</span></button>
+  </div>
+</div>
 
 <!-- Backdrop behind the whole page: colour drifting along both edges, a faint grid, and thin lines
      with a pulse of light travelling along each one. It stays fixed while the page scrolls. -->
@@ -77,6 +97,20 @@
       <li><a href="#skills">Skills</a></li>
       <li><a href="#contact" class="nav-cta">Let's talk</a></li>
     </ul>
+
+    <div class="sound-control">
+      <button type="button" class="icon-btn sound-toggle" id="sound-toggle" aria-label="Play TECHMINES soundtrack" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="sound-wave" d="M16 8c2 2 2 6 0 8M19 5c4 4 4 10 0 14"/></svg>
+        <span class="sound-meter" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sound-label">Sound off</span>
+      </button>
+      <div class="sound-panel" role="group" aria-label="Soundtrack volume">
+        <span>ORIGINAL AMBIENT LOOP</span>
+        <label for="sound-volume">Volume</label>
+        <input id="sound-volume" type="range" min="0" max="100" value="28" aria-label="Soundtrack volume">
+      </div>
+      <audio id="soundtrack" src="audio/techmines-ambient.mp3" preload="none" loop></audio>
+    </div>
 
     <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-label="Switch to light theme">
       <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -177,10 +211,21 @@
       <p class="section-note reveal">Explore the demos below. GitHub Pages simulates backend features where noted.</p>
     </div>
 
+    <nav class="case-route reveal" aria-label="Choose a project by the problem it solves">
+      <p>CHOOSE A FAILURE CASE <span>→ EXPLORE THE SYSTEM</span></p>
+      <div class="case-route-links">
+        <a href="#project-chainproof"><span>01 / CHAINPROOF</span><strong>Evidence altered</strong></a>
+        <a href="#project-relay"><span>02 / RELAY</span><strong>Model outage</strong></a>
+        <a href="#project-devpulse"><span>03 / DEVPULSE</span><strong>Workload strain</strong></a>
+        <a href="#project-nexora"><span>04 / NEXORA</span><strong>Factory flood</strong></a>
+        <a href="#project-autoline"><span>05 / AUTOLINE</span><strong>Plant bottleneck</strong></a>
+      </div>
+    </nav>
+
     <div class="cards">
 
       <!-- ChainProof -->
-      <article class="card card--featured spot reveal" data-project="chainproof">
+      <article class="card card--featured spot reveal" data-project="chainproof" id="project-chainproof">
         <div class="card-top"><span>01 / 05</span><span>Full-stack · Blockchain</span></div>
         <div class="card-identity">
           <img src="logos/chainproof/mark.svg" alt="ChainProof logo" class="card-logo" width="72" height="72" loading="lazy">
@@ -213,7 +258,7 @@
       </article>
 
       <!-- Relay -->
-      <article class="card spot reveal" data-project="relay">
+      <article class="card spot reveal" data-project="relay" id="project-relay">
         <div class="card-top"><span>02 / 05</span><span>Backend · Infrastructure</span></div>
         <div class="card-identity">
           <img src="logos/relay/mark.svg" alt="Relay logo" class="card-logo" width="72" height="72" loading="lazy">
@@ -246,7 +291,7 @@
       </article>
 
       <!-- DevPulse -->
-      <article class="card spot reveal" data-project="devpulse">
+      <article class="card spot reveal" data-project="devpulse" id="project-devpulse">
         <div class="card-top"><span>03 / 05</span><span>Full-stack · ML</span></div>
         <div class="card-identity">
           <img src="logos/devpulse/mark.svg" alt="DevPulse logo" class="card-logo" width="72" height="72" loading="lazy">
@@ -278,7 +323,7 @@
       </article>
 
       <!-- Nexora -->
-      <article class="card spot reveal" data-project="nexora">
+      <article class="card spot reveal" data-project="nexora" id="project-nexora">
         <div class="card-top"><span>04 / 05</span><span>Frontend · Risk modelling</span></div>
         <div class="card-identity">
           <img src="logos/nexora/mark.svg" alt="Nexora logo" class="card-logo" width="72" height="72" loading="lazy">
@@ -311,7 +356,7 @@
       </article>
 
       <!-- AutoLine -->
-      <article class="card spot reveal" data-project="autoline">
+      <article class="card spot reveal" data-project="autoline" id="project-autoline">
         <div class="card-top"><span>05 / 05</span><span>Full-stack · Databases</span></div>
         <div class="card-identity">
           <img src="logos/autoline/mark.svg" alt="AutoLine logo" class="card-logo" width="72" height="72" loading="lazy">
@@ -588,6 +633,30 @@
 <a href="#top" class="to-top" id="to-top" aria-label="Back to top">↑</a>
 
 <script>
+  // Intro is decorative and never tied to asset loading. The page stays usable without it.
+  (function () {
+    var launch = document.getElementById('launch');
+    if (!document.documentElement.classList.contains('show-launch')) {
+      launch.remove();
+      return;
+    }
+    var timer;
+    function closeLaunch() {
+      if (!launch.isConnected) return;
+      clearTimeout(timer);
+      launch.classList.add('is-leaving');
+      setTimeout(function () {
+        document.documentElement.classList.remove('show-launch');
+        launch.remove();
+      }, 240);
+    }
+    document.getElementById('launch-skip').addEventListener('click', closeLaunch);
+    document.querySelector('.skip-link').addEventListener('click', closeLaunch);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLaunch(); });
+    window.addEventListener('pageshow', function (e) { if (e.persisted) closeLaunch(); });
+    timer = setTimeout(closeLaunch, 1450);
+  })();
+
   var root = document.documentElement;
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -785,5 +854,6 @@
     });
   });
 </script>
+<script src="sound.js" defer></script>
 </body>
 </html>
