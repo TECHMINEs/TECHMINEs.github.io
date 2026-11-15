@@ -25,14 +25,15 @@
     if (saved) root.setAttribute('data-theme', saved);
     var light = saved ? saved === 'light' : window.matchMedia('(prefers-color-scheme: light)').matches;
     root.classList.toggle('is-light', light);
-    // A brief identity entrance on the first direct visit in this tab only.
-    try {
-      if (!location.hash && !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
-          !sessionStorage.getItem('techmines-intro')) {
-        root.classList.add('show-launch');
-        sessionStorage.setItem('techmines-intro', '1');
-      }
-    } catch (e) {} // Storage restrictions should never block the page.
+    // A one-time identity entrance on direct visits; returning visitors go straight to content.
+    var seenIntro = false;
+    try { seenIntro = localStorage.getItem('techmines-intro-seen') === '1'; } catch (e) {}
+    try { seenIntro = seenIntro || sessionStorage.getItem('techmines-intro-seen') === '1'; } catch (e) {}
+    if (!location.hash && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && !seenIntro) {
+      root.classList.add('show-launch');
+      try { localStorage.setItem('techmines-intro-seen', '1'); } catch (e) {}
+      try { sessionStorage.setItem('techmines-intro-seen', '1'); } catch (e) {}
+    }
   })();
 </script>
 </head>
@@ -42,10 +43,15 @@
 <a href="#main" class="skip-link">Skip to main content</a>
 
 <div class="launch" id="launch" role="region" aria-label="TECHMINES introduction">
+  <div class="launch-field" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="launch-inner">
-    <div class="launch-top"><span>TECHMINES / 2026</span><span>01 — 05</span></div>
+    <div class="launch-top"><span>TECHMINES / 2026</span><span>FIVE SYSTEMS / ONE BUILDER</span></div>
     <div class="launch-lockup">
-      <img src="profile.jpg" alt="" width="96" height="96">
+      <div class="launch-device" aria-hidden="true">
+        <i class="launch-wing launch-wing--left"></i>
+        <span class="launch-core"><img src="profile.jpg" alt="" width="96" height="96"></span>
+        <i class="launch-wing launch-wing--right"></i>
+      </div>
       <div><span class="launch-eyebrow">PRANAV JANGID</span><strong>BUILD.<br>VERIFY.<br>SHIP.</strong></div>
     </div>
     <div class="launch-track" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
@@ -668,7 +674,7 @@
       <button type="button" data-demo="nexora" aria-pressed="false">04 Nexora</button>
       <button type="button" data-demo="autoline" aria-pressed="false">05 AutoLine</button>
     </div>
-    <div class="workbench-meta"><p id="workbench-description">Trace evidence through every hand-off.</p><a id="workbench-external" href="https://techmines.github.io/ChainProof/" target="_blank" rel="noopener">Open full demo ↗</a></div>
+    <div class="workbench-meta"><div><p id="workbench-description">Trace evidence through every hand-off.</p><small>GitHub Pages preview · backend actions are simulated where noted in each project.</small></div><a id="workbench-external" href="https://techmines.github.io/ChainProof/" target="_blank" rel="noopener">Open full demo ↗</a></div>
     <iframe id="workbench-frame" title="ChainProof live demo" loading="lazy"></iframe>
   </div>
 </div>
