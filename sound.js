@@ -1,4 +1,4 @@
-/* Original TECHMINES ambient loop. Sound starts only when the visitor presses play. */
+/* User-controlled Arpent / Studio Edit. Sound starts only when the visitor presses play. */
 (function () {
   'use strict';
   var audio = document.getElementById('soundtrack');

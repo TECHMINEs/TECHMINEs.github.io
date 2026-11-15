@@ -105,11 +105,11 @@
         <span class="sound-label">Sound off</span>
       </button>
       <div class="sound-panel" role="group" aria-label="Soundtrack volume">
-        <span>ORIGINAL AMBIENT LOOP</span>
+        <span>ARPENT / STUDIO EDIT</span>
         <label for="sound-volume">Volume</label>
         <input id="sound-volume" type="range" min="0" max="100" value="28" aria-label="Soundtrack volume">
       </div>
-      <audio id="soundtrack" src="audio/techmines-ambient.mp3" preload="none" loop></audio>
+      <audio id="soundtrack" src="audio/arpent-studio.mp3" preload="none" loop></audio>
     </div>
 
     <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-label="Switch to light theme">
@@ -221,6 +221,11 @@
         <a href="#project-autoline"><span>05 / AUTOLINE</span><strong>Plant bottleneck</strong></a>
       </div>
     </nav>
+
+    <div class="workbench-invite reveal">
+      <div><span>LIVE PROJECT WORKBENCH / 05 SYSTEMS</span><h3>See the software in action.</h3><p>Open any of the five GitHub Pages demos in a focused workspace, then return to the same place on this page.</p></div>
+      <button type="button" id="workbench-open" class="btn btn--solid">Open workbench ↗</button>
+    </div>
 
     <div class="cards">
 
@@ -632,6 +637,21 @@
 
 <a href="#top" class="to-top" id="to-top" aria-label="Back to top">↑</a>
 
+<div class="workbench" id="workbench" role="dialog" aria-modal="true" aria-labelledby="workbench-heading" hidden>
+  <div class="workbench-shell">
+    <div class="workbench-head"><div><small>TECHMINES / LIVE SYSTEMS</small><h2 id="workbench-heading">Project workbench</h2></div><button type="button" id="workbench-close" aria-label="Close project workbench">×</button></div>
+    <div class="workbench-tabs" role="group" aria-label="Choose a live demo">
+      <button type="button" data-demo="chainproof" class="selected" aria-pressed="true">01 ChainProof</button>
+      <button type="button" data-demo="relay" aria-pressed="false">02 Relay</button>
+      <button type="button" data-demo="devpulse" aria-pressed="false">03 DevPulse</button>
+      <button type="button" data-demo="nexora" aria-pressed="false">04 Nexora</button>
+      <button type="button" data-demo="autoline" aria-pressed="false">05 AutoLine</button>
+    </div>
+    <div class="workbench-meta"><p id="workbench-description">Trace evidence through every hand-off.</p><a id="workbench-external" href="https://techmines.github.io/ChainProof/" target="_blank" rel="noopener">Open full demo ↗</a></div>
+    <iframe id="workbench-frame" title="ChainProof live demo" loading="lazy"></iframe>
+  </div>
+</div>
+
 <script>
   // Intro is decorative and never tied to asset loading. The page stays usable without it.
   (function () {
@@ -855,5 +875,6 @@
   });
 </script>
 <script src="sound.js" defer></script>
+<script src="workbench.js" defer></script>
 </body>
 </html>
