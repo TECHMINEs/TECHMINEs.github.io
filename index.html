@@ -9,12 +9,37 @@
 <meta property="og:description" content="Building software, and the case for it. B.Tech IT at MIT Manipal, BBA at IIM Bangalore.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://techmines.github.io/">
-<link rel="icon" href="profile.jpg">
+<meta property="og:image" content="https://techmines.github.io/icons/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pranav Jangid, TECHMINES: building software, and the case for it">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://techmines.github.io/">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Pranav Jangid",
+  "alternateName": "TECHMINES",
+  "url": "https://techmines.github.io/",
+  "image": "https://techmines.github.io/icons/og-card.jpg",
+  "email": "mailto:Pjangid.work@gmail.com",
+  "alumniOf": [
+    { "@type": "CollegeOrUniversity", "name": "Manipal Institute of Technology" },
+    { "@type": "CollegeOrUniversity", "name": "Indian Institute of Management Bangalore" }
+  ],
+  "sameAs": ["https://github.com/TECHMINEs", "https://www.linkedin.com/in/pranavjangid"]
+}
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=7">
 
 <script>
   // Pick the theme before the page paints, so there's no flash.
@@ -59,25 +84,11 @@
   </div>
 </div>
 
-<!-- Backdrop behind the whole page: colour drifting along both edges, a faint grid, and thin lines
-     with a pulse of light travelling along each one. It stays fixed while the page scrolls. -->
+<!-- Backdrop behind the whole page: colour drifting along both edges, a faint grid, and circuit
+     traces with pulses of light (drawn by backdrop.js). It stays fixed while the page scrolls. -->
 <div class="backdrop" id="backdrop" aria-hidden="true">
   <span class="blob"></span>
   <span class="blob"></span>
-  <svg class="flow" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-    <defs>
-      <path id="flow-1" pathLength="1000" d="M-100,170 C300,40 520,350 820,220 S1300,70 1560,260"/>
-      <path id="flow-2" pathLength="1000" d="M-100,410 C260,290 560,600 880,460 S1320,310 1560,520"/>
-      <path id="flow-3" pathLength="1000" d="M-100,650 C320,530 600,840 940,700 S1340,540 1560,740"/>
-      <path id="flow-4" pathLength="1000" d="M-100,880 C380,770 700,990 1040,880 S1400,770 1560,910"/>
-    </defs>
-    <g class="tracks">
-      <use href="#flow-1"/><use href="#flow-2"/><use href="#flow-3"/><use href="#flow-4"/>
-    </g>
-    <g class="pulses">
-      <use href="#flow-1"/><use href="#flow-2"/><use href="#flow-3"/><use href="#flow-4"/>
-    </g>
-  </svg>
 </div>
 
 <header class="site-header" id="site-header">
@@ -90,11 +101,6 @@
       </span>
     </a>
 
-    <!-- Accessible mobile menu button (replaces checkbox hack) -->
-    <button type="button" class="icon-btn nav-burger" id="nav-burger" aria-expanded="false" aria-controls="nav-links">
-      <span></span>
-    </button>
-
     <ul class="nav-links" id="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#projects">Projects</a></li>
@@ -104,10 +110,9 @@
       <li><a href="#contact" class="nav-cta">Let's talk</a></li>
     </ul>
 
-    <button type="button" class="icon-btn jukebox-trigger" id="jukebox-trigger" aria-label="Open TECHMINES audio deck" aria-expanded="false" aria-controls="jukebox">
-      <span class="deck-trigger-glyph" aria-hidden="true">◈</span>
-      <span class="deck-trigger-text"><strong>TM / AUDIO</strong><small id="deck-trigger-status">READY</small></span>
-      <span class="deck-trigger-progress" aria-hidden="true"><i id="deck-trigger-fill"></i></span>
+    <!-- Accessible mobile menu button -->
+    <button type="button" class="icon-btn nav-burger" id="nav-burger" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+      <span></span>
     </button>
 
     <button type="button" class="icon-btn theme-toggle" id="theme-toggle" aria-label="Switch to light theme">
@@ -118,34 +123,6 @@
   <div class="scroll-bar" id="scroll-bar"></div>
 </header>
 
-<aside class="jukebox" id="jukebox" role="region" aria-label="TECHMINES audio deck" hidden>
-  <div class="deck-head">
-    <span>TECHMINES <b>/</b> SIGNAL DECK 01</span>
-    <span class="deck-head-state" id="deck-state">STANDBY</span>
-    <button type="button" id="jukebox-close" aria-label="Close audio deck">×</button>
-  </div>
-  <div class="deck-face">
-    <div class="deck-mark" aria-hidden="true"><span>TM</span><i></i><small>12 / REDLINE</small></div>
-    <div class="deck-readout">
-      <p>LOADED TRACK <span>01 / 01</span></p>
-      <strong>ARPENT <em>/ STUDIO EDIT</em></strong>
-      <span class="deck-artist">Kevin MacLeod · TECHMINES site edit</span>
-      <div class="deck-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-    </div>
-  </div>
-  <div class="deck-timeline">
-    <label for="sound-seek">TRACK POSITION</label>
-    <input id="sound-seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek within Arpent Studio Edit" disabled>
-    <div class="deck-times"><time id="deck-current">0:00</time><span>ARPENT / STUDIO EDIT</span><time id="deck-duration">--:--</time></div>
-  </div>
-  <div class="deck-controls">
-    <button type="button" class="deck-play" id="sound-toggle" aria-label="Play Arpent Studio Edit" aria-pressed="false"><span class="deck-play-glyph" aria-hidden="true">▶</span><span class="sound-label">PLAY</span></button>
-    <button type="button" class="deck-mute" id="sound-mute" aria-label="Mute soundtrack" aria-pressed="false"><span aria-hidden="true">◖))</span></button>
-    <div class="deck-volume"><label for="sound-volume">LEVEL</label><input id="sound-volume" type="range" min="0" max="100" value="40" aria-label="Soundtrack volume"><output id="sound-percent" for="sound-volume">40%</output></div>
-  </div>
-  <p class="deck-credit">Opt-in audio · Stops when this tab is hidden. <span id="deck-volume-note"></span></p>
-  <audio id="soundtrack" src="audio/arpent-studio.mp3" preload="none" loop></audio>
-</aside>
 
 <main id="main">
 
@@ -174,9 +151,18 @@
       </div>
     </div>
 
-    <figure class="hero-logo">
-      <div class="frame">
-        <img src="profile.jpg" alt="The TECHMINES logo: a red V12 engine" width="743" height="743">
+    <figure class="hero-logo" id="hero-logo">
+      <div class="logo-case">
+        <span class="case-corner case-corner--tl" aria-hidden="true"></span>
+        <span class="case-corner case-corner--tr" aria-hidden="true"></span>
+        <span class="case-corner case-corner--bl" aria-hidden="true"></span>
+        <span class="case-corner case-corner--br" aria-hidden="true"></span>
+        <div class="frame">
+          <div class="frame-inner">
+            <img src="profile.jpg" alt="The TECHMINES logo: a red V12 engine" width="1200" height="1200" fetchpriority="high">
+            <span class="frame-glint" aria-hidden="true"></span>
+          </div>
+        </div>
       </div>
       <figcaption class="hero-badge">B.Tech <span>×</span> DBE</figcaption>
     </figure>
@@ -239,18 +225,18 @@
     </div>
 
     <nav class="case-route reveal" aria-label="Choose a project by the problem it solves">
-      <p>CHOOSE A FAILURE CASE <span>→ EXPLORE THE SYSTEM</span></p>
+      <p>Choose a failure case <span>Jump to the system built for it</span></p>
       <div class="case-route-links">
-        <a href="#project-chainproof"><span>01 / CHAINPROOF</span><strong>Evidence altered</strong></a>
-        <a href="#project-relay"><span>02 / RELAY</span><strong>Model outage</strong></a>
-        <a href="#project-devpulse"><span>03 / DEVPULSE</span><strong>Workload strain</strong></a>
-        <a href="#project-nexora"><span>04 / NEXORA</span><strong>Factory flood</strong></a>
-        <a href="#project-autoline"><span>05 / AUTOLINE</span><strong>Plant bottleneck</strong></a>
+        <a href="#project-chainproof"><span>01 ChainProof</span><strong>Evidence altered</strong></a>
+        <a href="#project-relay"><span>02 Relay</span><strong>Model outage</strong></a>
+        <a href="#project-devpulse"><span>03 DevPulse</span><strong>Workload strain</strong></a>
+        <a href="#project-nexora"><span>04 Nexora</span><strong>Factory flood</strong></a>
+        <a href="#project-autoline"><span>05 AutoLine</span><strong>Plant bottleneck</strong></a>
       </div>
     </nav>
 
     <div class="workbench-invite reveal">
-      <div><span>LIVE PROJECT WORKBENCH / 05 SYSTEMS</span><h3>See the software in action.</h3><p>Open any of the five GitHub Pages demos in a focused workspace, then return to the same place on this page.</p></div>
+      <div><span>Live project workbench · 5 systems</span><h3>See the software in action.</h3><p>Open any of the five GitHub Pages demos in a focused workspace, then return to the same place on this page.</p></div>
       <button type="button" id="workbench-open" class="btn btn--solid">Open workbench ↗</button>
     </div>
 
@@ -265,7 +251,7 @@
         </div>
         <p class="card-tagline">Chain of custody for forensic evidence, where tampering shows up straight away.</p>
         <p class="card-problem"><strong>Problem:</strong> Evidence changes hands before court. Every hand-off needs a record that can withstand scrutiny.</p>
-        <p class="metric"><strong>3</strong><span>independent records checked against each other: database, IPFS and blockchain</span></p>
+        <p class="metric"><strong>3</strong><span>independent records checked against each other: database, IPFS and blockchain</span><a class="proof-link" href="https://github.com/TECHMINEs/ChainProof/blob/main/apps/web/app/api/evidence/%5Bid%5D/verify-integrity/route.ts" target="_blank" rel="noopener">See the proof: the integrity check</a></p>
         <ul class="chips">
           <li>Next.js 14</li><li>TypeScript</li><li>PostgreSQL</li><li>Prisma</li><li>Redis</li><li>Solidity</li><li>Hardhat</li><li>snarkjs</li><li>Docker</li>
         </ul>
@@ -297,7 +283,8 @@
           <h3 class="card-title">Relay</h3>
         </div>
         <p class="card-tagline">A gateway that keeps LLM apps running when a model provider goes down.</p>
-        <p class="metric"><strong>257<small>req/s</small></strong><span>at 3.4&nbsp;ms p99 with zero failed requests, in a local k6 test against the mock provider</span></p>
+        <p class="card-problem"><strong>Problem:</strong> When one model provider slows down or fails, every app built on it fails with it.</p>
+        <p class="metric"><strong>257<small>req/s</small></strong><span>20,594 requests at 3.4&nbsp;ms p99 and none failed, in a local k6 run against the mock provider</span><a class="proof-link" href="https://github.com/TECHMINEs/Relay/blob/main/loadtest/results/steady.json" target="_blank" rel="noopener">See the proof: the k6 results file</a></p>
         <ul class="chips">
           <li>Go 1.26</li><li>Redis</li><li>PostgreSQL</li><li>Prometheus</li><li>Grafana</li><li>k6</li>
         </ul>
@@ -330,7 +317,8 @@
           <h3 class="card-title">DevPulse</h3>
         </div>
         <p class="card-tagline">Analyzes work patterns from GitHub commit history to surface fatigue trends.</p>
-        <p class="metric"><strong>0–100</strong><span>experimental work-pattern score from commit timing, streaks and volume, with a 7-day forecast (trained on synthetic data)</span></p>
+        <p class="card-problem"><strong>Problem:</strong> Burnout builds up quietly in late-night and weekend commits long before anyone talks about it.</p>
+        <p class="metric"><strong>8</strong><span>work-pattern signals read from each developer's commits, such as night and weekend share, streak length and cadence, scored by a model trained on synthetic data for now</span><a class="proof-link" href="https://github.com/TECHMINEs/DevPulse/blob/main/ml-service/train.py" target="_blank" rel="noopener">See the proof: the model's features</a></p>
         <ul class="chips">
           <li>React 18</li><li>Node.js</li><li>Socket.io</li><li>FastAPI</li><li>scikit-learn</li>
         </ul>
@@ -362,7 +350,8 @@
           <h3 class="card-title">Nexora</h3>
         </div>
         <p class="card-tagline">Works out what fails first at a factory, before a flood finds out for real.</p>
-        <p class="metric"><strong>377</strong><span>golden-value tests across 16 engines. Change one formula and the build fails.</span></p>
+        <p class="card-problem"><strong>Problem:</strong> Plants usually discover their single points of failure during the disaster, when it is too late to fix them.</p>
+        <p class="metric"><strong>377</strong><span>golden-value tests across 16 engines. Change one formula and the build fails.</span><a class="proof-link" href="https://github.com/TECHMINEs/Nexora/blob/main/scripts/verify.ts" target="_blank" rel="noopener">See the proof: the test suite</a></p>
         <ul class="chips">
           <li>Next.js 14</li><li>TypeScript</li><li>Tailwind CSS</li><li>Radix UI</li><li>Recharts</li>
         </ul>
@@ -395,7 +384,8 @@
           <h3 class="card-title">AutoLine</h3>
         </div>
         <p class="card-tagline">A car plant's production, parts and quality checks on one dashboard.</p>
-        <p class="metric"><strong>0</strong><span>queries rewritten to move from Oracle to SQLite. A translation layer handles the dialect.</span></p>
+        <p class="card-problem"><strong>Problem:</strong> When production, stock and inspections live in separate places, shortages show up after the line has already stopped.</p>
+        <p class="metric"><strong>14</strong><span>tables in one schema that runs unchanged on Oracle and SQLite, through a 10-rule dialect translation layer</span><a class="proof-link" href="https://github.com/TECHMINEs/AutoLine/blob/main/database_schema.sql" target="_blank" rel="noopener">See the proof: the schema</a></p>
         <ul class="chips">
           <li>React 19</li><li>Express 5</li><li>SQLite</li><li>Tailwind CSS</li><li>PDFKit</li>
         </ul>
@@ -523,16 +513,6 @@
           </ol>
         </article>
       </div>
-
-      <aside class="education-sidebar spot reveal">
-        <h3 class="label">Education</h3>
-        <div class="school">
-          <h4>Dual-Track Degrees</h4>
-          <p>B.Tech IT at MIT Manipal &amp; BBA (DBE) at IIM Bangalore.</p>
-          <p style="margin-top: 0.5rem; font-size: 0.95rem; color: var(--dim);">Engineering systems paired with digital business foundations.</p>
-          <a href="#education" class="card-link" style="padding-top: 0.85rem; display: inline-flex;">View full education details<!-- icon injected by CSS --></a>
-        </div>
-      </aside>
     </div>
   </div>
 </section>
@@ -615,13 +595,25 @@
   </div>
 </section>
 
-<!-- Large outlined lettering that drifts past before the contact block -->
-<div class="banner" aria-hidden="true">
-  <div class="banner-track">
-    <p>Internships <i>✦</i> Partnerships <i>✦</i> Projects <i>✦</i></p>
-    <p>Internships <i>✦</i> Partnerships <i>✦</i> Projects <i>✦</i></p>
+<!-- ================= RIGHT NOW ================= -->
+<section id="now" class="now-section" aria-labelledby="now-heading">
+  <div class="wrap now">
+    <div class="now-intro reveal">
+      <p class="section-label"><span>06</span>Right now</p>
+      <h2 id="now-heading" class="statement">What I'm working on <span>at the moment.</span></h2>
+      <p class="now-clock"><span class="status-dot" aria-hidden="true"></span>Manipal, India · <time id="now-time">IST</time></p>
+      <p class="now-updated">Updated November 2026</p>
+    </div>
+    <ol class="now-board reveal">
+      <li><span class="now-key">Exploring</span><span class="now-val">AI agents that automate real workflows, especially in finance</span></li>
+      <li><span class="now-key">Leading</span><span class="now-val">Business development and PR at MTTN, as head of the division</span></li>
+      <li><span class="now-key">Working</span><span class="now-val">In the founder's office at D.S. Design Sense, on client deals</span></li>
+      <li><span class="now-key">Studying</span><span class="now-val">B.Tech IT at MIT Manipal and a BBA (DBE) at IIM Bangalore</span></li>
+      <li class="now-open"><span class="now-key">Looking for</span><span class="now-val">Product and software internships. <a href="#contact" class="text-link">Let's talk</a></span></li>
+    </ol>
   </div>
-</div>
+</section>
+
 
 <!-- ================= CONTACT ================= -->
 <section id="contact" class="spot">
@@ -666,7 +658,7 @@
 
 <div class="workbench" id="workbench" role="dialog" aria-modal="true" aria-labelledby="workbench-heading" hidden>
   <div class="workbench-shell">
-    <div class="workbench-head"><div><small>TECHMINES / LIVE SYSTEMS</small><h2 id="workbench-heading">Project workbench</h2></div><button type="button" id="workbench-close" aria-label="Close project workbench">×</button></div>
+    <div class="workbench-head"><div><small>TECHMINES live systems</small><h2 id="workbench-heading">Project workbench</h2></div><button type="button" id="workbench-close" aria-label="Close project workbench">×</button></div>
     <div class="workbench-tabs" role="group" aria-label="Choose a live demo">
       <button type="button" data-demo="chainproof" class="selected" aria-pressed="true">01 ChainProof</button>
       <button type="button" data-demo="relay" aria-pressed="false">02 Relay</button>
@@ -675,7 +667,13 @@
       <button type="button" data-demo="autoline" aria-pressed="false">05 AutoLine</button>
     </div>
     <div class="workbench-meta"><div><p id="workbench-description">Trace evidence through every hand-off.</p><small>GitHub Pages preview · backend actions are simulated where noted in each project.</small></div><a id="workbench-external" href="https://techmines.github.io/ChainProof/" target="_blank" rel="noopener">Open full demo ↗</a></div>
-    <iframe id="workbench-frame" title="ChainProof live demo" loading="lazy"></iframe>
+    <div class="workbench-stage">
+      <iframe id="workbench-frame" title="ChainProof live demo"></iframe>
+      <div class="workbench-loading" id="workbench-loading" role="status" aria-live="polite">
+        <span class="workbench-loading-bar" aria-hidden="true"><i></i></span>
+        <p>Starting <strong id="workbench-loading-name">ChainProof</strong> demo…</p>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -732,6 +730,7 @@
   }
 
   // ── Highlight the nav link for the section on screen ──
+  // The intro (#top) has no nav link, so reaching it clears the highlight.
   var links = Array.from(document.querySelectorAll('.nav-links a'));
   if ('IntersectionObserver' in window) {
     var spy = new IntersectionObserver(function (entries) {
@@ -743,28 +742,65 @@
     document.querySelectorAll('main section[id]').forEach(function (s) { spy.observe(s); });
   }
 
+  // ── Jumping to a section shows its content straight away ──
+  // Without this, a jump lands on cards that are still waiting to fade in.
+  function revealUpTo(target) {
+    if (!target) return;
+    var bottom = target.getBoundingClientRect().bottom + window.scrollY;
+    document.querySelectorAll('.reveal:not(.visible)').forEach(function (el) {
+      if (el.getBoundingClientRect().top + window.scrollY <= bottom + window.innerHeight) el.classList.add('visible', 'instant');
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a || a.getAttribute('href').length < 2) return;
+    revealUpTo(document.querySelector(a.getAttribute('href')));
+  });
+  if (location.hash) revealUpTo(document.querySelector(location.hash));
+
+  // ── The logo case tilts gently towards the pointer ──
+  var logoCase = document.querySelector('.logo-case');
+  if (logoCase && !calm && window.matchMedia('(hover: hover)').matches) {
+    var heroLogo = document.getElementById('hero-logo');
+    heroLogo.addEventListener('pointermove', function (e) {
+      var box = logoCase.getBoundingClientRect();
+      var x = (e.clientX - box.left) / box.width - 0.5;
+      var y = (e.clientY - box.top) / box.height - 0.5;
+      logoCase.style.setProperty('--rx', (-y * 8).toFixed(2) + 'deg');
+      logoCase.style.setProperty('--ry', (x * 10).toFixed(2) + 'deg');
+      logoCase.style.setProperty('--gx', ((x + 0.5) * 100).toFixed(1) + '%');
+      logoCase.style.setProperty('--gy', ((y + 0.5) * 100).toFixed(1) + '%');
+      logoCase.classList.add('is-tilting');
+    });
+    heroLogo.addEventListener('pointerleave', function () {
+      logoCase.classList.remove('is-tilting');
+      logoCase.style.setProperty('--rx', '0deg');
+      logoCase.style.setProperty('--ry', '0deg');
+    });
+  }
+
   // ── Mobile menu: proper button with aria-expanded ──
   var burger = document.getElementById('nav-burger');
   var navLinks = document.getElementById('nav-links');
 
+  function setMenu(open) {
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    navLinks.classList.toggle('open', open);
+  }
+
   burger.addEventListener('click', function () {
-    var expanded = burger.getAttribute('aria-expanded') === 'true';
-    burger.setAttribute('aria-expanded', String(!expanded));
-    navLinks.classList.toggle('open', !expanded);
+    setMenu(burger.getAttribute('aria-expanded') !== 'true');
   });
 
   // Close menu on link click or Escape
   links.forEach(function (a) {
-    a.addEventListener('click', function () {
-      burger.setAttribute('aria-expanded', 'false');
-      navLinks.classList.remove('open');
-    });
+    a.addEventListener('click', function () { setMenu(false); });
   });
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && navLinks.classList.contains('open')) {
-      burger.setAttribute('aria-expanded', 'false');
-      navLinks.classList.remove('open');
+      setMenu(false);
       burger.focus();
     }
   });
@@ -831,6 +867,15 @@
       tapeBtn.setAttribute('aria-label', paused ? 'Pause scrolling text' : 'Resume scrolling text');
       tapeBtn.classList.toggle('is-paused', !paused);
     });
+  }
+
+  // ── Local time in Manipal for the "Right now" board ──
+  var nowTime = document.getElementById('now-time');
+  if (nowTime) {
+    var fmt = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: false });
+    var tickClock = function () { nowTime.textContent = fmt.format(new Date()) + ' IST'; };
+    tickClock();
+    setInterval(tickClock, 20000);
   }
 
   // ── Copy email button (confirms success before showing 'Copied') ──
@@ -901,7 +946,8 @@
     });
   });
 </script>
-<script src="sound.js" defer></script>
-<script src="workbench.js" defer></script>
+<script src="workbench.js?v=2" defer></script>
+<script src="jukebox.js?v=3" defer></script>
+<script src="backdrop.js?v=8" defer></script>
 </body>
 </html>

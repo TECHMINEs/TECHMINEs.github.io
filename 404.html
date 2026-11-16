@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found | TECHMINES</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#000000">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0; }
+  body {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px 16px;
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 / 56px 56px,
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 / 56px 56px,
+      radial-gradient(42vw 42vw at 110% -10%, rgba(255, 38, 38, 0.35), transparent 70%),
+      #000;
+    color: #E2E2E2;
+    font: 400 1.0625rem/1.6 'IBM Plex Sans', system-ui, sans-serif;
+  }
+  main { width: min(640px, 100%); }
+  .code { display: flex; align-items: center; gap: 14px; font: 600 0.875rem 'JetBrains Mono', monospace; color: #A9A9A9; }
+  .code img { width: 48px; height: 48px; border: 2px solid #FF2626; object-fit: cover; }
+  h1 { margin-top: 28px; font: 700 clamp(3rem, 12vw, 6rem)/0.9 'Chakra Petch', sans-serif; text-transform: uppercase; color: #fff; }
+  h1 span { color: #FF2626; }
+  p { margin-top: 18px; max-width: 46ch; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  a.btn {
+    display: inline-flex; align-items: center; min-height: 48px; padding: 0.8rem 1.4rem;
+    border: 2px solid #fff; color: #fff; text-decoration: none;
+    font: 700 1rem 'Chakra Petch', sans-serif; letter-spacing: 0.05em; text-transform: uppercase;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  a.btn:hover { transform: translate(-3px, -3px); box-shadow: 5px 5px 0 #FF2626; }
+  a.btn--solid { background: #FF2626; border-color: #FF2626; color: #000; }
+  a.btn--solid:hover { box-shadow: 5px 5px 0 #fff; }
+  a:focus-visible { outline: 3px solid #FF2626; outline-offset: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <p class="code"><img src="/profile.jpg" alt="" width="48" height="48"> Error 404 · TECHMINES</p>
+  <h1>Off the <span>route</span></h1>
+  <p>This page doesn't exist. The link may be old, or the address may have a typo. Everything I've built is one click away.</p>
+  <div class="actions">
+    <a class="btn btn--solid" href="/">Go to the portfolio</a>
+    <a class="btn" href="/#projects">See the projects</a>
+  </div>
+</main>
+</body>
+</html>

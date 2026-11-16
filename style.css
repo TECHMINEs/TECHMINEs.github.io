@@ -8,7 +8,7 @@
    4.  Small components (buttons, chips, labels, bullet lists)
    5.  Header and navigation
    6.  Page backdrop and intro
-   7.  Moving bands (tape and banner)
+   7.  Moving band (tape)
    8.  Sections (about, projects, experience, education, skills, contact)
    9.  Footer and back-to-top
    10. Motion (keyframes and scroll reveal)
@@ -289,10 +289,9 @@ main > section {
 /* Small numbered label that opens each section */
 .section-label {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--dim);
 }
 
@@ -345,19 +344,17 @@ main > section {
 
 .label {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--dim);
 }
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 /* Buttons */
@@ -626,7 +623,7 @@ main > section {
 
 .brand-tag {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.22em;
   color: var(--red);
@@ -674,6 +671,15 @@ main > section {
 .nav-links a:hover::after,
 .nav-links a.active::after { transform: scaleX(1); }
 
+
+/* The header slims down once the page scrolls */
+.nav { transition: height 0.25s var(--ease); }
+.site-header.scrolled .nav { height: 62px; }
+.brand img { transition: transform 0.3s var(--ease), box-shadow 0.3s ease, width 0.25s var(--ease), height 0.25s var(--ease); }
+.site-header.scrolled .brand img { width: 42px; height: 42px; }
+
+.nav .icon-btn { flex: none; }
+
 /* The last link is a filled button */
 .nav-links .nav-cta,
 .nav-links .nav-cta:hover,
@@ -708,7 +714,6 @@ main > section {
 /* Mobile nav: button-driven instead of checkbox hack */
 .nav-burger {
   display: none;
-  border: none;
 }
 
 .nav-burger span,
@@ -799,36 +804,7 @@ main > section {
   animation-direction: alternate-reverse;
 }
 
-/* Thin curved lines, each with a short bright dash that runs along it */
-.flow {
-  position: absolute;
-  inset: -8% 0;
-  width: 100%;
-  height: 116%;
-  fill: none;
-  translate: 0 calc(var(--p, 0) * -8vh);
-  transition: translate 0.6s ease-out;
-}
 
-.tracks use {
-  stroke: var(--red);
-  stroke-width: 1;
-  opacity: var(--track-o);
-}
-
-.pulses use {
-  stroke: var(--red);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-dasharray: 70 930;
-  opacity: var(--pulse-o);
-  filter: drop-shadow(0 0 6px var(--red));
-  animation: run 13s linear infinite;
-}
-
-.pulses use:nth-child(2) { animation-duration: 17s; animation-delay: -5s; }
-.pulses use:nth-child(3) { animation-duration: 15s; animation-delay: -9s; animation-direction: reverse; }
-.pulses use:nth-child(4) { animation-duration: 20s; animation-delay: -3s; }
 
 #top {
   padding-block: clamp(2.5rem, 5vw, 4.25rem) clamp(5rem, 10vw, 8rem);
@@ -918,9 +894,8 @@ h1 em {
 .alias {
   margin-top: 0.55rem;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
   color: var(--dim);
 }
 
@@ -951,18 +926,74 @@ h1 em {
   margin-top: 2.1rem;
 }
 
-/* Logo with a ring of light circling its edge */
+/* The logo sits in a display case: corner brackets, a ring of light circling the
+   frame, a glass glint, and a nameplate underneath. It tilts towards the pointer. */
 .hero-logo {
   position: relative;
   justify-self: end;
-  width: min(100%, 390px);
+  width: min(100%, 400px);
+  perspective: 1100px;
 }
+
+.logo-case {
+  position: relative;
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--red) 28%, var(--line));
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 100% 12px,
+    color-mix(in srgb, var(--panel) 82%, transparent);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 0.5s var(--ease);
+  animation: float 6s ease-in-out infinite alternate;
+}
+
+.logo-case.is-tilting { transition: transform 0.12s linear; }
+
+/* Ruler ticks along the top and left edges, like a measured drawing */
+.logo-case::before,
+.logo-case::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.logo-case::before {
+  left: 18px;
+  right: 18px;
+  top: 5px;
+  height: 6px;
+  background: repeating-linear-gradient(90deg, var(--stroke) 0 1px, transparent 1px 12px);
+  opacity: 0.6;
+}
+
+.logo-case::after {
+  top: 18px;
+  bottom: 18px;
+  left: 5px;
+  width: 6px;
+  background: repeating-linear-gradient(180deg, var(--stroke) 0 1px, transparent 1px 12px);
+  opacity: 0.6;
+}
+
+.case-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 0 solid var(--red);
+}
+
+.case-corner--tl { top: -1px; left: -1px; border-width: 3px 0 0 3px; }
+.case-corner--tr { top: -1px; right: -1px; border-width: 3px 3px 0 0; }
+.case-corner--bl { bottom: -1px; left: -1px; border-width: 0 0 3px 3px; }
+.case-corner--br { bottom: -1px; right: -1px; border-width: 0 3px 3px 0; }
 
 .frame {
   position: relative;
   padding: 4px;
   background: conic-gradient(from var(--angle), var(--red), var(--red-2) 16%, transparent 36%, transparent 64%, var(--red));
-  animation: spin 7s linear infinite, float 6s ease-in-out infinite alternate;
+  animation: spin 7s linear infinite;
+  transform: translateZ(24px);
 }
 
 .frame::before {
@@ -972,16 +1003,60 @@ h1 em {
   z-index: -1;
   background: conic-gradient(from var(--angle), var(--red), var(--red-2) 16%, transparent 36%, transparent 64%, var(--red));
   filter: blur(34px);
-  opacity: 0.85;
+  opacity: 0.7;
   animation: spin 7s linear infinite;
 }
 
-.frame img { width: 100%; }
+/* A dark mat between the ring and the image, so the logo's light background
+   reads as a deliberate plate instead of a hard white edge */
+.frame-inner {
+  position: relative;
+  overflow: hidden;
+  padding: 6px;
+  background: #050505;
+}
 
+.frame-inner img { width: 100%; }
+
+/* Soft inner shading over the image edges */
+.frame-inner::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5), inset 0 0 28px rgba(0, 0, 0, 0.28);
+  pointer-events: none;
+}
+
+/* Glass glint: a slow sweep, and a highlight that follows the pointer while tilting */
+.frame-glint {
+  position: absolute;
+  inset: 6px;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.38) 48%, transparent 60%);
+  background-size: 250% 100%;
+  background-position: 120% 0;
+  mix-blend-mode: soft-light;
+  animation: glint 7s var(--ease) 1.4s infinite;
+}
+
+.logo-case.is-tilting .frame-glint {
+  animation: none;
+  background: radial-gradient(240px circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, 0.4), transparent 60%);
+  mix-blend-mode: soft-light;
+}
+
+@keyframes glint {
+  0%, 55% { background-position: 120% 0; }
+  85%, 100% { background-position: -40% 0; }
+}
+
+/* Floating degree badge, parked on the logo's empty top-left corner so it never
+   covers the TECH MINES lettering at the bottom of the image */
 .hero-badge {
   position: absolute;
   left: -1.4rem;
-  bottom: 1.8rem;
+  top: 2.4rem;
+  z-index: 2;
   padding: 0.55rem 0.95rem;
   background: var(--bg);
   border: 2px solid var(--red);
@@ -1014,15 +1089,13 @@ h1 em {
   box-shadow: 0 0 46px -6px var(--glow);
 }
 
-.tape-track,
-.banner-track {
+.tape-track {
   display: flex;
   width: max-content;
   animation: slide 34s linear infinite;
 }
 
-.tape p,
-.banner p {
+.tape p {
   max-width: none;
   white-space: nowrap;
   font-family: var(--font-display);
@@ -1032,8 +1105,7 @@ h1 em {
 
 .tape p { font-size: 1rem; letter-spacing: 0.18em; }
 
-.tape i,
-.banner i { font-style: normal; }
+.tape i { font-style: normal; }
 
 .tape i { margin-inline: 1.5rem; opacity: 0.7; }
 
@@ -1066,30 +1138,6 @@ h1 em {
 .tape-pause .play-icon { display: none; }
 .tape-pause.is-paused .play-icon { display: block; }
 .tape-pause.is-paused .pause-icon { display: none; }
-
-/* Huge outlined lettering before the contact block */
-.banner {
-  overflow: hidden;
-  padding-block: clamp(1.5rem, 4vw, 3rem);
-}
-
-.banner-track { animation-duration: 44s; animation-direction: reverse; }
-
-.banner p {
-  font-size: clamp(3.2rem, 10vw, 8rem);
-  line-height: 1.05;
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--stroke);
-}
-
-.banner i {
-  margin-inline: 0.5em;
-  font-size: 0.45em;
-  vertical-align: 0.3em;
-  color: var(--red);
-  -webkit-text-stroke: 0;
-}
-
 
 /* ---------- 8. Sections ---------- */
 
@@ -1139,13 +1187,13 @@ h1 em {
 /* --- Projects --- */
 
 .case-route { margin: -0.3rem 0 2rem; border: 1px solid var(--line); background: var(--panel); }
-.case-route > p { max-width: none; display: flex; justify-content: space-between; gap: 0.7rem; padding: 0.7rem 1rem; border-bottom: 1px solid var(--line); color: var(--dim); font: 700 0.68rem var(--font-mono); letter-spacing: .09em; }
+.case-route > p { max-width: none; display: flex; justify-content: space-between; gap: 0.7rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--line); color: var(--text); font: 600 0.8125rem var(--font-mono); letter-spacing: .02em; }
 .case-route > p span { color: var(--red); }
 .case-route-links { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .case-route-links a { display: flex; flex-direction: column; gap: .35rem; min-width: 0; padding: 1rem; border-right: 1px solid var(--line); text-decoration: none; transition: background .2s ease, color .2s ease; }
 .case-route-links a:last-child { border-right: 0; }
 .case-route-links a:hover, .case-route-links a:focus-visible { background: var(--red); color: var(--on-red); }
-.case-route-links a span { font: 700 .64rem var(--font-mono); letter-spacing: .03em; color: var(--red); }
+.case-route-links a span { font: 600 .78rem var(--font-mono); letter-spacing: .02em; color: var(--red); }
 .case-route-links a strong { font: 600 1rem/1.2 var(--font-display); color: var(--text); }
 .case-route-links a:hover span, .case-route-links a:hover strong, .case-route-links a:focus-visible span, .case-route-links a:focus-visible strong { color: var(--on-red); }
 .card[id] { scroll-margin-top: calc(var(--head-h) + 1.5rem); }
@@ -1199,10 +1247,9 @@ h1 em {
   justify-content: space-between;
   gap: 1rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--dim);
 }
 
@@ -1281,12 +1328,35 @@ h1 em {
 
 .card-problem strong {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.8125rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--text);
 }
+
+/* Each metric links to the file in its repo that backs it up */
+.proof-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--red);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 0.15s ease;
+}
+
+.proof-link::after { content: "↗"; color: var(--red); }
+.proof-link:hover { color: var(--red); }
+
+.card--featured .proof-link,
+.card--featured .proof-link::after { color: var(--on-red); text-decoration-color: var(--on-red); }
+.card--featured .proof-link:hover { color: var(--text); }
 
 .metric {
   margin-top: 1.6rem;
@@ -1415,9 +1485,8 @@ h1 em {
   margin-bottom: 0.25rem;
   color: var(--red);
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
 }
 
 .card--featured .card-demo-note,
@@ -1524,11 +1593,11 @@ h1 em {
 .card--featured .points li::before { background: var(--on-red); }
 
 /* --- Experience --- */
+/* One column: education has its own section below, so it isn't repeated here */
 .resume {
   display: grid;
-  grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 920px;
 }
 
 /* One rail runs down every organisation; the red part grows as you scroll */
@@ -1613,23 +1682,6 @@ h1 em {
 }
 
 .roles .points li { font-size: 1rem; }
-
-/* Education sidebar in experience section */
-.education-sidebar {
-  position: sticky;
-  top: calc(var(--head-h) + 1.5rem);
-  border: 1px solid var(--line);
-  border-top: 4px solid var(--red);
-  background: color-mix(in srgb, var(--panel) 74%, transparent);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
-  box-shadow: var(--shadow);
-  padding: 1.4rem 1.5rem 0.5rem;
-}
-
-.school { padding-block: 1rem; }
-.school + .school { border-top: 1px solid var(--line); }
-.school p { margin: 0.3rem 0 0.35rem; font-size: 1rem; }
 
 /* --- Education (standalone section) --- */
 .education-section {
@@ -1732,6 +1784,97 @@ h1 em {
 .skill-panel dl > div { padding-block: 1.1rem; }
 .skill-panel dl > div + div { border-top: 1px solid var(--line); }
 .skill-panel dd { margin-top: 0.6rem; }
+
+/* --- Right now: a live status board before the contact block --- */
+.now {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+.now-intro .statement { margin-top: 1.1rem; }
+
+.now-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.6rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 80%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.now-updated {
+  margin-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--dim);
+}
+
+.now-board {
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--red);
+  background: color-mix(in srgb, var(--panel) 80%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  counter-reset: now;
+}
+
+.now-board li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 9.5rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: baseline;
+  padding: 1.05rem 1.4rem 1.05rem 3.2rem;
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.2s ease;
+}
+
+.now-board li:last-child { border-bottom: 0; }
+.now-board li:hover { background: color-mix(in srgb, var(--red) 7%, transparent); }
+
+/* Row numbers down the left edge, like lines in a log */
+.now-board li::before {
+  counter-increment: now;
+  content: counter(now, decimal-leading-zero);
+  position: absolute;
+  left: 1.2rem;
+  top: 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--stroke);
+}
+
+.now-key {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--red);
+}
+
+.now-val {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.now-open { background: color-mix(in srgb, var(--red) 9%, transparent); }
+.now-open .text-link { margin-left: 0.4rem; white-space: nowrap; }
+
+@media (max-width: 960px) {
+  .now { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .now-board li { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; padding: 0.95rem 1rem 0.95rem 2.8rem; }
+  .now-board li::before { left: 1rem; top: 1rem; }
+}
 
 /* --- Contact: a solid block of colour --- */
 #contact {
@@ -1984,6 +2127,9 @@ h1 em {
   animation: rise 0.8s var(--ease) var(--d, 0s) backwards;
 }
 
+/* Revealed by a jump link: show at once, no fade */
+.js .reveal.visible.instant { animation: none; }
+
 /* Cards and panels in the same row arrive one after another */
 .cards .card:nth-child(2),
 .cards .card:nth-child(4),
@@ -2021,11 +2167,9 @@ h1 em {
 
   .hero-logo {
     justify-self: start;
-    width: min(74%, 310px);
-    margin: 1rem 0 0 1rem;
+    width: min(88%, 340px);
+    margin: 1.25rem 0 0;
   }
-
-  .education-sidebar { position: static; }
 
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .case-route-links { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -2054,7 +2198,7 @@ html:not(.js) .nav-burger { display: none !important; }
     border-bottom: none !important;
   }
 
-  .nav-burger { display: inline-grid; }
+  .nav-burger { display: inline-grid; margin-left: auto; }
 
   /* Phone & tablet menu: a panel that drops down under the header.
      Uses aria-expanded on the button instead of a checkbox. */
@@ -2153,7 +2297,8 @@ html:not(.js) .nav-burger { display: none !important; }
 
   .hero-actions .btn { flex: 1 1 100%; }
 
-  .hero-badge { left: -0.9rem; font-size: 0.95rem; }
+  .hero-badge { left: -0.6rem; top: 1.4rem; font-size: 0.9rem; }
+  .logo-case { padding: 12px; }
 
   /* The sticky header is always in reach on a phone, so the corner button isn't needed */
   .to-top { display: none; }
@@ -2191,9 +2336,8 @@ html:not(.js) .nav-burger { display: none !important; }
 
   .js .reveal { opacity: 1; }
 
-  /* Keep tape/banner static when motion is reduced */
-  .tape-track,
-  .banner-track { animation: none !important; }
+  /* Keep the tape static when motion is reduced */
+  .tape-track { animation: none !important; }
   .launch { display: none !important; }
 }
 
@@ -2205,7 +2349,6 @@ html:not(.js) .nav-burger { display: none !important; }
   .to-top,
   .backdrop,
   .tape,
-  .banner,
   .hero-actions,
   .skip-link,
   .tape-pause,
@@ -2376,7 +2519,7 @@ html:not(.js) .nav-burger { display: none !important; }
 /* A focused workspace for the five GitHub Pages demos. */
 .workbench[hidden] { display: none !important; }
 .workbench-invite { display:flex; align-items:center; justify-content:space-between; gap:1.5rem; margin:0 0 2rem; padding:1.35rem 1.5rem; border:1px solid var(--stroke); border-left:5px solid var(--red); background:var(--panel); }
-.workbench-invite span, .workbench-head small { font:700 .65rem var(--font-mono); letter-spacing:.1em; color:var(--red); }
+.workbench-invite span, .workbench-head small { font:600 .8125rem var(--font-mono); letter-spacing:.02em; color:var(--red); }
 .workbench-invite h3 { margin:.25rem 0; font-size:1.5rem; }
 .workbench-invite p { max-width:58ch; font-size:.9rem; color:var(--dim); }
 .workbench-invite .btn { flex:none; }
@@ -2391,10 +2534,19 @@ body.workbench-open { overflow:hidden; }
 .workbench-tabs button.selected { background:var(--red); color:var(--on-red); }
 .workbench-meta { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.55rem 1rem; font-size:.83rem; }
 .workbench-meta p { margin:0; color:#f2f2f2; }
-.workbench-meta small { display:block; margin-top:.2rem; color:#aaa; font:.62rem/1.3 var(--font-mono); }
+.workbench-meta small { display:block; margin-top:.2rem; color:#aaa; font:.75rem/1.35 var(--font-mono); }
 .workbench-meta a { color:#ff5959; font:700 .76rem var(--font-mono); white-space:nowrap; }
 .workbench :is(button,a,iframe):focus-visible { outline:2px solid #fff; outline-offset:-3px; }
-#workbench-frame { display:block; flex:1; min-height:0; width:100%; border:0; background:#000; }
+/* The demo fades in once loaded; a loading panel covers the frame until then */
+.workbench-stage { position:relative; flex:1; min-height:0; display:flex; background:#000; }
+#workbench-frame { display:block; flex:1; min-height:0; width:100%; border:0; background:#000; opacity:0; transition:opacity .35s ease; }
+#workbench-frame.is-ready { opacity:1; }
+.workbench-loading { position:absolute; inset:0; display:grid; place-content:center; justify-items:center; gap:1rem; background:repeating-linear-gradient(0deg,#060606 0 3px,#0a0a0a 3px 4px); color:#ddd; font:500 .9rem var(--font-mono); text-align:center; }
+.workbench-loading[hidden] { display:none; }
+.workbench-loading strong { color:#fff; }
+.workbench-loading-bar { position:relative; width:min(260px,60vw); height:3px; overflow:hidden; background:#2a2a2a; }
+.workbench-loading-bar i { position:absolute; inset:0 auto 0 0; width:38%; background:var(--red); box-shadow:0 0 12px var(--glow); animation:wb-load 1.1s var(--ease) infinite; }
+@keyframes wb-load { from { transform:translateX(-110%); } to { transform:translateX(290%); } }
 @media (max-width:760px) {
   .workbench-invite { flex-direction:column; align-items:stretch; }
   .workbench-invite .btn { width:100%; }
@@ -2406,66 +2558,471 @@ body.workbench-open { overflow:hidden; }
 }
 @media print { .workbench, .workbench-invite { display:none !important; } }
 
-/* TECHMINES signal deck: a compact header control opens a tactile audio console. */
-.jukebox[hidden], .jukebox-trigger[hidden] { display:none !important; }
-.jukebox-trigger { position:relative; display:inline-flex; align-items:center; justify-content:center; gap:.55rem; width:142px; min-width:44px; padding:.3rem .65rem; margin-left:auto; overflow:hidden; text-align:left; }
-.deck-trigger-glyph { color:var(--red); font:700 1.6rem/1 var(--font-display); }
-.deck-trigger-text { display:grid; gap:0; line-height:1.1; }
-.deck-trigger-text strong { color:var(--text); font:700 .62rem var(--font-mono); letter-spacing:.08em; white-space:nowrap; }
-.deck-trigger-text small { color:var(--dim); font:600 .57rem var(--font-mono); letter-spacing:.14em; }
-.jukebox-trigger.is-playing { border-color:var(--red); }
-.jukebox-trigger.is-playing .deck-trigger-text small { color:var(--red); }
-.deck-trigger-progress { position:absolute; inset:auto 0 0; height:2px; background:var(--line); }
-.deck-trigger-progress i { display:block; width:0; height:100%; background:var(--red); transition:width .18s linear; }
-.jukebox { position:fixed; z-index:250; top:calc(var(--head-h) + .5rem); right:max(1.25rem, calc((100vw - 1160px)/2)); width:min(440px, calc(100vw - 2.5rem)); max-height:calc(100dvh - var(--head-h) - 1rem); overflow-y:auto; border:1px solid var(--red); background:#080808; color:#f5f5f5; box-shadow:0 20px 60px rgba(0,0,0,.7), 6px 6px 0 #000; }
-.deck-head { display:flex; align-items:center; gap:.65rem; min-height:46px; padding:0 .7rem 0 1rem; border-bottom:1px solid #542020; background:linear-gradient(120deg,#150606,#0b0b0b); font:700 .63rem var(--font-mono); letter-spacing:.1em; }
-.deck-head b { color:var(--red); }
-.deck-head-state { margin-left:auto; color:#ff6969; }
-.deck-head button { width:42px; min-height:42px; border:0; background:transparent; color:#fff; font:500 1.5rem var(--font-display); cursor:pointer; }
-.deck-face { display:grid; grid-template-columns:106px minmax(0,1fr); gap:1rem; padding:1.15rem; border-bottom:1px solid #292929; background:linear-gradient(135deg,rgba(255,38,38,.07),transparent 55%),repeating-linear-gradient(0deg,#0b0b0b 0 3px,#101010 3px 4px); }
-.deck-mark { position:relative; display:grid; place-items:center; align-content:center; gap:.25rem; min-height:104px; border:1px solid #9c2525; background:linear-gradient(135deg,transparent 46%,#7f1a1a 47% 48%,transparent 49%),#070707; box-shadow:inset 0 0 0 5px #141414; }
-.deck-mark span { color:#fff; font:700 2rem/.9 var(--font-display); letter-spacing:-.08em; }
-.deck-mark i { width:50px; height:3px; background:var(--red); transform:skew(-30deg); }
-.deck-mark small { color:#f86c6c; font:600 .46rem var(--font-mono); letter-spacing:.05em; }
-.deck-readout { min-width:0; align-self:center; }
-.deck-readout p { display:flex; justify-content:space-between; gap:.5rem; color:#f45e5e; font:700 .58rem var(--font-mono); letter-spacing:.12em; }
-.deck-readout strong { display:block; margin:.55rem 0 .25rem; color:#fff; font:700 1.55rem/1 var(--font-display); }
-.deck-readout strong em { display:block; margin-top:.2rem; color:#f24a4a; font:600 .9rem var(--font-display); font-style:normal; }
-.deck-artist { color:#aaa; font:500 .64rem var(--font-mono); }
-.deck-bars { display:flex; align-items:flex-end; gap:3px; height:19px; margin-top:.8rem; }
-.deck-bars i { flex:1; height:3px; background:#ab3737; }
-.jukebox.is-playing .deck-bars i { animation:deck-pulse .85s ease-in-out infinite alternate; }
-.deck-bars i:nth-child(3n) { animation-delay:-.35s; }.deck-bars i:nth-child(4n) { animation-delay:-.6s; }
-@keyframes deck-pulse { to { height:17px; background:var(--red); } }
-.deck-timeline { padding:.85rem 1rem .55rem; }
-.deck-timeline label { color:#aaa; font:700 .56rem var(--font-mono); letter-spacing:.12em; }
-.deck-timeline input { display:block; width:100%; margin:.3rem 0 0; }
-.deck-times { display:flex; align-items:center; justify-content:space-between; gap:.5rem; color:#bcbcbc; font:600 .61rem var(--font-mono); }
-.deck-times span { color:#777; font-size:.55rem; letter-spacing:.07em; }
-.deck-controls { display:grid; grid-template-columns:112px 44px minmax(0,1fr); align-items:center; gap:.65rem; padding:.45rem 1rem .8rem; }
-.deck-play, .deck-mute { min-height:44px; border:1px solid #a92f2f; cursor:pointer; }
-.deck-play { display:flex; align-items:center; justify-content:center; gap:.55rem; background:var(--red); color:#000; font:700 .74rem var(--font-mono); letter-spacing:.06em; box-shadow:3px 3px 0 #650f0f; }
-.deck-play:active { transform:translate(2px,2px); box-shadow:1px 1px 0 #650f0f; }
-.deck-play-glyph { font-size:1rem; }
-.deck-mute { background:#151515; color:#eee; font:700 .9rem var(--font-mono); }
-.deck-mute[aria-pressed="true"] { color:var(--red); border-color:var(--red); }
-.deck-volume { display:grid; grid-template-columns:1fr auto; align-items:center; gap:0 .45rem; min-width:0; }
-.deck-volume label, .deck-volume output { color:#aaa; font:700 .56rem var(--font-mono); }
-.deck-volume output { text-align:right; }
-.deck-volume input { grid-column:1/-1; min-width:0; width:100%; }
-.deck-timeline input, .deck-volume input { height:30px; appearance:none; background:transparent; cursor:pointer; }
-.deck-timeline input::-webkit-slider-runnable-track, .deck-volume input::-webkit-slider-runnable-track { height:4px; background:linear-gradient(to right,var(--red) var(--fill,0%),#474747 var(--fill,0%)); }
-.deck-timeline input::-webkit-slider-thumb, .deck-volume input::-webkit-slider-thumb { appearance:none; width:13px; height:18px; margin-top:-7px; border:1px solid #fff; border-radius:0; background:var(--red); box-shadow:2px 2px 0 #000; }
-.deck-timeline input:disabled { opacity:.45; cursor:not-allowed; }
-.deck-credit { margin:0; padding:0 1rem .8rem; color:#888; font:500 .59rem/1.45 var(--font-mono); }
-.jukebox :is(button,input):focus-visible, .jukebox-trigger:focus-visible { outline:2px solid #fff; outline-offset:2px; }
-@media (max-width:1080px) { .jukebox-trigger { width:44px; padding:0; }.deck-trigger-text { display:none; } }
-@media (max-width:760px) {
-  .jukebox { top:calc(var(--head-h) + .3rem); right:.5rem; width:calc(100vw - 1rem); }
-  .deck-face { grid-template-columns:82px minmax(0,1fr); gap:.7rem; padding:.9rem; }
-  .deck-mark { min-height:88px; }.deck-mark span { font-size:1.65rem; }
-  .deck-readout strong { font-size:1.3rem; }
-  .deck-controls { grid-template-columns:100px 44px minmax(0,1fr); gap:.45rem; padding-inline:.75rem; }
+
+/* ---------- 13. Jukebox ---------- */
+
+/* A retro-modern jukebox parked in the bottom-left corner. Folded, it is a large icon
+   whose neon, bulbs, record and light bars come alive while music plays. Opened, a full
+   cabinet slides out beside it: record under a glass dome, mix keys, dials, speaker. */
+.jbx {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 240;
+  font-family: var(--font-mono);
+  --beat: 0.6s;
 }
-@media (prefers-reduced-motion:reduce) { .jukebox .deck-bars i { animation:none !important; }.deck-trigger-progress i { transition:none; } }
-@media print { .jukebox, .jukebox-trigger { display:none !important; } }
+
+/* ---- folded: the mini jukebox ---- */
+.jbx-icon {
+  display: block;
+  width: 78px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.65));
+  transition: transform 0.25s var(--ease), filter 0.25s ease;
+}
+
+.jbx-icon:hover { transform: translateY(-4px) rotate(-2deg); filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 10px rgba(255, 38, 38, 0.35)); }
+.jbx-icon:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
+.jbx-icon svg { display: block; width: 100%; height: auto; overflow: visible; }
+.jbx.is-open .jbx-icon { transform: translateY(-3px); filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 12px rgba(255, 38, 38, 0.5)); }
+
+.jbx-i-all { transform-origin: 40px 112px; transform-box: view-box; }
+.jbx-i-body { fill: url(#jbxBody); stroke: url(#jbxChrome); stroke-width: 1.6; }
+.jbx-i-pillar { fill: url(#jbxRed); opacity: 0.5; transition: opacity 0.3s ease; }
+.jbx-i-neon { fill: none; stroke: var(--red); stroke-width: 2.6; opacity: 0.6; transition: opacity 0.3s ease; }
+.jbx-i-bulbs circle { fill: #5a1515; }
+.jbx-i-glass { fill: url(#jbxGlass); stroke: #2e2e2e; stroke-width: 1.2; }
+.jbx-i-vinyl { fill: #141414; stroke: #333; }
+.jbx-i-groove { fill: none; stroke: #2b2b2b; }
+.jbx-i-label { fill: var(--red); }
+.jbx-i-hole { fill: #050505; }
+.jbx-i-rec { transform-origin: 40px 58px; transform-box: view-box; }
+.jbx-i-shine { fill: #fff; opacity: 0.14; }
+.jbx-i-grille { fill: #070707; stroke: #262626; }
+.jbx-i-bars rect { fill: var(--red); opacity: 0.55; transition: height 0.08s linear, y 0.08s linear; }
+.jbx-i-key { fill: #262626; stroke: #3a3a3a; stroke-width: 0.6; }
+.jbx-i-key--on { fill: #5a5a5a; }
+.jbx-i-plinth { fill: url(#jbxRed); }
+.jbx-i-plinth-line { fill: #ffb0b0; opacity: 0.55; }
+
+.jbx-icon:hover .jbx-i-neon { opacity: 0.9; }
+.jbx.is-playing .jbx-i-neon { opacity: 1; filter: drop-shadow(0 0 4px var(--red)); }
+.jbx.is-playing .jbx-i-pillar { opacity: 1; }
+.jbx.is-playing .jbx-i-rec { animation: jbx-spin 1.8s linear infinite; }
+.jbx.is-playing .jbx-i-bars rect { opacity: 1; }
+.jbx.is-playing .jbx-i-key--on { fill: var(--red); }
+.jbx.is-playing .jbx-i-bulbs circle { animation: jbx-bulb-svg 1.1s ease-in-out infinite; animation-delay: calc(var(--i) * 0.11s); }
+.jbx.is-playing .jbx-i-all { animation: jbx-bob var(--beat) ease-in-out infinite alternate; }
+
+/* ---- opened: the cabinet ---- */
+.jbx-panel {
+  position: absolute;
+  left: 94px;
+  bottom: 0;
+  width: 300px;
+  animation: jbx-open 0.34s var(--ease) both;
+  transform-origin: bottom left;
+}
+
+.jbx-panel[hidden] { display: none; }
+
+.jbx-cabinet {
+  position: relative;
+  border-radius: 150px 150px 12px 12px;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 55% at 50% 0%, #1f1f1f, transparent 70%),
+    linear-gradient(90deg, #090909, #141414 50%, #090909);
+  color: #e2e2e2;
+  box-shadow:
+    0 40px 80px -24px rgba(0, 0, 0, 0.85),
+    0 0 0 1px #000,
+    inset 0 0 0 1px #444,
+    inset 0 0 0 5px #0a0a0a,
+    inset 0 0 0 6px #2b2b2b;
+}
+
+.jbx-crown {
+  position: relative;
+  height: 222px;
+}
+
+/* Neon tube following the arch */
+.jbx-crown::before {
+  content: "";
+  position: absolute;
+  inset: 16px 16px auto;
+  height: 240px;
+  border: 3px solid var(--red);
+  border-bottom: 0;
+  border-radius: 134px 134px 0 0;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+.jbx.is-playing .jbx-crown::before {
+  opacity: 1;
+  box-shadow: 0 0 16px var(--glow), inset 0 0 16px var(--glow-soft);
+}
+
+/* Bulbs just inside the neon, chasing while music plays */
+.jbx-bulbs {
+  position: absolute;
+  left: 50%;
+  top: 150px;
+  width: 0;
+  height: 0;
+}
+
+.jbx-bulbs i {
+  position: absolute;
+  left: -3.5px;
+  top: -3.5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4a1212;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.6);
+  transform: rotate(var(--a)) translateY(-122px);
+}
+
+.jbx.is-playing .jbx-bulbs i {
+  animation: jbx-bulb 1.1s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.075s);
+}
+
+/* Glass dome holding the record */
+.jbx-dome {
+  position: absolute;
+  left: 50%;
+  top: 44px;
+  width: 174px;
+  height: 174px;
+  margin-left: -87px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, #121212, #050505 70%);
+  box-shadow: inset 0 0 0 2px #2c2c2c, inset 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 0 1px #000;
+}
+
+.jbx-dome::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.16), transparent 32%, transparent 70%, rgba(255, 255, 255, 0.05));
+  pointer-events: none;
+}
+
+.jbx-record {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.jbx-record svg { display: block; width: 100%; height: 100%; }
+.jbx-record:focus-visible { outline: 3px solid var(--red); outline-offset: 4px; }
+
+.jbx-disc { transform-origin: 60px 60px; transform-box: view-box; }
+.jbx-vinyl { fill: #111; stroke: #2a2a2a; }
+.jbx-groove { fill: none; stroke: #1f1f1f; stroke-width: 1.2; }
+.jbx-label { fill: var(--red); }
+.jbx-label-ring { fill: none; stroke: rgba(0, 0, 0, 0.35); stroke-width: 1; }
+.jbx-label-mark { fill: #0a0a0a; }
+.jbx-hole { fill: #050505; }
+/* Light catching the vinyl stays put while the disc turns underneath */
+.jbx-sheen { fill: rgba(255, 255, 255, 0.06); pointer-events: none; }
+
+.jbx.is-playing .jbx-disc { animation: jbx-spin 1.8s linear infinite; }
+
+.jbx-play-glyph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0.92;
+  transition: opacity 0.2s ease;
+}
+
+.jbx-play-glyph::before {
+  content: "";
+  width: 0;
+  height: 0;
+  margin-left: 6px;
+  border-style: solid;
+  border-width: 13px 0 13px 21px;
+  border-color: transparent transparent transparent #fff;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.85));
+}
+
+.jbx.is-playing .jbx-play-glyph { opacity: 0; }
+.jbx.is-playing .jbx-record:hover .jbx-play-glyph,
+.jbx.is-playing .jbx-record:focus-visible .jbx-play-glyph { opacity: 0.92; }
+
+.jbx.is-playing .jbx-play-glyph::before {
+  width: 22px;
+  height: 26px;
+  margin: 0;
+  border: 0;
+  background: linear-gradient(90deg, #fff 0 8px, transparent 8px 14px, #fff 14px);
+}
+
+/* Chrome tonearm: rests beside the record, swings on while playing */
+.jbx-arm {
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  width: 4px;
+  height: 92px;
+  background: linear-gradient(90deg, #8a8a8a, #f0f0f0 45%, #7a7a7a);
+  transform-origin: 2px 4px;
+  transform: rotate(-5deg);
+  transition: transform 0.6s var(--ease);
+  pointer-events: none;
+}
+
+.jbx-arm::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: -6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #e0e0e0, #555 70%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.jbx-arm::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: -3px;
+  width: 10px;
+  height: 14px;
+  background: linear-gradient(#ff5a5a, #b30e16);
+}
+
+.jbx.is-playing .jbx-arm { transform: rotate(28deg); }
+
+/* Control deck */
+.jbx-deck {
+  position: relative;
+  margin: 0 16px;
+  padding: 14px 14px 12px;
+  border: 1px solid #2a2a2a;
+  background: linear-gradient(#161616, #0c0c0c);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 1px 0 #000;
+}
+
+/* Four screws in the corners of the plate */
+.jbx-deck::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle, #6a6a6a 0 1.5px, transparent 2px) top left / 6px 6px no-repeat,
+    radial-gradient(circle, #6a6a6a 0 1.5px, transparent 2px) top right / 6px 6px no-repeat,
+    radial-gradient(circle, #6a6a6a 0 1.5px, transparent 2px) bottom left / 6px 6px no-repeat,
+    radial-gradient(circle, #6a6a6a 0 1.5px, transparent 2px) bottom right / 6px 6px no-repeat;
+}
+
+.jbx-keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.jbx-keys button {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  min-height: 52px;
+  padding: 7px 0 6px;
+  border: 1px solid #363636;
+  border-bottom-width: 4px;
+  border-bottom-color: #050505;
+  background: linear-gradient(#2a2a2a, #161616);
+  color: #cfcfcf;
+  font: 700 1.05rem var(--font-display);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 0.1s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.jbx-keys button:hover { color: #fff; border-color: #555; border-bottom-color: #050505; }
+.jbx-keys button:active { transform: translateY(2px); border-bottom-width: 2px; }
+
+.jbx-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3a0d0d;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.7);
+}
+
+.jbx-keys button[aria-checked="true"] {
+  background: linear-gradient(#3a1010, #1a0707);
+  border-color: #7a1414;
+  border-bottom-color: #050505;
+  color: #fff;
+}
+
+.jbx-keys button[aria-checked="true"] .jbx-led {
+  background: #ff3b3b;
+  box-shadow: 0 0 8px #ff2626, 0 0 2px #fff inset;
+}
+
+.jbx-keys button:focus-visible,
+.jbx-knob:focus-visible,
+.jbx-fold:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+.jbx-dials {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin-top: 14px;
+  text-align: center;
+}
+
+.jbx-dial { display: grid; justify-items: center; gap: 3px; }
+
+.jbx-dial-face { position: relative; width: 64px; height: 64px; }
+
+.jbx-scale {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  stroke: #5a5a5a;
+  stroke-width: 1.4;
+}
+
+.jbx-scale line:nth-child(5n + 1) { stroke: #9a9a9a; stroke-width: 2; }
+
+.jbx-knob {
+  position: absolute;
+  inset: 11px;
+  display: block;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #1b1b1b 0 52%, transparent 54%),
+    conic-gradient(from 210deg, #4a4a4a, #b8b8b8, #3a3a3a, #a0a0a0, #4a4a4a);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7), 0 0 0 1px #000;
+  cursor: ns-resize;
+  touch-action: none;
+  transform: rotate(var(--turn, 0deg));
+  transition: transform 0.08s linear, box-shadow 0.2s ease;
+}
+
+.jbx-knob i {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 4px;
+  height: 12px;
+  margin-left: -2px;
+  background: var(--red);
+  box-shadow: 0 0 6px var(--glow);
+}
+
+.jbx-knob:hover,
+.jbx-knob.is-grabbed { box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--red), 0 0 12px var(--glow-soft); }
+
+.jbx-dial-label { font-size: 0.75rem; font-weight: 600; color: #c4c4c4; }
+.jbx-dial-value { font-size: 0.75rem; color: var(--red); font-variant-numeric: tabular-nums; }
+
+/* Speaker: the light bars glow through a perforated mesh */
+.jbx-speaker {
+  position: relative;
+  height: 44px;
+  margin-top: 12px;
+  border: 1px solid #262626;
+  background: #040404;
+  overflow: hidden;
+}
+
+.jbx-grille { display: block; width: 100%; height: 100%; }
+
+.jbx-speaker::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, transparent 1.3px, #0a0a0a 1.7px) 0 0 / 5px 5px;
+  pointer-events: none;
+}
+
+/* Base of the cabinet with the minimise plaque */
+.jbx-plinth {
+  display: grid;
+  place-items: center;
+  margin-top: 14px;
+  padding: 9px 0 11px;
+  background: linear-gradient(#ff3434, #b30e16);
+  border-top: 1px solid rgba(255, 180, 180, 0.6);
+}
+
+.jbx-fold {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.22);
+  color: #fff;
+  font: 600 0.75rem var(--font-mono);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: background 0.2s ease;
+}
+
+.jbx-fold svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+.jbx-fold:hover { background: rgba(0, 0, 0, 0.4); }
+
+@keyframes jbx-spin { to { transform: rotate(360deg); } }
+@keyframes jbx-open { from { opacity: 0; transform: translateX(-12px) scale(0.94); } }
+@keyframes jbx-bob { to { transform: translateY(-2px) scale(1.012); } }
+@keyframes jbx-bulb {
+  0%, 100% { background: #4a1212; box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.6); }
+  50% { background: #ff4a4a; box-shadow: 0 0 9px #ff2626, inset 0 1px 1px #fff; }
+}
+@keyframes jbx-bulb-svg { 0%, 100% { fill: #5a1515; } 50% { fill: #ff5050; } }
+
+.jbx.is-calm * { animation: none !important; }
+
+@media (max-width: 760px) {
+  .jbx { left: 12px; bottom: 12px; }
+  .jbx-icon { width: 62px; }
+  .jbx-panel { left: 0; bottom: 96px; width: min(300px, calc(100vw - 24px)); transform-origin: bottom left; }
+}
+
+@media (max-height: 640px) and (min-width: 761px) {
+  .jbx-panel { transform: scale(0.86); }
+}
+
+body.workbench-open .jbx { display: none; }
+
+@media print { .jbx { display: none !important; } }
+
+
+/* ---------- 14. Circuit backdrop and readability ---------- */
+
+/* backdrop.js draws the circuit traces into this canvas */
+.bg-canvas { position: absolute; inset: 0; display: block; }
+
+@media (max-width: 760px) { .bg-canvas { opacity: 0.7; } }

@@ -1,0 +1,3 @@
+# GitHub Pages (Jekyll) settings: publish the site files only.
+exclude:
+  - README.md
