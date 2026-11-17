@@ -34,6 +34,7 @@
 
   var W, H, dpr, raf = 0, last = 0, scrollP = 0, traces = [];
   var pointer = { x: -9999, y: -9999 };
+  var energy = 0;   // 0 to 1: jumps on a beat from the Walkman or a throw of the logo, then fades
 
   // Blocks of reading text (cards and panels already have their own surface)
   var TEXT = '.hero-text, .section-head, .split .section-label, .statement, .about-text, .stats, .orgs, .now-intro, .contact > div, .footer-row';
@@ -139,9 +140,10 @@
     var now = performance.now();
     if (maskAt !== window.scrollY || now - maskTime > 700) { buildMask(); maskAt = window.scrollY; maskTime = now; }
 
+    energy *= Math.exp(-dt * 3.4);
     traces.forEach(function (tr) {
-      tr.t = (tr.t + (dt * tr.speed) / tr.total) % 1;
-      tr.head = tr.t * tr.total; tr.tail = Math.max(0, tr.head - 80);
+      tr.t = (tr.t + (dt * tr.speed * (1 + energy * 1.8)) / tr.total) % 1;
+      tr.head = tr.t * tr.total; tr.tail = Math.max(0, tr.head - 80 - energy * 70);
     });
 
     // 1. traces and pads: one continuous circuit, faded behind text
@@ -166,8 +168,8 @@
     // 2. pulses on their own layer, faded further behind text so reading stays calm
     pg.clearRect(0, 0, W, H);
     pg.save(); pg.translate(0, shift);
-    pg.lineWidth = 2.2; pg.strokeStyle = rgba(red, v.pulse);
-    pg.shadowColor = red; pg.shadowBlur = v.glow;
+    pg.lineWidth = 2.2 + energy * 1.6; pg.strokeStyle = rgba(red, v.pulse);
+    pg.shadowColor = red; pg.shadowBlur = v.glow + energy * 12;
     traces.forEach(function (tr) {
       pg.beginPath();
       for (var d = tr.tail, first = true; d <= tr.head; d += 6, first = false) { var p = at(tr, d); first ? pg.moveTo(p[0], p[1]) : pg.lineTo(p[0], p[1]); }
@@ -189,6 +191,9 @@
   }
 
   function kick() { if (!raf) raf = requestAnimationFrame(frame); }
+
+  // The pulses run faster and brighter for a moment when the music hits or the logo is thrown
+  window.addEventListener('tm:beat', function (e) { if (!calm) energy = Math.max(energy, Math.min(1, (e.detail && e.detail.strength) || 0.6)); });
 
   window.addEventListener('pointermove', function (e) { pointer.x = e.clientX; pointer.y = e.clientY; if (calm) kick(); }, { passive: true });
   document.documentElement.addEventListener('pointerleave', function () { pointer.x = pointer.y = -9999; if (calm) kick(); });

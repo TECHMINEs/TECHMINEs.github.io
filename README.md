@@ -17,6 +17,9 @@
 - **A circuit-trace backdrop** drawn on a canvas, with travelling light pulses and contact pads that light up near the pointer. Behind text the same traces fade back, so everything stays readable.
 - **A logo you can play with.** The engine logo in the intro hangs from the header on a thin trace: drag it, throw it, and click it to turn it over. The back is the page's mainboard, with the time in India, switches for the theme, the music and the backdrop, and the contact links.
 - **A Walkman** in the corner. Click it and it grows into the full deck: press play, swap between three tapes, turn the knobs for pace and tone, roll the side wheel for volume. Spare tapes sit beside the open deck and can be dragged into the door, and the folded Walkman can be dragged to either side of the page. The sunrise tape is a studio edit of "Arpent" by Kevin MacLeod (CC0, FreePD). The midnight and grid tapes are composed live in the browser with the Web Audio API.
+- **Skills wired into one.** Engineering on one side, business on the other, and in the middle what the two do together. Pick a result and the skills behind it light up on both sides, with traces running into the middle.
+- **A page that answers the music.** While the Walkman plays, the circuit's pulses speed up and brighten on each beat, and throwing the logo sends a surge through them.
+- **A section route** down the left edge of wide screens: one pad per section, filling as you scroll.
 - **A target-lock cursor** for mouse and trackpad users: four chamfered brackets that frame the pointer and snap around whatever can be clicked.
 - Dark and light themes, a skip link, keyboard support throughout, and reduced-motion support.
 
@@ -32,6 +35,8 @@ Plain HTML, CSS and JavaScript, with no framework and no build step. Fonts: Chak
 | `backdrop.js` | The circuit-trace backdrop |
 | `walkman.js` | The Walkman player and its live-composed music |
 | `toy.js` | The swinging, flippable logo in the intro |
+| `skills.js` | The interactive Skills section |
+| `extras.js` | The section route and the counting numbers |
 | `cursor.js` | The target-lock cursor |
 | `audio/` | The studio track for the sunrise tape |
 | `404.html` | The page shown for missing links |

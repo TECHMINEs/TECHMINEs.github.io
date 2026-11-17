@@ -18,6 +18,8 @@
    14. Circuit backdrop
    15. Custom cursor
    16. Logo toy
+   17. Skills, wired into one
+   18. Section route
    ===================================================================== */
 
 
@@ -2837,6 +2839,22 @@ body.workbench-open .tmc { display: none; }
 }
 .tmc.is-press { --s: 0.82; }
 
+/* A one-word tag beside the lock, for things that can be dragged, opened or played */
+.tmc-tag::before {
+  content: attr(data-t);
+  left: 9px;
+  top: 9px;
+  padding: 3px 6px;
+  border: 1px solid currentColor;
+  background: var(--bg);
+  color: var(--text);
+  font: 600 10px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  opacity: 0;
+}
+.tmc.has-tag .tmc-tag::before { opacity: 1; }
+
 /* A fine plus at the centre, which tucks away over links */
 .tmc-dot::before { left: -4.5px; top: -0.75px; width: 9px; height: 1.5px; background: currentColor; }
 .tmc-dot::after { left: -0.75px; top: -4.5px; width: 1.5px; height: 9px; background: currentColor; }
@@ -2977,7 +2995,7 @@ body.workbench-open .tmc { display: none; }
 .toy-pads a:hover { color: var(--red); }
 .toy-pads a:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
 
-.toy-hint { margin: 1.1rem 0 0; text-align: center; font: 0.68rem var(--font-mono); letter-spacing: 0.1em; color: var(--muted); opacity: 0.85; transition: opacity 0.4s ease; }
+.toy-hint { margin: 1.1rem 0 0; text-align: center; font: 0.68rem var(--font-mono); letter-spacing: 0.1em; color: var(--dim); opacity: 0.85; transition: opacity 0.4s ease; }
 .toy-hint.is-gone { opacity: 0; }
 
 /* ---- the trace that feeds the logo: a quiet line, a soft glow, and a pulse of light ---- */
@@ -3016,3 +3034,135 @@ body.workbench-open .tmc { display: none; }
 }
 
 @media print { .toy-cable, .toy-hint, .toy-back { display: none !important; } }
+
+
+/* ---------- 17. Skills, wired into one ---------- */
+
+/* Engineering on the left, business on the right, and in the middle what the two do
+   together. Picking a result lights the skills behind it on both sides, and skills.js
+   draws a trace from each lit skill into the middle. */
+#skills .section-note { max-width: 38ch; white-space: normal; text-align: right; }
+
+.fusion {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 0.86fr) minmax(0, 1fr);
+  gap: clamp(1.6rem, 3vw, 2.6rem);
+  align-items: start;
+}
+.fusion .skill-panel:hover { transform: none; }
+.fusion-side { position: relative; z-index: 1; }
+.fusion-mid { position: relative; z-index: 2; align-self: center; }
+
+.fusion-core {
+  padding: 1.4rem 1.4rem 1.2rem;
+  border: 1px solid var(--red);
+  background: var(--bg);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 44px -14px var(--glow);
+}
+.fusion-tag { font: 700 0.74rem var(--font-display); letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
+.fusion-tag span { color: var(--red); }
+.fusion-title { margin-top: 0.7rem; font-size: 1.55rem; line-height: 1.1; text-transform: uppercase; }
+.fusion-line { margin-top: 0.6rem; font-size: 0.97rem; line-height: 1.5; color: var(--dim); }
+.fusion-proof { position: relative; margin-top: 0.8rem; padding-left: 1.1rem; font: 0.76rem/1.5 var(--font-mono); }
+.fusion-proof::before { content: ""; position: absolute; left: 0; top: 0.42em; width: 7px; height: 7px; background: var(--red); }
+.fusion-tally { margin-top: 0.9rem; padding-top: 0.7rem; border-top: 1px solid var(--line); font: 0.7rem var(--font-mono); letter-spacing: 0.06em; color: var(--dim); }
+
+.fusion-list { display: grid; gap: 0.4rem; margin-top: 0.8rem; }
+.fusion-pick {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.62rem 0.8rem;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 82%, transparent);
+  color: var(--text);
+  font: 600 0.92rem var(--font-display);
+  letter-spacing: 0.04em;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, transform 0.2s var(--ease), box-shadow 0.2s ease;
+}
+.fusion-pick span { font: 0.68rem var(--font-mono); color: var(--red); }
+.fusion-pick:hover { border-color: var(--red); transform: translateX(3px); }
+.fusion-pick.is-fed { border-color: var(--red); box-shadow: inset 3px 0 0 var(--red); }
+.fusion-pick[aria-pressed="true"] {
+  border-color: var(--red);
+  background: var(--red);
+  color: #000;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  transform: none;
+}
+.fusion-pick[aria-pressed="true"] span { color: #000; }
+.fusion-pick:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+
+/* skills are buttons here: lit when the chosen result uses them, quiet when it does not */
+.fusion .chips li, .fusion .chips li:hover { padding: 0; border: 0; background: none; transform: none; }
+.chip {
+  padding: 0.28rem 0.62rem;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font: 0.78rem/1.4 var(--font-mono);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.25s ease, opacity 0.3s ease, transform 0.2s var(--ease);
+}
+.chip:hover { border-color: var(--red); transform: translateY(-2px); }
+.chip:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.fusion.has-pick .chip { opacity: 0.42; }
+.fusion.has-pick .chip.is-lit, .fusion.has-pick .chip:hover, .fusion.has-pick .chip:focus-visible { opacity: 1; }
+.chip.is-lit { border-color: var(--red); background: color-mix(in srgb, var(--red) 18%, var(--bg)); }
+
+.fusion-wires { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.fusion-wires path { fill: none; stroke-linejoin: round; }
+.fw-line { stroke: var(--red); stroke-width: 1.1; opacity: 0.5; }
+.fw-pulse { stroke: var(--red); stroke-width: 2.2; stroke-dasharray: 7 93; filter: drop-shadow(0 0 3px var(--red)); animation: fw-run 2.4s linear infinite; }
+@keyframes fw-run { from { stroke-dashoffset: 7; } to { stroke-dashoffset: -93; } }
+
+@media (max-width: 980px) {
+  #skills .section-note { text-align: left; }
+  .fusion { grid-template-columns: minmax(0, 1fr); }
+  .fusion-mid { order: -1; }
+  .fusion-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fusion-wires { display: none; }
+}
+@media (max-width: 560px) { .fusion-list { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .fw-pulse { animation: none; opacity: 0; } }
+@media print { .fusion-wires { display: none; } .fusion.has-pick .chip { opacity: 1; } }
+
+#contact .contact-lead { max-width: 36ch; margin-top: 1rem; font-size: 1.1rem; line-height: 1.5; color: var(--on-red); }
+
+
+/* ---------- 18. Section route ---------- */
+
+/* A trace down the left edge of wide screens with one pad per section (see extras.js) */
+.route { position: fixed; left: 22px; top: 50%; z-index: 120; display: none; flex-direction: column; gap: 18px; transform: translateY(-50%); }
+.route::before, .route::after { content: ""; position: absolute; left: 4px; top: 0; width: 1px; }
+.route::before { bottom: 0; background: color-mix(in srgb, var(--red) 32%, transparent); }
+.route::after { height: calc(var(--p, 0) * 100%); background: var(--red); box-shadow: 0 0 6px var(--red); }
+.route a { position: relative; z-index: 1; display: block; width: 9px; height: 9px; border: 1px solid var(--red); background: var(--bg); transition: transform 0.2s var(--ease), background 0.2s ease, box-shadow 0.2s ease; }
+.route a::before { content: ""; position: absolute; inset: -7px; }
+.route a::after {
+  content: attr(data-label);
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--text);
+  font: 0.68rem/1 var(--font-mono);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-4px, -50%);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s var(--ease);
+}
+.route a:hover::after, .route a:focus-visible::after { opacity: 1; transform: translate(0, -50%); }
+.route a:hover, .route a.is-on { background: var(--red); transform: scale(1.25); box-shadow: 0 0 8px var(--red); }
+.route a:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+@media (min-width: 1280px) and (hover: hover) { .route { display: flex; } }
+body.workbench-open .route { display: none; }
+@media print { .route { display: none !important; } }

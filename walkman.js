@@ -506,12 +506,12 @@
   var root = document.createElement('div');
   root.className = 'wm';
   root.innerHTML =
-    '<button type="button" class="wm-mini" aria-expanded="false" aria-controls="wm-deck" aria-label="Open the Walkman">' + art('wmm-', false) + '</button>' +
+    '<button type="button" class="wm-mini" data-cursor="open" aria-expanded="false" aria-controls="wm-deck" aria-label="Open the Walkman">' + art('wmm-', false) + '</button>' +
     '<span class="wm-hint" aria-hidden="true">Press play</span>' +
     '<div class="wm-deck" id="wm-deck" role="region" aria-label="TECHMINES Walkman" hidden>' + art('wmd-', true) +
       '<button type="button" class="wm-fold"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>Minimise</button>' +
       '<div class="wm-rack" role="group" aria-label="Tape rack">' + ORDER.map(function (k) {
-        return '<button type="button" class="wm-cass" data-mix="' + k + '" aria-label="Load the ' + TAPES[k].label.toLowerCase() + '">' + cassette(k) + '</button>';
+        return '<button type="button" class="wm-cass" data-cursor="drag" data-mix="' + k + '" aria-label="Load the ' + TAPES[k].label.toLowerCase() + '">' + cassette(k) + '</button>';
       }).join('') + '<span class="wm-rack-note" aria-hidden="true">Drag a tape into the door</span></div>' +
     '</div>';
   document.body.appendChild(root);
@@ -717,7 +717,7 @@
   });
 
   // While playing: the VU needle follows the music, the counter runs, the tape winds across
-  var bins, raf = 0;
+  var bins, raf = 0, beatAvg = 0, beatAt = 0;
   function loop() { if (!raf) raf = requestAnimationFrame(frame); }
   function setNeedle(a) { each('.wm-needle', function (n) { n.setAttribute('transform', 'rotate(' + a.toFixed(1) + ' 40 139)'); }); }
   function frame(now) {
@@ -728,6 +728,12 @@
       analyser.getByteFrequencyData(bins);
       var sum = 0; for (var i = 0; i < 24; i++) sum += bins[i];
       level = Math.min(1, sum / 24 / 150);
+      // tell the rest of the page when the music hits, so the circuit behind it can answer
+      beatAvg += (level - beatAvg) * 0.08;
+      if (level > 0.28 && level > beatAvg * 1.15 && now - beatAt > 180) {
+        beatAt = now;
+        window.dispatchEvent(new CustomEvent('tm:beat', { detail: { strength: Math.min(1, 0.45 + (level - beatAvg) * 2.5) } }));
+      }
     }
     var goal = -42 + level * 84;
     needle += (goal - needle) * (goal > needle ? 0.35 : 0.08);

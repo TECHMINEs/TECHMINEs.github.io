@@ -16,12 +16,13 @@
   root.className = 'tmc is-hidden';
   root.setAttribute('aria-hidden', 'true');
   root.innerHTML = '<span class="tmc-dot"></span>' +
-    '<span class="tmc-c tmc-c--tl"></span><span class="tmc-c tmc-c--tr"></span><span class="tmc-c tmc-c--br"></span><span class="tmc-c tmc-c--bl"></span>';
+    '<span class="tmc-c tmc-c--tl"></span><span class="tmc-c tmc-c--tr"></span><span class="tmc-c tmc-c--br"></span><span class="tmc-c tmc-c--bl"></span><span class="tmc-tag"></span>';
   document.body.appendChild(root);
   html.classList.add('has-tmc');
 
   var dot = root.querySelector('.tmc-dot');
   var corners = Array.from(root.querySelectorAll('.tmc-c'));
+  var tag = root.querySelector('.tmc-tag');
 
   var mouse = { x: -100, y: -100 }, aim = { x: -100, y: -100 };
   var target = null, raf = 0, t0 = performance.now();
@@ -65,6 +66,7 @@
       corners[i].style.transform = 'translate3d(' + c.x.toFixed(2) + 'px,' + c.y.toFixed(2) + 'px,0)';
     });
 
+    tag.style.transform = 'translate3d(' + cs[2].x.toFixed(1) + 'px,' + cs[2].y.toFixed(1) + 'px,0)';   // rides the bottom-right bracket
     raf = requestAnimationFrame(frame);
   }
   function kick() { if (!raf) raf = requestAnimationFrame(frame); }
@@ -75,6 +77,9 @@
     if (hit !== target) {
       target = hit;
       root.classList.toggle('is-hover', !!hit);
+      var tagged = hit && hit.closest('[data-cursor]');
+      tag.dataset.t = tagged ? tagged.dataset.cursor : '';
+      root.classList.toggle('has-tag', !!tagged);
     }
   }
 

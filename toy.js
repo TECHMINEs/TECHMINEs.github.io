@@ -69,6 +69,7 @@
     toy.setAttribute('aria-label', flipped ? 'Page controls and contact links. Press Escape to turn the logo back.' : 'TECHMINES logo. Drag to swing it, or press Enter to turn it over.');
     front.inert = flipped;      // only the face you can see takes focus and clicks
     back.inert = !flipped;
+    if (flipped) toy.removeAttribute('data-cursor'); else toy.setAttribute('data-cursor', 'drag');
     hint.textContent = flipped ? 'Click the board to turn it back' : 'Drag me · click to turn over';
     clearInterval(clockTimer);
     if (flipped) { sync(); clockTimer = setInterval(sync, 1000); }
@@ -249,11 +250,20 @@
     toy.addEventListener(ev, function (e) {
       if (!drag) return;
       var tapped = drag.m < 6 && e.type === 'pointerup';
+      var A = pt ? pt[N] : null, speed = A ? Math.hypot(A.x - A.ox, A.y - A.oy) : 0;
+      if (!tapped && speed > 7) window.dispatchEvent(new CustomEvent('tm:beat', { detail: { strength: Math.min(1, speed / 22) } }));   // a throw surges the circuit
       drag = null;
       toy.classList.remove('is-held');
       if (tapped) flip();
       wake();
     });
+  });
+
+  // The case brightens for an instant on each beat of the music
+  window.addEventListener('tm:beat', function (e) {
+    if (calm || !front.animate) return;
+    var s = (e.detail && e.detail.strength) || 0.6, el = toy.classList.contains('is-flipped') ? back : front;
+    el.animate([{ filter: 'brightness(' + (1 + s * 0.28).toFixed(2) + ')' }, { filter: 'brightness(1)' }], { duration: 280, easing: 'ease-out' });
   });
 
   face();
