@@ -742,10 +742,174 @@ main > section {
 .nav-burger span::before { top: -6px; }
 .nav-burger span::after  { top: 6px; }
 
-/* Theme button shows a sun in dark mode and a moon in light mode */
-.theme-toggle .moon { display: none; }
-.is-light .theme-toggle .moon { display: block; }
-.is-light .theme-toggle .sun  { display: none; }
+/* Theme switch: a quiet room in a cut-corner frame (the scene is inline SVG in index.html).
+   Night (dark theme): working late at the desk by the laptop's glow, the lamp on, steam off the
+   mug, and through the window a few slender towers, stars and the moon. Day (light theme): the
+   same room in daylight, the lamp off, sunlight through the window, the sun, a cloud and a bird.
+   Switching sets the sun behind the towers as the moon rises, the lamp clicks on and the city
+   lights come up. On narrow screens the frame pans: the desk at night, the window by day. */
+.theme-toggle {
+  --tt-w: 148px; --tt-h: 46px; --tt-cut: 8px;
+  --tt-in-w: calc(var(--tt-w) - 4px); --tt-in-h: calc(var(--tt-h) - 4px);
+  --tt-pan: calc(var(--tt-in-w) - var(--tt-in-h) * 144 / 42);
+  position: relative;
+  flex: none;
+  width: var(--tt-w);
+  height: var(--tt-h);
+  padding: 0;
+  border: 0;
+  background: var(--tt-frame, #34343a);
+  cursor: pointer;
+  clip-path: polygon(var(--tt-cut) 0, 100% 0, 100% calc(100% - var(--tt-cut)), calc(100% - var(--tt-cut)) 100%, 0 100%, 0 var(--tt-cut));
+  transition: background-color 0.3s ease, transform 0.2s var(--ease), filter 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.theme-toggle:hover, .theme-toggle:focus-visible { --tt-frame: var(--red); filter: drop-shadow(0 0 10px var(--glow)); outline: none; }
+.theme-toggle:active { transform: scale(0.97); }
+.is-light .theme-toggle { --tt-frame: #9aa0ae; }
+.is-light .theme-toggle:hover, .is-light .theme-toggle:focus-visible { --tt-frame: var(--red); }
+
+.tt-view {
+  position: absolute; inset: 2px; overflow: hidden; background: #0d0b12;
+  clip-path: polygon(calc(var(--tt-cut) - 1px) 0, 100% 0, 100% calc(100% - var(--tt-cut) + 1px), calc(100% - var(--tt-cut) + 1px) 100%, 0 100%, 0 calc(var(--tt-cut) - 1px));
+}
+.tt-scene {
+  position: absolute; left: 0; top: 0; display: block;
+  height: 100%; width: calc(var(--tt-in-h) * 144 / 42);
+  transform: translateX(var(--tt-pan));
+  transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.is-light .tt-scene { transform: translateX(0); }
+.tt-scene * { transition: fill 0.9s ease, stroke 0.9s ease, opacity 0.8s ease; }
+
+/* day and night layers */
+.tt-day-only { opacity: 0; }
+.is-light .tt-day-only { opacity: 1; }
+.is-light .tt-night-only { opacity: 0; }
+
+/* the room */
+.tt-wall { fill: #0d0b12; }
+.tt-floor { fill: #08070b; }
+.tt-skirting { fill: #1c1722; }
+.is-light .tt-wall { fill: #eef1f6; }
+.is-light .tt-floor { fill: #cfd6e0; }
+.is-light .tt-skirting { fill: #b9c2ce; }
+
+/* the window, its view, the curtain */
+.tt-out { fill: #07070f; }
+.is-light .tt-out { fill: #cde1f4; }
+.tt-frame, .tt-mullion { stroke: #2c2532; stroke-width: 0.8; fill: none; }
+.tt-sill { fill: #211b27; }
+.tt-rod { fill: #3a3341; }
+.tt-curtain { fill: #2a151c; }
+.tt-curtain-fold { fill: none; stroke: rgba(0, 0, 0, 0.45); stroke-width: 0.35; stroke-linecap: round; }
+.is-light .tt-frame, .is-light .tt-mullion { stroke: #c0c8d3; }
+.is-light .tt-sill { fill: #d5dbe4; }
+.is-light .tt-rod { fill: #a9b2bf; }
+.is-light .tt-curtain { fill: #ecd3cd; }
+.is-light .tt-curtain-fold { stroke: rgba(150, 90, 80, 0.25); }
+
+.tt-st { fill: #f6f1e7; animation: tt-twinkle var(--t, 3s) var(--d, 0s) ease-in-out infinite; }
+.tt-st.r { fill: #ff3b30; }
+@keyframes tt-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+.tt-towers { fill: #1f1824; }
+.is-light .tt-towers { fill: #b1bdcc; }
+.tt-tw { fill: #ffbe63; transition: fill 0.35s ease var(--d, 0s); }
+.is-light .tt-tw { fill: #e4ecf6; }
+.tt-av { fill: #ff2626; animation: tt-blink 1.6s steps(1, end) infinite; }
+.is-light .tt-av { animation: none; opacity: 0.4; }
+@keyframes tt-blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.12; } }
+.tt-cloud { fill: #fff; transform: translate(var(--x), var(--y)) scale(var(--s)); animation: tt-cloud var(--dur, 10s) ease-in-out infinite alternate; }
+@keyframes tt-cloud { from { transform: translate(calc(var(--x) - 3px), var(--y)) scale(var(--s)); } to { transform: translate(calc(var(--x) + 3px), var(--y)) scale(var(--s)); } }
+.tt-bird { fill: none; stroke: #4f5866; stroke-width: 0.4; stroke-linecap: round; animation: tt-bird 13s linear infinite; }
+@keyframes tt-bird { 0% { transform: translate(4px, 14px); } 50% { transform: translate(28px, 11px); } 100% { transform: translate(56px, 13px); } }
+
+/* sun and moon: they travel together across the window and dip behind the towers to swap */
+.tt-orb { transform: translate(44.5px, 11px); transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1); }
+.is-light .tt-orb { transform: translate(18.5px, 12px); }
+.tt-orb-size { transform: scale(0.88); }
+.is-light .tt-orb-size { transform: scale(0.78); }
+.tt-orb-size { transition: transform 0.1s ease 0.46s; }
+.theme-toggle.is-switching .tt-dip { animation: tt-dip 1s cubic-bezier(0.65, 0, 0.35, 1); }
+@keyframes tt-dip { 0% { transform: translateY(0); } 42%, 58% { transform: translateY(22px); } 100% { transform: translateY(0); } }
+.tt-halo { opacity: 0.5; }
+.is-light .tt-halo { opacity: 0.9; }
+.tt-sun, .tt-moon { transition: opacity 0.12s ease 0.46s; }
+.tt-sun { opacity: 0; }
+.is-light .tt-sun { opacity: 1; }
+.is-light .tt-moon { opacity: 0; }
+.tt-rays { transform-box: fill-box; transform-origin: center; animation: tt-spin 16s linear infinite; }
+.tt-rays path { fill: none; stroke: #ff3b2f; stroke-width: 0.8; stroke-linecap: round; }
+.tt-sun-core { fill: #ff2a1f; }
+.tt-crater { fill: #d5cdbd; }
+@keyframes tt-spin { to { transform: rotate(360deg); } }
+
+/* light: sunlight by day, the lamp and the screen at night */
+.tt-lamplight { opacity: 1; transition: opacity 0.25s ease 0.55s; }
+.is-light .tt-lamplight { opacity: 0; transition-delay: 0s; }
+.tt-screenlight { opacity: 1; }
+.is-light .tt-screenlight { opacity: 0; }
+.theme-toggle:hover .tt-lamplight, .theme-toggle:hover .tt-screenlight { filter: brightness(1.25); }
+
+/* the desk and what is on it */
+.tt-desk { fill: #221c28; }
+.tt-desk-leg { stroke: #221c28; stroke-width: 1; }
+.is-light .tt-desk { fill: #9aa4b2; }
+.is-light .tt-desk-leg { stroke: #9aa4b2; }
+.tt-lamp > rect, .tt-lamp > path:not(.tt-lamp-arm) { fill: #2e2834; }
+.tt-lamp-arm { stroke: #2e2834; stroke-width: 0.7; stroke-linecap: round; stroke-linejoin: round; }
+.tt-bulb { fill: #ffe1ad; filter: drop-shadow(0 0 1.5px #ffd08a); }
+.is-light .tt-lamp > rect, .is-light .tt-lamp > path:not(.tt-lamp-arm) { fill: #7c8697; }
+.is-light .tt-lamp-arm { stroke: #7c8697; }
+.is-light .tt-bulb { fill: #aeb7c4; filter: none; }
+.tt-mug > path:first-child { fill: #c8161d; }
+.tt-mug-handle { stroke: #c8161d; stroke-width: 0.45; }
+.tt-steam { fill: none; stroke: rgba(255, 255, 255, 0.4); stroke-width: 0.35; stroke-linecap: round; animation: tt-steam 2.8s ease-out infinite; }
+.tt-steam.s2 { animation-delay: -1.4s; }
+.is-light .tt-steam { stroke: rgba(80, 90, 104, 0.35); }
+@keyframes tt-steam { 0% { transform: translateY(0.6px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(-2.2px); opacity: 0; } }
+.tt-laptop > rect, .tt-laptop > path:not(.tt-screen) { fill: #3a3441; }
+.tt-logo { fill: #ff2626; }
+.tt-screen { stroke: #ff7a66; stroke-width: 0.5; stroke-linecap: round; animation: tt-screen 4s ease-in-out infinite; }
+@keyframes tt-screen { 0%, 100% { opacity: 1; } 50% { opacity: 0.75; } }
+.is-light .tt-laptop > rect, .is-light .tt-laptop > path:not(.tt-screen) { fill: #b8c0cc; }
+.is-light .tt-screen { stroke: #eef3f9; animation: none; }
+.tt-books .bk1 { fill: #3b2a45; } .tt-books .bk2 { fill: #283248; } .tt-books .bk3 { fill: #8c1a21; }
+.is-light .tt-books .bk1 { fill: #8a94a5; } .is-light .tt-books .bk2 { fill: #6e798b; } .is-light .tt-books .bk3 { fill: #cf3a33; }
+.tt-plant .pot { fill: #3a2a26; } .tt-plant .leaf { fill: #2d4a37; }
+.is-light .tt-plant .pot { fill: #b98463; } .is-light .tt-plant .leaf { fill: #6f9a79; }
+
+/* the chair and the person at the desk, typing */
+.tt-chair > rect, .tt-chair > circle { fill: #1c1821; }
+.tt-chair > path { stroke: #1c1821; stroke-width: 0.9; stroke-linecap: round; }
+.is-light .tt-chair > rect, .is-light .tt-chair > circle { fill: #7d8796; }
+.is-light .tt-chair > path { stroke: #7d8796; }
+.tt-person .limb { stroke: #060508; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.tt-person .torso { stroke: #060508; stroke-width: 4.4; stroke-linecap: round; }
+.tt-person .arm { stroke: #060508; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.tt-head circle { fill: #060508; }
+.tt-head .hair { fill: #060508; }
+.tt-person .rim { stroke: #ff5a46; stroke-width: 0.45; stroke-linecap: round; opacity: 0.9; }
+.is-light .tt-person .limb, .is-light .tt-person .torso, .is-light .tt-person .arm { stroke: #3d4553; }
+.is-light .tt-head circle { fill: #3d4553; }
+.is-light .tt-head .hair { fill: #232831; }
+.is-light .tt-person .rim { opacity: 0; }
+.tt-arm { transform-box: view-box; transform-origin: 114.6px 23.8px; animation: tt-type 0.42s ease-in-out infinite alternate; }
+@keyframes tt-type { from { transform: rotate(0deg); } to { transform: rotate(-2.4deg); } }
+.tt-head { animation: tt-nod 3.6s ease-in-out infinite; }
+@keyframes tt-nod { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(0.25px); } }
+
+/* smaller screens: the frame shrinks and pans across the room instead */
+@media (max-width: 1150px) { .theme-toggle { --tt-w: 124px; --tt-h: 44px; } }
+@media (max-width: 900px) { .theme-toggle { --tt-w: 84px; --tt-h: 44px; } }
+@media (max-width: 400px) { .theme-toggle { --tt-w: 62px; --tt-h: 40px; --tt-cut: 6px; } }
+@media (max-width: 340px) { .theme-toggle { --tt-w: 48px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tt-st, .tt-cloud, .tt-bird, .tt-rays, .tt-av, .tt-steam, .tt-screen, .tt-arm, .tt-head, .tt-dip { animation: none !important; }
+  .tt-bird { display: none; }
+  .tt-orb, .tt-scene, .tt-scene *, .tt-sun, .tt-moon, .tt-lamplight { transition-duration: 0.01s !important; transition-delay: 0s !important; }
+}
 
 
 /* ---------- 6. Page backdrop and intro ---------- */
