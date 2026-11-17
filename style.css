@@ -2982,6 +2982,23 @@ body.workbench-open { overflow:hidden; }
 }
 
 
+/* Phones: the folded Walkman shrinks and always sits in the bottom-right corner, and the
+   intro's buttons stop short of that corner so nothing on the first screen sits under it. */
+@media (max-width: 767px) {
+  :root { --wm-mini: 56px; }
+  .wm, .wm.is-left { left: auto; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .wm.is-left .wm-mini, .wm.is-left .wm-deck { transform-origin: bottom right; }
+  .wm.is-left .wm-deck { left: auto; right: 0; }
+  .wm.is-left .wm-rack { left: auto; right: 0; }
+  .wm-hint { display: none; }   /* no room for the note beside the buttons */
+  /* Keep the intro's text and buttons out of that corner on the first screen.
+     The big name is left full width, since it sits well above the Walkman. */
+  .hero-text > :not(h1) { margin-right: calc(var(--wm-mini) + 14px); }
+  .to-top { display: none; }   /* the Walkman holds this corner; the sticky header is always in reach */
+  /* room at the very end so the footer text is never left under the Walkman */
+  .site-footer { padding-bottom: calc(var(--wm-mini) * 1.39 + 28px); }
+}
+
 body.workbench-open .wm { display: none; }
 
 @media print { .wm { display: none !important; } }
