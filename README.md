@@ -109,7 +109,7 @@ A telephone handset hangs on a coiled cord from a carriage that rides a rail alo
 - **Section route:** one pad per section on screens 1280 px and wider; the trace fills as you scroll.
 - **Counting numbers:** the About figures count up once, the first time they appear.
 - **Cursor:** on mouse and trackpad, four chamfered brackets frame the pointer and lock around anything clickable, following it with a damped spring. Over the logo, the tapes and the handset it shows a one-word tag such as "drag" or "open".
-- **Theme switch:** a quiet room in a cut-corner frame beside "Let's talk". At night: working late at the desk by the laptop's glow (a small red TECHMINES dot on the lid), the desk lamp on, steam rising from a red mug, books and a plant, and through the window a few slender towers with lit windows and a blinking mast, stars and the moon. By day: the same room in daylight, the lamp off, sunlight falling through the window, the sun, a cloud and a bird. Switching sets the sun behind the towers as the moon rises, the lamp clicks on and the city lights come up, and the backdrop surges. On narrow screens the frame pans: the desk at night, the window by day. Dark is the default and the choice is remembered.
+- **Theme switch:** a small illustrated scene of Pranav at his desk, in a cut-corner frame beside "Let's talk". By day he types at a laptop with a red TM on the lid, headphones round his neck, coffee steaming, the sun in the window over the city. At night the headphones go on, the laptop's red glow lights his face, music notes drift up, his head bobs to the beat, the desk lamp is on and the moon is out. His eyes follow the pointer and blink; hovering brings a smile, or at night happy closed eyes. Switching sets the sun behind the towers as the moon rises, the lamp clicks on and the city lights come up, and the backdrop surges. On small screens the frame centres on the character. Dark is the default and the choice is remembered.
 
 ## The five projects
 
@@ -134,7 +134,7 @@ Each project card links to the exact file that backs its headline number. On Git
 
 | File | Purpose |
 |---|---|
-| `index.html` | The page, its small inline script, and the theme switch's room scene (inline SVG) |
+| `index.html` | The page, its small inline script, and the theme switch's illustrated scene (inline SVG) |
 | `style.css` | All styles, in numbered sections (base, layout, sections, Walkman, cursor, logo case, Skills, route, telephone) |
 | `toy.js` | The logo case: rope physics, drag and throw, the mainboard on the back |
 | `walkman.js` | The Walkman: the deck, the tape rack, carrying, presets, and the Web Audio engine that composes two of the tapes |
