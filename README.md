@@ -20,6 +20,7 @@
 - **Skills wired into one.** Engineering on one side, business on the other, and in the middle what the two do together. Pick a result and the skills behind it light up on both sides, with traces running into the middle.
 - **A page that answers the music.** While the Walkman plays, the circuit's pulses speed up and brighten on each beat, and throwing the logo sends a surge through them.
 - **A section route** down the left edge of wide screens: one pad per section, filling as you scroll.
+- **A telephone in the contact section**: a handset on a coiled cord hangs from a carriage on a rail. It follows the pointer, turns to face it and rings as it gets close; reaching the email connects the call. It can be grabbed and thrown, and it always moves out of the Walkman's way.
 - **A target-lock cursor** for mouse and trackpad users: four chamfered brackets that frame the pointer and snap around whatever can be clicked.
 - Dark and light themes, a skip link, keyboard support throughout, and reduced-motion support.
 
@@ -37,6 +38,7 @@ Plain HTML, CSS and JavaScript, with no framework and no build step. Fonts: Chak
 | `toy.js` | The swinging, flippable logo in the intro |
 | `skills.js` | The interactive Skills section |
 | `extras.js` | The section route and the counting numbers |
+| `phone.js` | The contact handset: drawing, cord physics and placement |
 | `cursor.js` | The target-lock cursor |
 | `audio/` | The studio track for the sunrise tape |
 | `404.html` | The page shown for missing links |

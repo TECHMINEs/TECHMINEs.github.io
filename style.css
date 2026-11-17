@@ -3166,3 +3166,27 @@ body.workbench-open .tmc { display: none; }
 @media (min-width: 1280px) and (hover: hover) { .route { display: flex; } }
 body.workbench-open .route { display: none; }
 @media print { .route { display: none !important; } }
+
+
+/* ---------- 19. Contact handset ---------- */
+
+/* A handset on a coiled cord, hanging from a carriage on a rail (see phone.js) */
+#contact.has-phone-room { padding-top: calc(clamp(3rem, 6vw, 4.2rem) + var(--ph-room, 0px)); }
+.phone { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; overflow: visible; pointer-events: none; color: var(--on-red); }
+.phone .ph-track { fill: none; stroke: #0b0b0b; stroke-width: 3.2; stroke-linecap: round; }
+.phone .ph-track-hi { fill: none; stroke: rgba(255, 255, 255, 0.2); stroke-width: 0.8; stroke-linecap: round; }
+.phone .ph-stop { fill: #0b0b0b; }
+.phone .ph-cord { fill: none; stroke: #0b0b0b; stroke-linecap: round; stroke-linejoin: round; }
+.phone .ph-cord-hi { fill: none; stroke: rgba(255, 255, 255, 0.24); stroke-linecap: round; stroke-linejoin: round; }
+.phone .ph-ring path { fill: none; stroke: #0b0b0b; stroke-width: 2.2; stroke-linecap: round; }
+.phone .ph-ring { opacity: 0; }
+.phone .ph-ridge path { stroke: rgba(0, 0, 0, 0.6); stroke-width: 0.7; }
+.phone .ph-word text { font: 600 5.4px var(--font-display); letter-spacing: 1.5px; }
+.phone .ph-word-lo { fill: rgba(0, 0, 0, 0.7); }
+.phone .ph-word-hi { fill: rgba(255, 255, 255, 0.15); }
+.phone .ph-hit { pointer-events: auto; cursor: grab; touch-action: none; }
+.phone .ph-hit:active { cursor: grabbing; }
+.phone .ph-say { font: 600 11.5px var(--font-mono); letter-spacing: 0.04em; fill: currentColor; transform: translate(-9px, 4px); }
+.phone .ph-dot { fill: currentColor; opacity: 0.55; }
+.phone .is-live .ph-dot { opacity: 1; }
+@media print { .phone { display: none; } #contact.has-phone-room { padding-top: 1rem; } }
