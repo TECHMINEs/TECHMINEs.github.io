@@ -44,12 +44,11 @@
 <script>
   // Pick the theme before the page paints, so there's no flash.
   (function () {
-    var root = document.documentElement, saved = null;
+    // Every visit starts from the browser's own light or dark setting.
+    var root = document.documentElement;
     root.classList.add('js');
-    try { saved = localStorage.getItem('theme'); } catch (e) {}
-    if (saved) root.setAttribute('data-theme', saved);
-    var light = saved ? saved === 'light' : window.matchMedia('(prefers-color-scheme: light)').matches;
-    root.classList.toggle('is-light', light);
+    try { localStorage.removeItem('theme'); } catch (e) {}   // clear any choice saved by older versions
+    root.classList.toggle('is-light', window.matchMedia('(prefers-color-scheme: light)').matches);
     // A one-time identity entrance on direct visits; returning visitors go straight to content.
     var seenIntro = false;
     try { seenIntro = localStorage.getItem('techmines-intro-seen') === '1'; } catch (e) {}
@@ -854,7 +853,8 @@
     });
   });
 
-  // Light / dark switch (remembers the choice, announces correctly)
+  // Light / dark switch. It changes the theme for this visit only; the next visit
+  // starts from the browser's setting again.
   var themeBtn = document.getElementById('theme-toggle');
   function updateThemeLabel() {
     var isLight = root.classList.contains('is-light');
@@ -862,12 +862,23 @@
   }
   updateThemeLabel();
 
+  // Until the visitor uses the switch, follow the browser if its setting changes
+  var picked = false;
+  var systemLight = window.matchMedia('(prefers-color-scheme: light)');
+  var followSystem = function (e) {
+    if (picked) return;
+    root.classList.toggle('is-light', e.matches);
+    updateThemeLabel();
+  };
+  if (systemLight.addEventListener) systemLight.addEventListener('change', followSystem);
+  else if (systemLight.addListener) systemLight.addListener(followSystem);
+
   var switchTimer = 0;
   themeBtn.addEventListener('click', function () {
     var next = root.classList.contains('is-light') ? 'dark' : 'light';
     root.setAttribute('data-theme', next);
     root.classList.toggle('is-light', next === 'light');
-    try { localStorage.setItem('theme', next); } catch (e) {}
+    picked = true;
     updateThemeLabel();
     // play the little sunrise or nightfall, and send a surge through the circuit
     themeBtn.classList.remove('is-switching'); void themeBtn.offsetWidth; themeBtn.classList.add('is-switching');

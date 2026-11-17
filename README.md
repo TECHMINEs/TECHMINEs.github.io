@@ -81,7 +81,7 @@ A cassette player parked in the bottom corner. Click it and it grows into the fu
 - **Tape rack:** spare tapes sit beside the open deck; drag one into the cassette door (or click it) to load it.
 - **Carry it:** drag the folded Walkman and it glides to the nearer corner, left or right.
 - **Pace on the studio track** changes speed while keeping pitch. To stay glitch-free in every browser, the speed moves in 5% steps and is applied once the knob settles; a watchdog nudges playback back on if a browser ever stalls it.
-- Sound only ever starts after a click, and the deck pauses when the tab is hidden.
+- Every visit opens on The Grid at its home preset (pace 1, tone 0.85) and starts playing straight away. Browsers hold back sound until a visitor's first click, tap or key press, so where that applies the music starts on that first interaction. The deck pauses when the tab is hidden.
 
 ### The circuit backdrop
 
@@ -109,7 +109,7 @@ A telephone handset hangs on a coiled cord from a carriage that rides a rail alo
 - **Section route:** one pad per section on screens 1280 px and wider; the trace fills as you scroll.
 - **Counting numbers:** the About figures count up once, the first time they appear.
 - **Cursor:** on mouse and trackpad, four chamfered brackets frame the pointer and lock around anything clickable, following it with a damped spring. Over the logo, the tapes and the handset it shows a one-word tag such as "drag" or "open".
-- **Theme switch:** a small illustrated scene of Pranav at his desk, in a cut-corner frame beside "Let's talk". By day he types at a laptop with a red TM on the lid, headphones round his neck, coffee steaming, the sun in the window over the city. At night the headphones go on, the laptop's red glow lights his face, music notes drift up, his head bobs to the beat, the desk lamp is on and the moon is out. His eyes follow the pointer and blink; hovering brings a smile, or at night happy closed eyes. Switching sets the sun behind the towers as the moon rises, the lamp clicks on and the city lights come up, and the backdrop surges. On small screens the frame centres on the character. Dark is the default and the choice is remembered.
+- **Theme switch:** a small illustrated scene of Pranav at his desk, in a cut-corner frame beside "Let's talk". By day he types at a laptop with a red TM on the lid, headphones round his neck, coffee steaming, the sun in the window over the city. At night the headphones go on, the laptop's red glow lights his face, music notes drift up, his head bobs to the beat, the desk lamp is on and the moon is out. His eyes follow the pointer and blink; hovering brings a smile, or at night happy closed eyes. Switching sets the sun behind the towers as the moon rises, the lamp clicks on and the city lights come up, and the backdrop surges. On small screens the frame centres on the character. Each visit starts in the visitor's own browser setting, light or dark, and follows it if it changes; the switch changes the theme for that visit only.
 
 ## The five projects
 
@@ -161,9 +161,8 @@ Each project card links to the exact file that backs its headline number. On Git
 
   | Key | Holds |
   |---|---|
-  | `theme` | Light or dark |
   | `techmines-intro-seen` | Skips the intro animation on later visits |
-  | `tm-jbx-mix`, `tm-jbx-pace`, `tm-jbx-tone`, `tm-jbx-volume` | The Walkman's tape and settings |
+  | `tm-jbx-mix`, `tm-jbx-pace`, `tm-jbx-tone`, `tm-jbx-volume` | The Walkman's last settings (only the volume is reused; each visit opens on The Grid) |
   | `tm-jbx-side`, `tm-jbx-seen` | Which corner the Walkman sits in, and whether its hint has been seen |
   | `tm-toy-seen` | Whether the logo's "drag me" hint has been seen |
 

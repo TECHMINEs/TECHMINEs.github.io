@@ -1,7 +1,7 @@
 /* Walkman: a cassette player in the corner that opens into the full deck. Three tapes,
    pace and tone knobs, a volume wheel, a preset button and a rack of spare tapes to drag
    into the door. Tape A is a studio track; B and C are composed live with Web Audio.
-   Sound only starts after a click. */
+   Every visit opens on tape C at its home preset, playing as soon as the browser allows. */
 (function () {
   'use strict';
 
@@ -47,11 +47,14 @@
     C: [['The grid', 1, 0.85], ['Slow burn', 0.82, 0.35], ['Overdrive', 1.25, 1], ['Night shift', 0.95, 0.55]]
   };
 
+  // Each visit starts on tape C with its home preset, "The grid" (pace 1, tone 0.85).
+  // Only the volume carries over, and never below an audible level.
+  var startVolume = clamp(store.get('volume', 0.6), 0, 1);
   var state = {
-    mix: MIXES[store.get('mix', 'A')] ? store.get('mix', 'A') : 'A',
-    pace: clamp(store.get('pace', 1), 0.7, 1.4),
-    volume: clamp(store.get('volume', 0.6), 0, 1),
-    tone: clamp(store.get('tone', 0.85), 0, 1),
+    mix: 'C',
+    pace: PRESETS.C[0][1],
+    volume: startVolume < 0.15 ? 0.6 : startVolume,
+    tone: PRESETS.C[0][2],
     playing: false
   };
 
@@ -796,7 +799,25 @@
   document.addEventListener('visibilitychange', function () { if (document.hidden) pause(); });
   window.addEventListener('pagehide', pause);
 
+  // Start the music as soon as the page opens. Browsers only allow sound after the
+  // visitor's first click, tap or key press, so if this first attempt is held back,
+  // the music starts on that first interaction instead.
+  function autoStart() {
+    play();
+    if (ctx.state === 'running') return;
+    stopSources(); state.playing = false; render();
+    var events = ['pointerdown', 'keydown', 'touchend'];
+    function unlock(e) {
+      events.forEach(function (t) { document.removeEventListener(t, unlock, true); });
+      // The Walkman's own keys and the mainboard switch handle their own clicks
+      if (e && e.target && e.target.closest && e.target.closest('.wm-deck, .toy-sw')) return;
+      if (!state.playing) play();
+    }
+    events.forEach(function (t) { document.addEventListener(t, unlock, true); });
+  }
+
   render();
   setNeedle(needle);
   if (calm) root.classList.add('is-calm');
+  autoStart();
 })();
