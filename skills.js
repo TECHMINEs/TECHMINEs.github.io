@@ -1,10 +1,6 @@
-/* TECHMINES skills: two sets wired into one.
-   Engineering sits on the left, business on the right, and the middle lists what the two
-   do together. Pick one of those and the skills behind it light up on both sides, with
-   traces running from each lit skill into the middle. Tap a skill to see what it feeds.
-   Until someone touches it, the section steps through the list on its own.
-
-   Without this script the section is still a readable list of skills. */
+/* Skills: engineering and business panels wired into seven shared results. Picking a
+   result lights the skills behind it and draws traces into the centre. Without this
+   script the section is a plain list. */
 (function () {
   'use strict';
 
@@ -39,7 +35,7 @@
     wire();
   }
 
-  // ------------------------------------------------------------------ the traces
+  // The traces
   // Each lit skill sends a trace down into the gap under its row, across to the gutter
   // beside the middle column, and into the core. Corners are cut at 45 degrees.
   function route(points) {
@@ -82,7 +78,7 @@
     svg.innerHTML = out;
   }
 
-  // ------------------------------------------------------------------ hands on
+  // Hands on
   var touched = false, timer = 0;
   function stop() { touched = true; clearInterval(timer); }
 
@@ -116,7 +112,7 @@
 
   fusion.addEventListener('pointerdown', stop);
 
-  // ------------------------------------------------------------------ start
+  // Start
   select(current, null);
   var redraw = 0;
   function later() { clearTimeout(redraw); redraw = setTimeout(wire, 160); }

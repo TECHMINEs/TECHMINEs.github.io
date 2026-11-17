@@ -1,12 +1,6 @@
-/* TECHMINES logo toy.
-   Turns the logo case in the intro into something you can play with. The case keeps its
-   look and its place, and now hangs from the header on a thin trace: drag it, throw it,
-   and it swings back to rest. Click it (or press Enter) and it turns over to show the
-   page's mainboard: the time in India, three switches that drive the real page (theme,
-   music, backdrop) and the contact links.
-
-   Without this script the logo is simply the static case. With reduced motion there is no
-   swinging: the case stays put and still turns over. */
+/* Logo toy: the intro's logo case hangs from the header on a trace. Drag or throw it;
+   click or press Enter to turn it over to the mainboard (IST clock, theme, music and
+   backdrop switches, contact links). With reduced motion it only turns over. */
 (function () {
   'use strict';
 
@@ -22,7 +16,7 @@
     set: function (k, v) { try { localStorage.setItem('tm-toy-' + k, v); } catch (e) { /* optional */ } }
   };
 
-  // ------------------------------------------------------------------ build
+  // Build
   // .toy swings, .toy-in turns over, the original case is the front face
   var toy = document.createElement('div'), inner = document.createElement('div');
   toy.className = 'toy';
@@ -61,7 +55,7 @@
   if (store.get('seen')) hint.hidden = true;
   toy.tabIndex = 0;
 
-  // ------------------------------------------------------------------ turning over
+  // Turning over
   var clockTimer = 0;
   function face() {
     var flipped = toy.classList.contains('is-flipped');
@@ -101,7 +95,7 @@
   }
   switches.forEach(function (b) { b.addEventListener('click', function () { acts[b.dataset.k](); sync(); setTimeout(sync, 400); }); });
 
-  // ------------------------------------------------------------------ placement
+  // Placement
   // Tell the stylesheet where the intro text really ends, so the logo can sit in the free
   // space between the text and the Walkman (see "Logo toy" in style.css).
   function place() {
@@ -118,7 +112,7 @@
     fig.style.setProperty('--text-right', Math.ceil(right) + 'px');
   }
 
-  // ------------------------------------------------------------------ the swing
+  // The swing
   // A short rope: a fixed point under the header, N links of trace, then the case as one
   // stiff, heavier link. At rest the case hangs exactly where it sits in the layout.
   var N = 8, L, CL, ax, ay, cx, cy, pt = null, drag = null;
@@ -230,7 +224,7 @@
   if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) wake(); }).observe(fig);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) wake(); });
 
-  // ------------------------------------------------------------------ hands on
+  // Hands on
   toy.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && toy.classList.contains('is-flipped')) { e.preventDefault(); flip(); toy.focus(); return; }
     if (e.target === toy && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); flip(); }

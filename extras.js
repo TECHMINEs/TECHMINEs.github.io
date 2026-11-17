@@ -1,13 +1,10 @@
-/* TECHMINES extras: two small page-wide touches.
-   1. A section route down the left edge of wide screens: a trace with one pad per section.
-      It fills as you scroll, marks where you are, and each pad jumps to its section.
-   2. The headline numbers in the About section count up the first time they come into view. */
+/* Section route on wide screens, and the About numbers counting up once. */
 (function () {
   'use strict';
 
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ------------------------------------------------------------------ section route
+  // Section route
   var STOPS = [['top', 'Intro'], ['about', 'About'], ['projects', 'Work'], ['experience', 'Experience'],
                ['education', 'Education'], ['skills', 'Skills'], ['now', 'Right now'], ['contact', 'Contact']];
   var stops = STOPS.filter(function (s) { return document.getElementById(s[0]); });
@@ -41,7 +38,7 @@
     fill();
   }
 
-  // ------------------------------------------------------------------ counting numbers
+  // Counting numbers
   var nums = Array.prototype.slice.call(document.querySelectorAll('.stats strong'));
   if (nums.length && !calm && 'IntersectionObserver' in window) {
     var count = function (el) {

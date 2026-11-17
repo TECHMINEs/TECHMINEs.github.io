@@ -1,8 +1,5 @@
-/* TECHMINES contact handset, drawn in 3D.
-   phone.js runs the physics and placement; this file only draws: a glossy black handset with
-   perforated ear and mouth grilles, a rubber cord sleeve, a coiled cord built as a real helix,
-   and the rail and carriage it hangs from, lit by soft studio lights with a red bounce from the
-   section and casting a soft shadow onto it. Needs three.js (r128, global THREE). */
+/* 3D drawing for the contact handset (three.js r128). phone.js owns the physics and
+   placement; this only renders the handset, cord, rail and shadow. */
 (function () {
   'use strict';
 
@@ -28,7 +25,7 @@
     var cam = new THREE.OrthographicCamera(0, 100, 0, -100, 1, 3000);
     cam.position.set(0, 0, 1000);
 
-    // ---------------------------------------------------------------- light and reflections
+    // Light and reflections
     // A small photo studio rendered into an environment map: a big softbox above, a strip on the
     // left, and red bounce from the section around it, so the black plastic reads as glossy.
     var env = new THREE.Scene();
@@ -60,7 +57,7 @@
     shadowPlane.receiveShadow = true;
     scene.add(shadowPlane);
 
-    // ---------------------------------------------------------------- materials
+    // Materials
     var gloss = new THREE.MeshPhysicalMaterial({ color: 0x030303, roughness: 0.42, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 0.85 });
     var satin = new THREE.MeshPhysicalMaterial({ color: 0x0a0a0b, roughness: 0.55, clearcoat: 0.35, clearcoatRoughness: 0.35, envMapIntensity: 0.7 });
     var rubber = new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.85 });
@@ -109,7 +106,7 @@
       return new THREE.MeshBasicMaterial({ map: t, transparent: true, depthWrite: false });
     }
 
-    // ---------------------------------------------------------------- the handset (y up, cups face +x)
+    // The handset (y up, cups face +x)
     var model = new THREE.Group();
     var handleCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(15, 86, 0), new THREE.Vector3(5, 75, 0), new THREE.Vector3(-0.5, 50, 0), new THREE.Vector3(-2, 0, 0),
@@ -160,7 +157,7 @@
     var pivot = new THREE.Group(); pivot.add(yawG);
     scene.add(pivot);
 
-    // ---------------------------------------------------------------- rail and carriage
+    // Rail and carriage
     var railGeo = new THREE.CylinderGeometry(1.9, 1.9, 1, 16); railGeo.rotateZ(Math.PI / 2);
     var rail = new THREE.Mesh(railGeo, gunmetal); rail.castShadow = true; scene.add(rail);
     var stopGeo = new THREE.BoxGeometry(5, 13, 9);
@@ -187,7 +184,7 @@
     car.traverse(function (o) { if (o.isMesh) o.castShadow = true; });
     scene.add(car);
 
-    // ---------------------------------------------------------------- the coiled cord (rebuilt every frame)
+    // The coiled cord (rebuilt every frame)
     var MAXP = 420, RAD = 6;
     var cordGeo = new THREE.BufferGeometry();
     var pos = new Float32Array(MAXP * RAD * 3), nor = new Float32Array(MAXP * RAD * 3), idx = [];
@@ -238,7 +235,7 @@
       cordGeo.attributes.normal.needsUpdate = true;
     }
 
-    // ---------------------------------------------------------------- per-frame drawing
+    // Per-frame drawing
     var W = 0, H = 0, ear = new THREE.Vector3(), tip = new THREE.Vector3();
     function resize(w, h) {
       if (w === W && h === H) return;

@@ -399,7 +399,7 @@ main > section {
 
 .btn--solid:hover { box-shadow: 5px 5px 0 var(--text); }
 
-/* ChainProof Live Demo: Solid black with white text in both themes */
+/* Live demo button: black with white text in both themes */
 .btn--chainproof {
   background: #000000 !important;
   border: 1px solid #333333 !important;
@@ -474,7 +474,7 @@ main > section {
   transition: color 0.15s ease;
 }
 
-/* Replace Unicode arrow with inline SVG for cross-browser reliability */
+/* Inline SVG arrow instead of the Unicode one, which renders unevenly */
 .text-link::after {
   content: "";
   display: inline-block;
@@ -721,7 +721,7 @@ main > section {
   mask-repeat: no-repeat;
 }
 
-/* Mobile nav: button-driven instead of checkbox hack */
+/* Mobile nav */
 .nav-burger {
   display: none;
 }
@@ -928,7 +928,7 @@ html:not(.is-light) .theme-toggle:hover .tt-head { animation-duration: 0.5s; }
 .tt-plant .pot { fill: #3a2a26; } .tt-plant .leaf { fill: #2d4a37; }
 .is-light .tt-plant .pot { fill: #b98463; } .is-light .tt-plant .leaf { fill: #6f9a79; }
 
-/* smaller screens: the frame shrinks and pans across the scene instead */
+/* smaller screens: a narrower frame */
 @media (max-width: 1150px) { .theme-toggle { --tt-w: 124px; --tt-h: 44px; } }
 @media (max-width: 900px) {
   .theme-toggle { --tt-w: 84px; --tt-h: 44px; }
@@ -1234,7 +1234,7 @@ h1 em {
   pointer-events: none;
 }
 
-/* Glass glint: a slow sweep, and a highlight that follows the pointer while tilting */
+/* Glass glint: a slow sweep, and a highlight that follows the pointer */
 .frame-glint {
   position: absolute;
   inset: 6px;
@@ -1462,7 +1462,7 @@ h1 em {
 
 .card-top span:first-child { color: var(--red); }
 
-/* Project authentic branding: 64-80px logo mark vertically centered beside project name */
+/* Project mark beside the name */
 .card-identity {
   display: flex;
   align-items: center;
@@ -1645,7 +1645,7 @@ h1 em {
   animation: rise 0.45s var(--ease) backwards;
 }
 
-/* Replace Unicode arrow with inline SVG for cross-browser reliability */
+/* Inline SVG arrow instead of the Unicode one, which renders unevenly */
 .card-link {
   align-self: flex-start;
   margin-top: auto;
@@ -2541,7 +2541,7 @@ html:not(.js) .nav-burger { display: none !important; }
 }
 
 @media print {
-  /* Hide non-essential elements */
+  /* Non-essential elements */
   .site-header,
   .launch,
   .case-route,
@@ -2555,7 +2555,7 @@ html:not(.js) .nav-burger { display: none !important; }
 
   .js .reveal { opacity: 1; }
 
-  /* Reset all theme-dependent colours for readable print output */
+  /* Print colours */
   :root,
   :root[data-theme="light"],
   :root[data-theme="dark"] {
@@ -2587,7 +2587,7 @@ html:not(.js) .nav-burger { display: none !important; }
     line-height: 1.5;
   }
 
-  /* Ensure cards and panels print without backdrop effects */
+  /* Cards and panels: no backdrop effects */
   .card,
   .skill-panel,
   .edu-card {
@@ -2599,7 +2599,7 @@ html:not(.js) .nav-burger { display: none !important; }
     break-inside: avoid;
   }
 
-  /* Ensure featured card is readable when printed */
+  /* Featured card */
   .card--featured {
     background: #fff;
     color: #000;
@@ -2631,7 +2631,7 @@ html:not(.js) .nav-burger { display: none !important; }
 
   .card--featured .points li::before { background: #cc0000; }
 
-  /* Contact section: print-friendly */
+  /* Contact */
   #contact {
     background: #fff;
     color: #1a1a1a;
@@ -2697,7 +2697,7 @@ html:not(.js) .nav-burger { display: none !important; }
   .status-dot { animation: none; }
   .status { background: #f5f5f5; border-color: #ccc; }
 
-  /* Ensure page breaks work well */
+  /* Page breaks */
   .org,
   .edu-card { break-inside: avoid; }
 
@@ -2758,10 +2758,8 @@ body.workbench-open { overflow:hidden; }
 
 /* ---------- 13. Walkman ---------- */
 
-/* A cassette player parked in the bottom-left corner. Folded, it is a small Walkman whose
-   reels turn while music plays. Clicked, the same Walkman grows into the full deck:
-   piano keys, a tape behind a smoked door, a VU meter, a counter, two knobs and a wheel.
-   The drawing is one SVG (see walkman.js), so sizes below are in its own units. */
+/* Folded, a small Walkman in the corner; clicked, it grows into the full deck. The drawing
+   is one SVG (see walkman.js), so sizes below are in its own units. */
 .wm {
   position: fixed;
   right: 20px;
@@ -2892,7 +2890,7 @@ body.workbench-open { overflow:hidden; }
 .wm-led--power { fill: #f2f2f2; }
 .wm.is-playing .wm-led--play { fill: #ff3b3b; animation: wm-blink var(--beat) ease-in-out infinite alternate; }
 
-/* knobs, wheel and the mute button */
+/* knobs, wheel and the preset button */
 .wm-knob, .wm-wheel { cursor: ns-resize; touch-action: none; }
 .wm-tick { stroke: #5c5c5c; stroke-width: 0.5; }
 .wm-tick--major { stroke: #d0d0d0; stroke-width: 0.7; }

@@ -1,11 +1,6 @@
-/* TECHMINES backdrop: one continuous circuit.
-   Right-angle traces with chamfered corners run along the page grid, with glowing contact
-   pads and light pulses racing along them. The circuit is continuous across the whole
-   page: behind reading text the very same traces carry on, simply faded down with a
-   gradual edge, and their pulses fade even further so nothing competes with the words.
-   In open space everything stays vivid. Pads near the pointer light up. The canvas is
-   fixed behind the page, pauses when the tab is hidden and stays still for visitors who
-   prefer reduced motion. */
+/* Backdrop: one continuous circuit of chamfered traces, pads and light pulses. Behind
+   text the same traces fade down so reading stays calm. Pauses in hidden tabs and stays
+   still with reduced motion. */
 (function () {
   'use strict';
 

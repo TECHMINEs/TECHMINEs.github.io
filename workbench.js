@@ -1,6 +1,4 @@
-/* TECHMINES project workbench.
-   A full-screen dialog that runs each project's live demo in a frame, with a tab per project,
-   a loading state while the demo starts, and a link to open the demo in its own tab. */
+/* Project workbench: runs each live demo in a full-screen frame, one tab per project. */
 (function () {
   'use strict';
   const dialog = document.getElementById('workbench');
@@ -19,8 +17,7 @@
   const loading = document.getElementById('workbench-loading');
   const loadingName = document.getElementById('workbench-loading-name');
   if (!dialog || !open) return;
-  // Keep the frame hidden behind a loading panel until the demo has painted,
-  // so visitors never stare at a blank white rectangle.
+  // A loading panel covers the frame until the demo has painted.
   let loadTimer;
   function showLoading(name) {
     if (!loading) return;

@@ -1,9 +1,5 @@
-/* TECHMINES cursor: chamfer lock.
-   Replaces the system pointer for mouse and trackpad users with a HUD-style target lock.
-   At rest, four brackets with 45-degree cut corners (like the circuit traces in the
-   backdrop) frame a fine plus at the pointer. Over a button or link the brackets spring
-   around that element and turn white. Touch screens keep their normal behaviour, and
-   reduced-motion visitors get no lag or spring. */
+/* Cursor: four chamfered brackets that frame the pointer and spring around anything
+   clickable. Mouse and trackpad only; no spring with reduced motion. */
 (function () {
   'use strict';
 

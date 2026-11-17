@@ -1,15 +1,7 @@
-/* TECHMINES Walkman.
-   A small cassette player parked in the corner of the page. Click it and it grows into
-   the full deck: the play key starts and pauses the music, each of the three tapes is a
-   different mix, the two knobs set pace and tone, the wheel on the side sets volume and
-   the red button steps through presets of pace and tone for the loaded tape. Spare tapes sit in a rack beside the open deck: drag one into the door to load it.
-   Drag the small Walkman to carry it to the other side of the page.
-   Sound only ever starts after a click.
-
-   The sunrise tape is the site's original studio track (pace changes speed while keeping
-   pitch). The midnight and grid tapes are composed live in the browser with the Web Audio
-   API, so their pace changes the tempo itself. The grid tape is a dark, cinematic piece:
-   a pulsing sixteenth-note ostinato under swelling strings and low brass. */
+/* Walkman: a cassette player in the corner that opens into the full deck. Three tapes,
+   pace and tone knobs, a volume wheel, a preset button and a rack of spare tapes to drag
+   into the door. Tape A is a studio track; B and C are composed live with Web Audio.
+   Sound only starts after a click. */
 (function () {
   'use strict';
 
@@ -24,7 +16,7 @@
     set: function (k, v) { try { localStorage.setItem('tm-jbx-' + k, JSON.stringify(v)); } catch (e) { /* optional */ } }
   };
 
-  // ------------------------------------------------------------------ the mixes
+  // The mixes
   var MIXES = {
     A: { type: 'track', src: new URL('audio/arpent-studio.mp3', BASE).href },
     B: { // late night, half time
@@ -158,7 +150,7 @@
     else rateTimer = setTimeout(apply, performance.now() - rateAt > 400 ? 120 : 260);
   }
 
-  // ------------------------------------------------------------------ instruments
+  // Instruments
   function env(g, t, peak, attack, decay) {
     g.gain.setValueAtTime(0.0001, t);
     g.gain.linearRampToValueAtTime(peak, t + attack);
@@ -270,7 +262,7 @@
     o.connect(g); g.connect(synthBus); o.start(t); o.stop(t + dur + 0.3);
   }
 
-  // ------------------------------------------------------------------ sequencing
+  // Sequencing
   function scheduleClassic(m, s, t) {
     var bar = Math.floor(s / 16) % 4, i = s % 16, chord = m.chords[bar], sd = stepDur();
     if (i === 0) pad(t, chord, sd * 16, m.padLevel, m.padCut);
@@ -387,7 +379,7 @@
 
   function beat() { return (60 / ((mix().bpm || 96) * state.pace)).toFixed(3) + 's'; }
 
-  // ------------------------------------------------------------------ the Walkman
+  // The Walkman
   var RED = '#FF2626';
   var TAPES = {
     A: { label: 'Sunrise tape', face: '#f2f2f2', ink: RED,

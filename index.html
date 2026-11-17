@@ -64,7 +64,7 @@
 </head>
 <body>
 
-<!-- Skip link for keyboard / screen reader users -->
+<!-- Skip link -->
 <a href="#main" class="skip-link">Skip to main content</a>
 
 <div class="launch" id="launch" role="region" aria-label="TECHMINES introduction">
@@ -110,7 +110,7 @@
       <li><a href="#contact" class="nav-cta">Let's talk</a></li>
     </ul>
 
-    <!-- Accessible mobile menu button -->
+    <!-- Mobile menu button -->
     <button type="button" class="icon-btn nav-burger" id="nav-burger" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
       <span></span>
     </button>
@@ -125,7 +125,7 @@
 
 <main id="main">
 
-<!-- ================= INTRO ================= -->
+<!-- Intro -->
 <section id="top">
   <div class="wrap hero">
     <div class="hero-text">
@@ -181,7 +181,7 @@
   </button>
 </div>
 
-<!-- ================= ABOUT ================= -->
+<!-- About -->
 <section id="about">
   <div class="wrap split">
     <p class="section-label reveal"><span>01</span>About me</p>
@@ -214,7 +214,7 @@
   </div>
 </section>
 
-<!-- ================= PROJECTS ================= -->
+<!-- Projects -->
 <section id="projects">
   <div class="wrap">
     <div class="section-head">
@@ -414,7 +414,7 @@
   </div>
 </section>
 
-<!-- ================= EXPERIENCE ================= -->
+<!-- Experience -->
 <section id="experience">
   <div class="wrap">
     <div class="section-head">
@@ -518,7 +518,7 @@
   </div>
 </section>
 
-<!-- ================= EDUCATION (anchor target for navigation) ================= -->
+<!-- Education -->
 <section id="education" class="education-section">
   <div class="wrap">
     <div class="section-head">
@@ -554,7 +554,7 @@
   </div>
 </section>
 
-<!-- ================= SKILLS ================= -->
+<!-- Skills -->
 <section id="skills">
   <div class="wrap">
     <div class="section-head">
@@ -615,7 +615,7 @@
   </div>
 </section>
 
-<!-- ================= RIGHT NOW ================= -->
+<!-- Right now -->
 <section id="now" class="now-section" aria-labelledby="now-heading">
   <div class="wrap now">
     <div class="now-intro reveal">
@@ -635,7 +635,7 @@
 </section>
 
 
-<!-- ================= CONTACT ================= -->
+<!-- Contact -->
 <section id="contact" class="spot">
   <div class="wrap contact">
     <div class="reveal">
@@ -726,7 +726,7 @@
   var root = document.documentElement;
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ── Fail-safe: if the IntersectionObserver fails or never fires, make content visible ──
+  // Fail-safe: if the IntersectionObserver fails or never fires, make content visible
   window.addEventListener('load', function () {
     setTimeout(function () {
       document.querySelectorAll('.reveal:not(.visible)').forEach(function (el) {
@@ -735,7 +735,7 @@
     }, 3000);
   });
 
-  // ── Fade things in as they scroll into view ──
+  // Fade things in as they scroll into view
   if ('IntersectionObserver' in window) {
     var revealer = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
@@ -746,11 +746,11 @@
     }, { threshold: 0.08 });
     document.querySelectorAll('.reveal').forEach(function (el) { revealer.observe(el); });
   } else {
-    // No IntersectionObserver – show everything immediately
+    // No IntersectionObserver: show everything
     document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
   }
 
-  // ── Highlight the nav link for the section on screen ──
+  // Highlight the nav link for the section on screen
   // The intro (#top) has no nav link, so reaching it clears the highlight.
   var links = Array.from(document.querySelectorAll('.nav-links a'));
   if ('IntersectionObserver' in window) {
@@ -763,7 +763,7 @@
     document.querySelectorAll('main section[id]').forEach(function (s) { spy.observe(s); });
   }
 
-  // ── Jumping to a section shows its content straight away ──
+  // Jumping to a section shows its content straight away
   // Without this, a jump lands on cards that are still waiting to fade in.
   function revealUpTo(target) {
     if (!target) return;
@@ -779,7 +779,7 @@
   });
   if (location.hash) revealUpTo(document.querySelector(location.hash));
 
-  // ── A glint on the logo's glass follows the pointer ──
+  // A glint on the logo's glass follows the pointer
   var logoCase = document.querySelector('.logo-case');
   if (logoCase && !calm && window.matchMedia('(hover: hover)').matches) {
     var heroLogo = document.getElementById('hero-logo');
@@ -792,7 +792,7 @@
     heroLogo.addEventListener('pointerleave', function () { logoCase.classList.remove('is-tilting'); });
   }
 
-  // ── Mobile menu: proper button with aria-expanded ──
+  // Mobile menu
   var burger = document.getElementById('nav-burger');
   var navLinks = document.getElementById('nav-links');
 
@@ -818,7 +818,7 @@
     }
   });
 
-  // ── On scroll: fill the progress bar and the timeline, and show the back-to-top button ──
+  // On scroll: fill the progress bar and the timeline, and show the back-to-top button
   var header = document.getElementById('site-header');
   var bar = document.getElementById('scroll-bar');
   var backdrop = document.getElementById('backdrop');
@@ -845,7 +845,7 @@
   window.addEventListener('resize', onScroll);
   onScroll();
 
-  // ── A soft light that follows the pointer across cards ──
+  // A soft light that follows the pointer across cards
   document.querySelectorAll('.spot').forEach(function (card) {
     card.addEventListener('pointermove', function (e) {
       var box = card.getBoundingClientRect();
@@ -854,7 +854,7 @@
     });
   });
 
-  // ── Light / dark switch (remembers the choice, announces correctly) ──
+  // Light / dark switch (remembers the choice, announces correctly)
   var themeBtn = document.getElementById('theme-toggle');
   function updateThemeLabel() {
     var isLight = root.classList.contains('is-light');
@@ -892,7 +892,7 @@
     }, { passive: true });
   }
 
-  // ── Tape pause/play button ──
+  // Tape pause/play button
   var tapeBtn = document.getElementById('tape-pause');
   var tapeTrack = document.querySelector('.tape-track');
   if (tapeBtn && tapeTrack) {
@@ -904,7 +904,7 @@
     });
   }
 
-  // ── Local time in Manipal for the "Right now" board ──
+  // Local time in Manipal for the "Right now" board
   var nowTime = document.getElementById('now-time');
   if (nowTime) {
     var fmt = new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: false });
@@ -913,7 +913,7 @@
     setInterval(tickClock, 20000);
   }
 
-  // ── Copy email button (confirms success before showing 'Copied') ──
+  // Copy email button (confirms success before showing 'Copied')
   var copyBtn = document.getElementById('copy-email');
   if (copyBtn) {
     copyBtn.addEventListener('click', function () {
@@ -964,7 +964,7 @@
     document.body.removeChild(ta);
   }
 
-  // ── Open all details before printing, restore disclosure states afterward ──
+  // Open all details before printing, restore disclosure states afterward
   window.addEventListener('beforeprint', function () {
     document.querySelectorAll('details').forEach(function (d) {
       d.setAttribute('data-was-open', d.open ? 'true' : 'false');

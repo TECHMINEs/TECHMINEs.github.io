@@ -1,14 +1,6 @@
-/* TECHMINES contact handset.
-   A telephone handset hangs on a coiled cord from a small carriage on a rail along the top of
-   the contact section. The carriage slides along the rail to follow the pointer, the handset
-   reaches toward it, turns to face it and starts ringing as it gets close, harder the nearer
-   it is. Reach the email and the call connects. You can grab the handset, swing it and throw it.
-
-   The rail only covers space that is free: it never sits over the text or the links, and it
-   stays out of the column the Walkman uses, moving aside when the Walkman opens or is carried
-   to the other side. The handset is drawn in 3D by phone3d.js (three.js, loaded just before the
-   section comes into view); the flat drawing below is the fallback when 3D is not available.
-   Decorative only: the section works the same without it. */
+/* Contact handset: hangs on a coiled cord from a carriage on a rail, follows the pointer,
+   rings as it gets close and connects on the email. Placement keeps it clear of the text
+   and the Walkman. phone3d.js draws it in 3D; the SVG below is the fallback. */
 (function () {
   'use strict';
 
@@ -19,7 +11,7 @@
   var wrap = sec.querySelector('.contact');
   var mail = sec.querySelector('.contact-email'), copyBtn = sec.querySelector('#copy-email');
 
-  // ------------------------------------------------------------------ the drawing
+  // The drawing
   // Handset in its own units: the cord enters at (8, -13), the body runs to y = 201, the
   // ear and mouth cups face +x. Flipping x turns it to face the other way.
   function ridges(flip) {
@@ -105,7 +97,7 @@
   var cordP = $('.ph-cord'), cordH = $('.ph-cord-hi'), lbl = $('.ph-lbl'), say = $('.ph-say'), dot = $('.ph-dot');
   hit.setAttribute('data-cursor', 'drag');
 
-  // ------------------------------------------------------------------ placement
+  // Placement
   var ATTACH = { x: 8, y: -13 }, COM = { x: 14, y: 101 }, HS_H = 240, HALF = 60;
   var BASE = document.currentScript ? document.currentScript.src : location.href;
   var gl = null;
@@ -217,7 +209,7 @@
     stopB.setAttribute('x', (b - 1).toFixed(1)); stopB.setAttribute('y', y - 6.5);
   }
 
-  // ------------------------------------------------------------------ physics (section pixels, 60 steps a second)
+  // Physics (section pixels, 60 steps a second)
   var pts = [], carX = 0, carV = 0, grab = null, face = -1, faceGoal = -1, engage = 0;
   function seed(x, swing) {
     carX = x; carV = 0; pts = [];
@@ -300,7 +292,7 @@
     return { near: near, px: px, py: py };
   }
 
-  // ------------------------------------------------------------------ drawing each frame
+  // Drawing each frame
   var ringAmt = 0, said = '', lastSx = 0;
   function render(now, st) {
     var n = pts.length, end = pts[n - 1], top = pts[n - 2], t = now / 1000;
@@ -357,7 +349,7 @@
     dot.style.opacity = ringAmt > 0.2 ? (burst ? 1 : 0.25) : 1;
   }
 
-  // ------------------------------------------------------------------ loop
+  // Loop
   var running = false, visible = false, acc = 0, last = 0, quiet = 0;
   function frame(now) {
     if (!visible || !shown) { running = false; return; }
@@ -375,7 +367,7 @@
   }
   function wake() { if (!running && visible && shown && pts.length) { running = true; last = performance.now(); requestAnimationFrame(frame); } }
 
-  // ------------------------------------------------------------------ input
+  // Input
   window.addEventListener('pointermove', function (e) {
     if (e.pointerType === 'touch' && !grab) return;
     P.x = e.clientX; P.y = e.clientY; P.on = true;
@@ -424,7 +416,7 @@
     wake();
   });
 
-  // ------------------------------------------------------------------ the 3D handset
+  // The 3D handset
   // three.js loads a little before the section comes into view; until then (or if WebGL is
   // missing) the flat drawing above is shown instead.
   var glTried = false;
@@ -453,7 +445,7 @@
   window.addEventListener('load', glWatch);
   glWatch();
 
-  // ------------------------------------------------------------------ start and keep placed
+  // Start and keep placed
   var replan = 0;
   function later(ms) { clearTimeout(replan); replan = setTimeout(function () { plan(); wake(); }, ms); }
   if ('IntersectionObserver' in window) {
