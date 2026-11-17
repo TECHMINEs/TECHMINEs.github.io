@@ -28,11 +28,16 @@
   // each corner has a position and a velocity, for the springy snap
   var cs = corners.map(function () { return { x: -100, y: -100, vx: 0, vy: 0 }; });
 
+  var last = 0;
   function frame(now) {
     raf = 0;
     var t = (now - t0) / 1000;
-    aim.x += calm ? mouse.x - aim.x : (mouse.x - aim.x) * 0.3;
-    aim.y += calm ? mouse.y - aim.y : (mouse.y - aim.y) * 0.3;
+    // Real elapsed time drives the motion, so it feels the same on 60 Hz and 120 Hz screens
+    var dt = Math.min(0.034, last ? (now - last) / 1000 : 0.016);
+    last = now;
+    var follow = calm ? 1 : 1 - Math.exp(-dt * 26);
+    aim.x += (mouse.x - aim.x) * follow;
+    aim.y += (mouse.y - aim.y) * follow;
     dot.style.transform = 'translate3d(' + mouse.x + 'px,' + mouse.y + 'px,0)';
 
     // Where each corner wants to be: around the hovered element, or framing the pointer
@@ -49,12 +54,15 @@
       var gx = goals[i][0], gy = goals[i][1];
       if (calm) { c.x = gx; c.y = gy; }
       else {
-        // a little overshoot when snapping, like a lens settling
-        c.vx = (c.vx + (gx - c.x) * 0.22) * 0.68;
-        c.vy = (c.vy + (gy - c.y) * 0.22) * 0.68;
-        c.x += c.vx; c.y += c.vy;
+        // a damped spring, taken in two half-steps: quick to arrive, with one soft overshoot
+        for (var s = 0; s < 2; s++) {
+          var h = dt / 2;
+          c.vx += ((gx - c.x) * 330 - c.vx * 31) * h;
+          c.vy += ((gy - c.y) * 330 - c.vy * 31) * h;
+          c.x += c.vx * h; c.y += c.vy * h;
+        }
       }
-      corners[i].style.transform = 'translate3d(' + c.x + 'px,' + c.y + 'px,0)';
+      corners[i].style.transform = 'translate3d(' + c.x.toFixed(2) + 'px,' + c.y.toFixed(2) + 'px,0)';
     });
 
     raf = requestAnimationFrame(frame);
@@ -78,13 +86,13 @@
     }
     mouse.x = e.clientX; mouse.y = e.clientY;
     root.classList.remove('is-hidden');
-    locate(mouse.x, mouse.y);
+    if (!root.classList.contains('is-press')) locate(mouse.x, mouse.y);   // keep hold of what is being dragged
     kick();
   }, { passive: true });
   window.addEventListener('scroll', function () { locate(mouse.x, mouse.y); }, { passive: true });
   window.addEventListener('pointerdown', function () { root.classList.add('is-press'); });
-  window.addEventListener('pointerup', function () { root.classList.remove('is-press'); });
+  ['pointerup', 'pointercancel'].forEach(function (ev) { window.addEventListener(ev, function () { root.classList.remove('is-press'); locate(mouse.x, mouse.y); }); });
   html.addEventListener('pointerleave', function () { root.classList.add('is-hidden'); });
   window.addEventListener('blur', function () { root.classList.add('is-hidden'); });
-  document.addEventListener('visibilitychange', function () { if (document.hidden) { cancelAnimationFrame(raf); raf = 0; } else kick(); });
+  document.addEventListener('visibilitychange', function () { if (document.hidden) { cancelAnimationFrame(raf); raf = 0; last = 0; } else kick(); });
 })();

@@ -17,6 +17,7 @@
    13. Walkman
    14. Circuit backdrop
    15. Custom cursor
+   16. Logo toy
    ===================================================================== */
 
 
@@ -63,6 +64,9 @@
   --font-body:    'IBM Plex Sans', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', ui-monospace, Menlo, monospace;
   --font-signature: 'Caveat', cursive, sans-serif;
+
+  /* Width of the folded Walkman. The intro's logo uses it to stay clear of that corner. */
+  --wm-mini: clamp(116px, 9.4vw, 156px);
 
   --wrap:   1160px;
   --head-h: 76px;
@@ -2570,12 +2574,16 @@ body.workbench-open { overflow:hidden; }
    The drawing is one SVG (see walkman.js), so sizes below are in its own units. */
 .wm {
   position: fixed;
-  left: 20px;
+  right: 20px;
   bottom: 20px;
+  transition: transform 0.5s cubic-bezier(0.2, 1.25, 0.35, 1);
   z-index: 240;
   font-family: var(--font-mono);
   --beat: 0.6s;
   --spin: 2.6s;
+  /* sizes follow the screen: larger on a big desktop, and never taller than the window */
+  --mini: var(--wm-mini);
+  --deck: max(220px, min(clamp(300px, 25vw, 372px), calc((100vh - 120px) * 0.72)));
 }
 
 .wm-art { display: block; width: 100%; height: auto; overflow: visible; }
@@ -2583,12 +2591,14 @@ body.workbench-open { overflow:hidden; }
 /* ---- folded: the mini Walkman ---- */
 .wm-mini {
   display: block;
-  width: 84px;
+  position: relative;
+  width: var(--mini);
   padding: 0;
   border: 0;
   background: none;
   cursor: pointer;
-  transform-origin: bottom left;
+  touch-action: pan-y;
+  transform-origin: bottom right;
   filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.65));
   transition: transform 0.25s var(--ease), filter 0.25s ease;
 }
@@ -2601,10 +2611,10 @@ body.workbench-open { overflow:hidden; }
 /* ---- opened: the deck grows out of the same corner ---- */
 .wm-deck {
   position: absolute;
-  left: 0;
+  right: 0;
   bottom: 0;
-  width: 300px;
-  transform-origin: bottom left;
+  width: var(--deck);
+  transform-origin: bottom right;
   filter: drop-shadow(0 26px 40px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.25));
   animation: wm-open 0.34s var(--ease) both;
 }
@@ -2702,30 +2712,87 @@ body.workbench-open { overflow:hidden; }
 .wm-mute:active { transform: scale(0.9); }
 .wm.is-muted .wm-mute { transform: scale(0.9); filter: brightness(0.5); }
 
-@keyframes wm-open { from { transform: scale(0.24); opacity: 0.5; } to { transform: scale(1); opacity: 1; } }
-@keyframes wm-close { from { transform: scale(1); opacity: 1; } to { transform: scale(0.24); opacity: 0.5; } }
+@keyframes wm-open { from { transform: scale(0.38); opacity: 0.5; } to { transform: scale(1); opacity: 1; } }
+@keyframes wm-close { from { transform: scale(1); opacity: 1; } to { transform: scale(0.38); opacity: 0.5; } }
 @keyframes wm-spin { to { transform: rotate(360deg); } }
 @keyframes wm-bob { from { transform: translateY(0); } to { transform: translateY(-2px); } }
 @keyframes wm-blink { from { opacity: 0.45; } to { opacity: 1; } }
 
 .wm.is-calm *, .wm.is-calm .wm-deck { animation: none !important; transition: none !important; }
 
-/* Keep the open deck clear of the left-aligned hero actions on laptops. */
-@media (min-width: 761px) {
-  .wm { left: auto; right: 20px; }
-  .wm-mini, .wm-deck { transform-origin: bottom right; }
-  .wm-deck { left: auto; right: 0; }
+/* ---- the tape rack: loose cassettes beside the open deck ---- */
+.wm-rack { position: absolute; right: calc(100% + 16px); bottom: 26px; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.wm.is-left .wm-rack { left: calc(100% + 16px); right: auto; align-items: flex-start; }
+.wm-cass { position: relative; display: block; width: calc(var(--deck) * 0.37); padding: 0; border: 0; background: none; cursor: grab; touch-action: none; transform: rotate(-4deg); transition: transform 0.35s cubic-bezier(0.2, 1.3, 0.4, 1), filter 0.2s ease; }
+.wm-cass:last-of-type { transform: rotate(3deg); }
+.wm-cass svg { display: block; width: 100%; height: auto; }
+.wm-cass:hover { transform: translateY(-3px); filter: drop-shadow(0 0 8px rgba(255, 38, 38, 0.5)); }
+.wm-cass:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+.wm-cass.is-held { z-index: 3; cursor: grabbing; transition: none; }
+.wm[data-mix="A"] .wm-cass[data-mix="A"],
+.wm[data-mix="B"] .wm-cass[data-mix="B"],
+.wm[data-mix="C"] .wm-cass[data-mix="C"] { display: none; }
+.wm-rack-note { max-width: calc(var(--deck) * 0.37); font: 500 10.5px/1.35 var(--font-mono); letter-spacing: 0.04em; color: var(--text); opacity: 0.75; text-align: right; }
+.wm.is-left .wm-rack-note { text-align: left; }
+/* the door lights up while a tape is in your hand, and turns white when you can let go */
+.wm.is-loading .wm-door-line { stroke: var(--red); stroke-width: 1.2; }
+.wm.is-over .wm-door-line { stroke: #fff; stroke-width: 1.6; }
+
+/* The Walkman starts on the right and can be carried to the other side: drag it and it
+   settles in the nearer corner (walkman.js remembers which). */
+.wm.is-left { left: 20px; right: auto; }
+.wm.is-left .wm-mini, .wm.is-left .wm-deck { transform-origin: bottom left; }
+.wm.is-left .wm-deck { left: 0; right: auto; }
+.wm.is-carried { transition: none; }
+.wm.is-carried .wm-mini { cursor: grabbing; }
+.wm.is-calm { transition: none; }
+
+/* A soft red pool of light under the folded Walkman */
+.wm-mini::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -9px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 38, 38, 0.5), transparent);
+  filter: blur(6px);
+  z-index: -1;
 }
+
+/* A small note that points at the Walkman until it has been opened once */
+.wm-hint {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 12px);
+  padding: 6px 10px;
+  border: 1px solid var(--red);
+  background: var(--bg);
+  color: var(--text);
+  font: 500 11px/1 var(--font-mono);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: wm-hint 1.8s ease-in-out infinite alternate;
+}
+.wm-hint::after { content: ""; position: absolute; top: 100%; right: 30px; border: 5px solid transparent; border-top-color: var(--red); }
+.wm.is-left .wm-hint { left: 0; right: auto; }
+.wm.is-left .wm-hint::after { left: 30px; right: auto; }
+.wm.is-seen .wm-hint, .wm.is-open .wm-hint, .wm.is-playing .wm-hint, .wm.is-carried .wm-hint { display: none; }
+@keyframes wm-hint { from { transform: translateY(0); } to { transform: translateY(-4px); } }
 
 @media (max-width: 760px) {
-  .wm { left: 12px; bottom: 12px; }
-  .wm-mini { width: 64px; }
-  .wm-deck { width: min(280px, calc(100vw - 24px)); }
+  .wm { right: 12px; bottom: 12px; }
+  .wm.is-left { left: 12px; }
+  :root { --wm-mini: 78px; }
+  .wm { --deck: min(280px, calc(100vw - 24px)); }
+  .wm-rack, .wm.is-left .wm-rack { left: auto; right: 0; bottom: calc(100% + 44px); flex-direction: row; align-items: flex-end; width: auto; }
+  .wm.is-left .wm-rack { left: 0; right: auto; }
+  .wm-cass { width: 92px; }
+  .wm-rack-note { display: none; }
 }
 
-@media (max-height: 560px) {
-  .wm-deck { width: 220px; }
-}
 
 body.workbench-open .wm { display: none; }
 
@@ -2777,3 +2844,175 @@ body.workbench-open .tmc { display: none; }
 .tmc.is-hover .tmc-dot::after { transform: scale(0); }
 
 @media print { .tmc { display: none !important; } }
+
+
+/* ---------- 16. Logo toy ---------- */
+
+/* The logo case in the intro hangs from the header on a thin trace. It can be dragged and
+   thrown, and it turns over to show the page's mainboard (see toy.js). Without the script
+   the case is simply static, exactly as before. */
+
+/* Placement on wide screens: the logo sits in the free space between the intro text and
+   the Walkman's corner, as large as fits up to 400px. toy.js measures where the text really
+   ends (--text-right); until then a safe guess from the grid is used. */
+@media (min-width: 961px) {
+  .hero-logo {
+    --gutter: max(1.25rem, (100vw - var(--wrap)) / 2);
+    --reach: max(0px, var(--wm-mini) + 44px - var(--gutter));
+    --free: calc(100vw - var(--gutter) - var(--reach) - 1.75rem - var(--text-right, calc(var(--gutter) + 0.6 * (100vw - 2 * var(--gutter) - clamp(2rem, 5vw, 4.5rem)))));
+    z-index: 2;
+    width: clamp(220px, var(--free), 400px);
+    margin-right: calc(var(--reach) + max(0px, (var(--free) - 400px) / 2));
+  }
+}
+
+.toy {
+  position: relative;
+  transform-origin: 50% 0;
+  perspective: 1100px;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.toy.is-held { cursor: grabbing; }
+.toy:focus-visible { outline: 2px solid var(--red); outline-offset: 10px; }
+
+.toy-in {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.9, 0.25, 1);
+  pointer-events: none;
+}
+.toy.is-flipped .toy-in { transform: rotateY(180deg); }
+
+/* Front and back are single flat faces; only the one facing you can be pointed at */
+.toy .logo-case { animation: none; transform-style: flat; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.toy .hero-badge { animation: none; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.toy-front, .toy-back, .toy .hero-badge { pointer-events: auto; }
+.toy .toy-back { position: absolute; inset: 0; display: flex; transform: rotateY(180deg); }
+.toy:not(.is-flipped) .toy-back,
+.toy.is-flipped .toy-front,
+.toy.is-flipped .hero-badge { pointer-events: none; }
+
+/* ---- the back: the page's mainboard ---- */
+.toy-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding: 1.25rem 1.4rem 1.1rem;
+  border: 1px solid var(--red);
+  background: var(--bg);
+  box-shadow: inset 0 0 0 4px var(--bg), inset 0 0 0 5px color-mix(in srgb, var(--text) 16%, transparent);
+  color: var(--text);
+  font-family: var(--font-mono);
+  cursor: pointer;
+}
+
+.toy-top { display: flex; align-items: center; justify-content: space-between; font: 700 0.74rem var(--font-display); letter-spacing: 0.2em; text-transform: uppercase; }
+.toy-top span { display: inline-flex; align-items: center; gap: 0.5rem; font: 0.62rem var(--font-mono); letter-spacing: 0.12em; color: color-mix(in srgb, var(--text) 60%, transparent); }
+.toy-top i { width: 7px; height: 7px; background: var(--red); animation: toy-led 2.4s ease-in-out infinite; }
+
+/* the small display stays black in both themes, like a real screen */
+.toy-oled { display: flex; align-items: flex-end; justify-content: space-between; gap: 0.6rem; margin: 0.8rem 0 0.45rem; padding: 0.75rem 0.9rem 0.7rem; border: 1px solid color-mix(in srgb, #ff2626 55%, #000); background: #000; }
+.toy-oled b { font: 700 1.85rem/1 var(--font-mono); letter-spacing: 0.03em; color: #ff3030; font-variant-numeric: tabular-nums; }
+.toy-oled span { font: 0.6rem/1.5 var(--font-mono); letter-spacing: 0.12em; color: #ececf0; text-align: right; white-space: pre-line; }
+
+.toy-row { display: flex; align-items: center; justify-content: space-between; padding: 0.55rem 0; border-bottom: 1px solid color-mix(in srgb, var(--text) 16%, transparent); line-height: 1.15; }
+.toy-row[hidden] { display: none; }
+.toy-row span { font: 700 1rem var(--font-display); letter-spacing: 0.1em; text-transform: uppercase; }
+.toy-row em { display: block; margin-top: 2px; font: normal 0.6rem/1.2 var(--font-mono); letter-spacing: 0.1em; color: color-mix(in srgb, var(--text) 60%, transparent); }
+
+/* a slide switch with cut corners, like the traces and the cursor */
+.toy-sw {
+  position: relative;
+  flex: none;
+  width: 60px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  background: color-mix(in srgb, var(--text) 38%, transparent);
+  clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.toy-sw::before {
+  content: "OFF";
+  position: absolute;
+  inset: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 7px;
+  background: var(--bg);
+  clip-path: polygon(6.5px 0, 100% 0, 100% calc(100% - 6.5px), calc(100% - 6.5px) 100%, 0 100%, 0 6.5px);
+  font: 700 8px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--text) 55%, transparent);
+}
+.toy-sw::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 24px;
+  height: 18px;
+  clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+  background:
+    linear-gradient(90deg, transparent 9px, rgba(0, 0, 0, 0.45) 9px 10px, transparent 10px 12px, rgba(0, 0, 0, 0.45) 12px 13px, transparent 13px 15px, rgba(0, 0, 0, 0.45) 15px 16px, transparent 16px),
+    var(--text);
+  transition: transform 0.24s cubic-bezier(0.3, 1.5, 0.5, 1), background-color 0.2s ease;
+}
+.toy-sw[aria-checked="true"] { background: var(--red); }
+.toy-sw[aria-checked="true"]::before { content: "ON"; justify-content: flex-start; color: var(--red); }
+.toy-sw[aria-checked="true"]::after { transform: translateX(28px); background-color: var(--red); }
+.toy-sw:hover::after { filter: brightness(1.15); }
+.toy-sw:focus-visible { outline: none; background: var(--text); }
+
+.toy-pads { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; margin-top: auto; padding-top: 0.7rem; }
+.toy-pads a { display: inline-flex; align-items: center; gap: 0.45rem; color: var(--text); text-decoration: none; font: 700 0.8rem var(--font-display); letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s ease; }
+.toy-pads a::before { content: ""; width: 9px; height: 9px; border: 1px solid var(--red); background: radial-gradient(circle, var(--red) 0 2px, transparent 2.5px); }
+.toy-pads a:hover { color: var(--red); }
+.toy-pads a:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+
+.toy-hint { margin: 1.1rem 0 0; text-align: center; font: 0.68rem var(--font-mono); letter-spacing: 0.1em; color: var(--muted); opacity: 0.85; transition: opacity 0.4s ease; }
+.toy-hint.is-gone { opacity: 0; }
+
+/* ---- the trace that feeds the logo: a quiet line, a soft glow, and a pulse of light ---- */
+.toy-cable { position: absolute; left: 0; top: 0; z-index: 1; width: 100%; height: 100%; overflow: visible; pointer-events: none; opacity: 0; transition: opacity 0.6s ease; }
+.toy-cable.is-on { opacity: 1; }
+.toy-cable path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.tc-glow { stroke: var(--red); stroke-width: 7; opacity: 0.1; }
+.tc-base { stroke: var(--red); stroke-width: 1.3; opacity: 0.6; }
+.tc-pulse { stroke: #ff9a9a; stroke-width: 2.2; stroke-dasharray: 10 100; stroke-dashoffset: 10; filter: drop-shadow(0 0 5px #ff2626); animation: toy-pulse 2.8s cubic-bezier(0.45, 0, 0.3, 1) infinite; }
+.toy-cable rect { fill: var(--bg); stroke: var(--red); stroke-width: 1.2; }
+.toy-cable rect.tc-dot { fill: var(--red); stroke: none; }
+
+@keyframes toy-led { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+@keyframes toy-pulse {
+  0% { stroke-dashoffset: 10; opacity: 0; }
+  6% { opacity: 1; }
+  62% { stroke-dashoffset: -100; opacity: 1; }
+  63%, 100% { stroke-dashoffset: -100; opacity: 0; }
+}
+
+/* When the case is small (narrow laptops, phones) the back tightens up; toy.js sets these */
+.toy.is-compact .toy-panel { padding: 0.95rem 1rem 0.8rem; }
+.toy.is-compact .toy-oled { margin: 0.55rem 0 0.25rem; padding: 0.55rem 0.7rem 0.5rem; }
+.toy.is-compact .toy-oled b { font-size: 1.45rem; }
+.toy.is-compact .toy-row { padding: 0.4rem 0; }
+.toy.is-compact .toy-row span { font-size: 0.88rem; }
+.toy.is-compact .toy-pads { gap: 0.3rem 0.8rem; padding-top: 0.5rem; }
+.toy.is-compact .toy-pads a { font-size: 0.7rem; }
+.toy.is-tiny .toy-panel { zoom: 0.8; }
+.toy.is-tiny .toy-row em { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .toy-in { transition: none; }
+  .tc-pulse, .toy-top i { animation: none; }
+  .tc-pulse { opacity: 0; }
+}
+
+@media print { .toy-cable, .toy-hint, .toy-back { display: none !important; } }

@@ -120,6 +120,7 @@
 
   // Fades a layer inside the text areas, leaving the given fraction of it
   function fadeText(ctx, keep) {
+    if (!mask.width || !mask.height) return;   // nothing to fade while the page has no size
     ctx.save();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.globalCompositeOperation = 'destination-out';

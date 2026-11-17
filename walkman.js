@@ -2,7 +2,9 @@
    A small cassette player parked in the corner of the page. Click it and it grows into
    the full deck: the play key starts and pauses the music, each of the three tapes is a
    different mix, the two knobs set pace and tone, the wheel on the side sets volume and
-   the red button mutes. Sound only ever starts after a click.
+   the red button mutes. Spare tapes sit in a rack beside the open deck: drag one into the door to load it.
+   Drag the small Walkman to carry it to the other side of the page.
+   Sound only ever starts after a click.
 
    The sunrise tape is the site's original studio track (pace changes speed while keeping
    pitch). The midnight and grid tapes are composed live in the browser with the Web Audio
@@ -490,12 +492,27 @@
     '</svg>';
   }
 
+  // A loose cassette for the rack beside the deck
+  function cassette(k) {
+    var T = TAPES[k], reel = function (cx) { return '<circle cx="' + cx + '" cy="60.6" r="5.1" fill="#ececec" stroke="#8a8a8a" stroke-width=".5"/><circle cx="' + cx + '" cy="60.6" r="1.6" fill="#2a2a2a"/>'; };
+    return '<svg viewBox="24 29 74 49" aria-hidden="true">' +
+      '<rect x="26" y="31" width="70" height="44.8" rx="3.5" fill="#1a1a1a" stroke="#4a4a4a" stroke-width=".7"/>' +
+      '<rect x="29.5" y="34.5" width="63" height="15.2" rx="1.4" fill="' + T.face + '" stroke="rgba(255,255,255,.16)" stroke-width=".4"/>' +
+      '<rect x="29.5" y="48.3" width="63" height="1.4" fill="' + RED + '"/>' + symbol(k, 55.2, 35.6, 0.5, T.ink) +
+      '<rect x="40" y="53.1" width="42" height="15" rx="2.8" fill="#080808" stroke="#2c2c2c" stroke-width=".5"/>' + reel(47.7) + reel(74.3) +
+      '<circle cx="31.8" cy="71.1" r="1.2" fill="#333"/><circle cx="90.2" cy="71.1" r="1.2" fill="#333"/></svg>';
+  }
+
   var root = document.createElement('div');
   root.className = 'wm';
   root.innerHTML =
     '<button type="button" class="wm-mini" aria-expanded="false" aria-controls="wm-deck" aria-label="Open the Walkman">' + art('wmm-', false) + '</button>' +
+    '<span class="wm-hint" aria-hidden="true">Press play</span>' +
     '<div class="wm-deck" id="wm-deck" role="region" aria-label="TECHMINES Walkman" hidden>' + art('wmd-', true) +
       '<button type="button" class="wm-fold"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>Minimise</button>' +
+      '<div class="wm-rack" role="group" aria-label="Tape rack">' + ORDER.map(function (k) {
+        return '<button type="button" class="wm-cass" data-mix="' + k + '" aria-label="Load the ' + TAPES[k].label.toLowerCase() + '">' + cassette(k) + '</button>';
+      }).join('') + '<span class="wm-rack-note" aria-hidden="true">Drag a tape into the door</span></div>' +
     '</div>';
   document.body.appendChild(root);
 
@@ -568,7 +585,7 @@
     clearTimeout(closing);
     deck.classList.remove('is-closing');
     deck.hidden = false;
-    root.classList.add('is-open');
+    root.classList.add('is-open', 'is-seen'); store.set('seen', true);
     mini.setAttribute('aria-expanded', 'true');
     render();
     playKey.focus();
@@ -593,7 +610,40 @@
     el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(e); } });
   }
 
-  mini.addEventListener('click', function () { if (deck.hidden) openDeck(); else closeDeck(false); });
+  mini.addEventListener('click', function () { if (carried) { carried = false; return; } if (deck.hidden) openDeck(); else closeDeck(false); });
+
+  // The Walkman can be carried to either side of the page: drag it and it settles in the nearer corner
+  var carry = null, carried = false;
+  function setSide(s) { root.classList.toggle('is-left', s === 'left'); }
+  var savedSide = store.get('side', null);
+  setSide(savedSide === 'left' || savedSide === 'right' ? savedSide : (window.innerWidth > 760 ? 'right' : 'left'));
+  if (store.get('seen', false)) root.classList.add('is-seen');
+  mini.addEventListener('pointerdown', function (e) { if (!e.button) carry = { x: e.clientX, y: e.clientY, id: e.pointerId, on: false }; });
+  window.addEventListener('pointermove', function (e) {
+    if (!carry) return;
+    var dx = e.clientX - carry.x, dy = e.clientY - carry.y;
+    if (!carry.on) {
+      if (Math.hypot(dx, dy) < 8) return;
+      carry.on = true; root.classList.add('is-carried');
+      try { mini.setPointerCapture(carry.id); } catch (err) { /* optional */ }
+    }
+    root.style.transform = 'translate(' + dx + 'px,' + (Math.min(0, dy) * 0.35) + 'px) rotate(' + clamp(dx * 0.02, -6, 6) + 'deg)';
+  });
+  ['pointerup', 'pointercancel'].forEach(function (ev) { window.addEventListener(ev, function () {
+    if (!carry) return;
+    var was = carry.on; carry = null;
+    if (!was) return;
+    carried = true; setTimeout(function () { carried = false; }, 120);
+    // glide from where it was let go to its new corner
+    var before = root.getBoundingClientRect();
+    var next = before.left + before.width / 2 < window.innerWidth / 2 ? 'left' : 'right';
+    root.style.transform = ''; setSide(next); store.set('side', next);
+    var after = root.getBoundingClientRect();
+    root.style.transform = 'translate(' + (before.left - after.left) + 'px,' + (before.top - after.top) + 'px)';
+    root.getBoundingClientRect();
+    root.classList.remove('is-carried');
+    root.style.transform = '';
+  }); });
   fold.addEventListener('click', function () { closeDeck(true); });
   deck.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.preventDefault(); closeDeck(true); } });
   document.addEventListener('pointerdown', function (e) { if (!deck.hidden && !root.contains(e.target)) closeDeck(false); });
@@ -603,6 +653,30 @@
   press(deck.querySelector('.wm-key--prev'), function () { skip(-1); });
   press(deck.querySelector('.wm-key--next'), function () { skip(1); });
   press(deck.querySelector('.wm-glass'), function () { skip(1); });
+
+  // Loose tapes: drag one onto the door to load it, or just click it. The tape that was
+  // playing pops back out into the rack.
+  var glass = deck.querySelector('.wm-glass'), held = null;
+  Array.from(deck.querySelectorAll('.wm-cass')).forEach(function (c) {
+    c.addEventListener('pointerdown', function (e) { if (e.button) return; held = { c: c, x: e.clientX, y: e.clientY, on: false }; c.setPointerCapture(e.pointerId); });
+    c.addEventListener('pointermove', function (e) {
+      if (!held || held.c !== c) return;
+      var dx = e.clientX - held.x, dy = e.clientY - held.y;
+      if (!held.on && Math.hypot(dx, dy) < 6) return;
+      held.on = true; c.classList.add('is-held'); root.classList.add('is-loading');
+      c.style.transform = 'translate(' + dx + 'px,' + dy + 'px) rotate(' + clamp(dx * 0.05, -10, 10) + 'deg) scale(1.08)';
+      var r = glass.getBoundingClientRect();
+      root.classList.toggle('is-over', e.clientX > r.left - 14 && e.clientX < r.right + 14 && e.clientY > r.top - 14 && e.clientY < r.bottom + 14);
+    });
+    ['pointerup', 'pointercancel'].forEach(function (ev) { c.addEventListener(ev, function () {
+      if (!held || held.c !== c) return;
+      var dropped = held.on && root.classList.contains('is-over');
+      c.dataset.dragged = held.on ? '1' : '';
+      held = null; c.classList.remove('is-held'); c.style.transform = ''; root.classList.remove('is-loading', 'is-over');
+      if (dropped) swapTo(c.dataset.mix);
+    }); });
+    c.addEventListener('click', function () { if (c.dataset.dragged) { c.dataset.dragged = ''; return; } swapTo(c.dataset.mix); });
+  });
   press(muteKey, function () {
     muted = !muted;
     if (ctx && state.playing) out.gain.setTargetAtTime(level(), ctx.currentTime, 0.05);

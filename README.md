@@ -15,7 +15,8 @@
 - **Five projects**, each with a live GitHub Pages demo and a link to the evidence behind its headline number: [ChainProof](https://github.com/TECHMINEs/ChainProof), [Relay](https://github.com/TECHMINEs/Relay), [DevPulse](https://github.com/TECHMINEs/DevPulse), [Nexora](https://github.com/TECHMINEs/Nexora) and [AutoLine](https://github.com/TECHMINEs/AutoLine).
 - **A project workbench** that opens any demo inside the page.
 - **A circuit-trace backdrop** drawn on a canvas, with travelling light pulses and contact pads that light up near the pointer. Behind text the same traces fade back, so everything stays readable.
-- **A Walkman** in the corner. Click it and it grows into the full deck: press play, swap between three tapes, turn the knobs for pace and tone, roll the side wheel for volume. The sunrise tape is a studio edit of "Arpent" by Kevin MacLeod (CC0, FreePD). The midnight and grid tapes are composed live in the browser with the Web Audio API.
+- **A logo you can play with.** The engine logo in the intro hangs from the header on a thin trace: drag it, throw it, and click it to turn it over. The back is the page's mainboard, with the time in India, switches for the theme, the music and the backdrop, and the contact links.
+- **A Walkman** in the corner. Click it and it grows into the full deck: press play, swap between three tapes, turn the knobs for pace and tone, roll the side wheel for volume. Spare tapes sit beside the open deck and can be dragged into the door, and the folded Walkman can be dragged to either side of the page. The sunrise tape is a studio edit of "Arpent" by Kevin MacLeod (CC0, FreePD). The midnight and grid tapes are composed live in the browser with the Web Audio API.
 - **A target-lock cursor** for mouse and trackpad users: four chamfered brackets that frame the pointer and snap around whatever can be clicked.
 - Dark and light themes, a skip link, keyboard support throughout, and reduced-motion support.
 
@@ -30,6 +31,7 @@ Plain HTML, CSS and JavaScript, with no framework and no build step. Fonts: Chak
 | `workbench.js` | The in-page demo viewer |
 | `backdrop.js` | The circuit-trace backdrop |
 | `walkman.js` | The Walkman player and its live-composed music |
+| `toy.js` | The swinging, flippable logo in the intro |
 | `cursor.js` | The target-lock cursor |
 | `audio/` | The studio track for the sunrise tape |
 | `404.html` | The page shown for missing links |
