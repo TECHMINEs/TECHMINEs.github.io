@@ -2,7 +2,7 @@
    A small cassette player parked in the corner of the page. Click it and it grows into
    the full deck: the play key starts and pauses the music, each of the three tapes is a
    different mix, the two knobs set pace and tone, the wheel on the side sets volume and
-   the red button mutes. Spare tapes sit in a rack beside the open deck: drag one into the door to load it.
+   the red button steps through presets of pace and tone for the loaded tape. Spare tapes sit in a rack beside the open deck: drag one into the door to load it.
    Drag the small Walkman to carry it to the other side of the page.
    Sound only ever starts after a click.
 
@@ -48,6 +48,13 @@
     }
   };
 
+  // Presets for the red button: a name, a pace and a tone for each tape
+  var PRESETS = {
+    A: [['Studio', 1, 0.85], ['Slow & warm', 0.85, 0.3], ['Lifted', 1.15, 1], ['Late drive', 0.92, 0.55]],
+    B: [['Late night', 1, 0.85], ['After hours', 0.85, 0.3], ['Rush hour', 1.2, 1], ['Low light', 0.92, 0.5]],
+    C: [['The grid', 1, 0.85], ['Slow burn', 0.82, 0.35], ['Overdrive', 1.25, 1], ['Night shift', 0.95, 0.55]]
+  };
+
   var state = {
     mix: MIXES[store.get('mix', 'A')] ? store.get('mix', 'A') : 'A',
     pace: clamp(store.get('pace', 1), 0.7, 1.4),
@@ -62,9 +69,8 @@
 
   function clamp(v, a, b) { v = Number(v); return isFinite(v) ? Math.min(b, Math.max(a, v)) : a; }
   function freq(m) { return 440 * Math.pow(2, (m - 69) / 12); }
-  var muted = false;
   function mix() { return MIXES[state.mix]; }
-  function level() { return muted ? 0 : state.volume * 0.85; }
+  function level() { return state.volume * 0.85; }
   function stepDur() { return 60 / ((mix().bpm || 100) * state.pace) / 4; }
   function toneHz() { return 700 * Math.pow(16000 / 700, state.tone); }
 
@@ -128,7 +134,28 @@
     var now = ctx.currentTime;
     delay.delayTime.setTargetAtTime(stepDur() * 3, now, 0.05);
     verbWet.gain.setTargetAtTime(mix().verb || 0.18, now, 0.2);
-    if (track) track.playbackRate = state.pace;
+    setTrackRate(false);
+  }
+
+  // The studio track is time-stretched by the browser. Changing its speed on every pixel of a
+  // knob drag makes Safari stall or go silent, so the speed moves in 5% steps and is applied
+  // once the knob settles (and at most a few times a second while it is turning).
+  var rateTimer = 0, rateAt = 0;
+  function trackRate() { return Math.round(state.pace * 20) / 20; }
+  function setTrackRate(now) {
+    if (!track) return;
+    var want = trackRate();
+    clearTimeout(rateTimer);
+    if (Math.abs(track.playbackRate - want) < 0.001) return;
+    var apply = function () {
+      if (!track) return;
+      rateAt = performance.now();
+      track.defaultPlaybackRate = want;
+      track.playbackRate = want;
+      if (state.playing && mix().type === 'track' && track.paused) track.play().catch(function () {});
+    };
+    if (now) apply();
+    else rateTimer = setTimeout(apply, performance.now() - rateAt > 400 ? 120 : 260);
   }
 
   // ------------------------------------------------------------------ instruments
@@ -306,7 +333,7 @@
   function startSources() {
     if (mix().type === 'track') {
       ensureTrack();
-      track.playbackRate = state.pace;
+      track.defaultPlaybackRate = trackRate(); track.playbackRate = trackRate();
       track.play().catch(function () { state.playing = false; render(); });
     } else {
       startSequencer();
@@ -483,7 +510,7 @@
       // counter and hotline (mute) button
       '<rect x="68" y="112" width="26" height="12" rx="1.8" fill="#0a0a0a" stroke="#3a3a3a" stroke-width=".5"/>' +
       '<text x="81" y="121.2" class="wm-counter">000</text><rect x="68" y="117.8" width="26" height=".4" fill="rgba(255,255,255,.12)"/>' +
-      '<g class="wm-mute"' + act('button', 'Mute', ' aria-pressed="false"') + '><circle cx="102.5" cy="118" r="4.8" fill="' + u('red') + '" stroke="#7a0a0e" stroke-width=".5"/><circle cx="101.3" cy="116.7" r="1.4" fill="rgba(255,255,255,.45)"/></g>' +
+      '<g class="wm-mute"' + act('button', 'Next preset') + '><circle cx="102.5" cy="118" r="4.8" fill="' + u('red') + '" stroke="#7a0a0e" stroke-width=".5"/><circle cx="101.3" cy="116.7" r="1.4" fill="rgba(255,255,255,.45)"/></g>' +
       knob('pace', 'Pace', 76, 141) + knob('tone', 'Tone', 100, 141) +
       // side volume wheel with its scale
       '<g class="wm-wheel" data-dial="volume"' + act('slider', 'Volume', ' aria-valuemin="0" aria-valuemax="100" aria-orientation="vertical"') + '>' +
@@ -522,10 +549,10 @@
   var playKey = deck.querySelector('.wm-key--play');
   var muteKey = deck.querySelector('.wm-mute');
   var tapeKeys = Array.from(deck.querySelectorAll('.wm-tape-key'));
-  var played = 0, lastTick = 0, needle = -42;
+  var played = 0, lastTick = 0, needle = -42, watchAt = 0, watchPos = -1;
 
   var DIALS = {
-    pace:   { min: 0.7, max: 1.4, def: 1,    text: function (v) { return mix().type === 'track' ? Math.round(v * 100) + '% pace' : Math.round(mix().bpm * v) + ' bpm'; } },
+    pace:   { min: 0.7, max: 1.4, def: 1,    text: function (v) { return mix().type === 'track' ? Math.round(v * 20) * 5 + '% pace' : Math.round(mix().bpm * v) + ' bpm'; } },
     volume: { min: 0,   max: 1,   def: 0.6,  text: function (v) { return Math.round(v * 100) + '% volume'; } },
     tone:   { min: 0,   max: 1,   def: 0.85, text: function (v) { return v < 0.34 ? 'Warm tone' : v < 0.67 ? 'Even tone' : 'Bright tone'; } }
   };
@@ -544,18 +571,17 @@
         if (mark) mark.setAttribute('y', (78.2 - pct * 36.6).toFixed(2));
       });
     });
-    each('.wm-readout', function (t) { t.textContent = DIALS[lastTouched].text(state[lastTouched]); });
+    var shown = performance.now() < presetUntil ? presetName : DIALS[lastTouched].text(state[lastTouched]);
+    each('.wm-readout', function (t) { t.textContent = shown; });
     root.style.setProperty('--spin', (2.6 / state.pace).toFixed(2) + 's');
     root.style.setProperty('--beat', beat());
   }
 
   function render() {
     root.classList.toggle('is-playing', state.playing);
-    root.classList.toggle('is-muted', muted);
     root.dataset.mix = state.mix;
     playKey.setAttribute('aria-pressed', String(state.playing));
     playKey.setAttribute('aria-label', state.playing ? 'Pause' : 'Play');
-    muteKey.setAttribute('aria-pressed', String(muted));
     mini.setAttribute('aria-label', (deck.hidden ? 'Open the Walkman' : 'Close the Walkman') + (state.playing ? ', music playing' : ''));
     tapeKeys.forEach(function (k) {
       var on = k.dataset.mix === state.mix;
@@ -677,10 +703,25 @@
     }); });
     c.addEventListener('click', function () { if (c.dataset.dragged) { c.dataset.dragged = ''; return; } swapTo(c.dataset.mix); });
   });
+  // The red button glides both knobs to the tape's next preset and names it on the display
+  var presetAt = {}, presetName = '', presetUntil = 0, glide = 0;
   press(muteKey, function () {
-    muted = !muted;
-    if (ctx && state.playing) out.gain.setTargetAtTime(level(), ctx.currentTime, 0.05);
-    render();
+    var list = PRESETS[state.mix] || PRESETS.A;
+    var i = presetAt[state.mix] = ((presetAt[state.mix] == null ? 0 : presetAt[state.mix]) + 1) % list.length;
+    var target = list[i], from = { pace: state.pace, tone: state.tone }, t0 = performance.now();
+    presetName = target[0]; presetUntil = t0 + 2600;
+    setTimeout(renderDials, 2650);
+    muteKey.setAttribute('aria-label', 'Next preset (now ' + target[0] + ')');
+    muteKey.classList.remove('is-hit'); void muteKey.getBoundingClientRect(); muteKey.classList.add('is-hit');
+    cancelAnimationFrame(glide);
+    (function slide(now) {
+      var k = calm ? 1 : Math.min(1, (now - t0) / 480), e = 1 - Math.pow(1 - k, 3);
+      setControl('pace', from.pace + (target[1] - from.pace) * e);
+      setControl('tone', from.tone + (target[2] - from.tone) * e);
+      if (k < 1) glide = requestAnimationFrame(slide);
+    })(t0);
+    // land exactly on the preset even if animation frames are paused (a background tab)
+    setTimeout(function () { if (presetName === target[0]) { cancelAnimationFrame(glide); setControl('pace', target[1]); setControl('tone', target[2]); } }, 560);
   });
   tapeKeys.forEach(function (k, idx) {
     press(k, function () { swapTo(k.dataset.mix); });
@@ -697,10 +738,8 @@
   Array.from(deck.querySelectorAll('[data-dial]')).forEach(function (el) {
     var name = el.dataset.dial, d = DIALS[name], span = d.max - d.min;
     function set(v) {
-      lastTouched = name;
-      if (name === 'volume' && muted) { muted = false; }
+      lastTouched = name; presetUntil = 0;
       setControl(name, clamp(v, d.min, d.max));
-      root.classList.toggle('is-muted', muted);
     }
     var startY = 0, startV = 0, dragging = false;
     el.addEventListener('pointerdown', function (e) { dragging = true; startY = e.clientY; startV = state[name]; el.setPointerCapture(e.pointerId); e.preventDefault(); el.focus(); });
@@ -723,7 +762,7 @@
   function frame(now) {
     raf = 0;
     var level = 0;
-    if (state.playing && analyser && !muted) {
+    if (state.playing && analyser) {
       if (!bins) bins = new Uint8Array(analyser.frequencyBinCount);
       analyser.getByteFrequencyData(bins);
       var sum = 0; for (var i = 0; i < 24; i++) sum += bins[i];
@@ -739,6 +778,14 @@
     needle += (goal - needle) * (goal > needle ? 0.35 : 0.08);
     setNeedle(needle);
     if (state.playing) {
+      // keep the studio track running: if the browser stalls it, nudge it back into play
+      if (track && mix().type === 'track' && now - watchAt > 900) {
+        if (track.paused || (track.currentTime === watchPos && track.readyState >= 2)) {
+          try { if (track.currentTime === watchPos) track.currentTime = track.currentTime + 0.01; } catch (e) {}
+          track.play().catch(function () {});
+        }
+        watchAt = now; watchPos = track.currentTime;
+      }
       if (lastTick) played += (now - lastTick) / 1000 * state.pace;
       lastTick = now;
       var count = String(Math.floor(played / 2) % 1000);

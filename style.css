@@ -194,6 +194,7 @@ ul, ol { list-style: none; }
 strong { color: var(--text); font-weight: 600; }
 
 ::selection { background: var(--red); color: var(--on-red); }
+#contact ::selection { background: #0b0b0b; color: #fff; }   /* red on red would be invisible */
 
 :focus-visible {
   outline: 3px solid var(--red);
@@ -1531,12 +1532,6 @@ h1 em {
   font-size: 0.78rem;
 }
 
-.btn--sm {
-  padding: 0.55rem 1.15rem;
-  font-size: 0.82rem;
-  letter-spacing: 0.05em;
-}
-
 /* The first project is the featured one: balanced 6-col span and filled with colour */
 .card--featured {
   grid-column: span 6;
@@ -1929,8 +1924,7 @@ h1 em {
   max-width: 100%;
 }
 
-.contact-email,
-.big-email {
+.contact-email {
   display: inline-block;
   font-family: var(--font-display);
   font-weight: 700;
@@ -1946,8 +1940,7 @@ h1 em {
   transition: text-underline-offset 0.2s ease;
 }
 
-.contact-email:hover,
-.big-email:hover { text-underline-offset: 0.36em; }
+.contact-email:hover { text-underline-offset: 0.36em; }
 
 /* Copy email button */
 .copy-email {
@@ -2400,7 +2393,6 @@ html:not(.js) .nav-burger { display: none !important; }
   /* Ensure cards and panels print without backdrop effects */
   .card,
   .skill-panel,
-  .education-sidebar,
   .edu-card {
     background: #fff;
     -webkit-backdrop-filter: none;
@@ -2452,8 +2444,7 @@ html:not(.js) .nav-burger { display: none !important; }
   #contact h2,
   #contact .contact-heading { color: #1a1a1a; }
 
-  .contact-email,
-  .big-email { color: #cc0000; }
+  .contact-email { color: #cc0000; }
 
   #contact .btn {
     border-color: #1a1a1a;
@@ -2651,7 +2642,7 @@ body.workbench-open { overflow:hidden; }
 .wm-readout { fill: #ff7a7a; }
 .wm-vu-tag { font-size: 3.2px; fill: #7d7d7d; }
 .wm-vu-glow { opacity: 0; transition: opacity 0.5s ease; }
-.wm.is-playing:not(.is-muted) .wm-vu-glow { opacity: 1; }
+.wm.is-playing .wm-vu-glow { opacity: 1; }
 .wm-mini .wm-text { display: none; }
 .wm-counter { font-size: 7px; font-weight: 600; fill: #f2f2f2; letter-spacing: 1.8px; font-variant-numeric: tabular-nums; }
 
@@ -2703,7 +2694,6 @@ body.workbench-open { overflow:hidden; }
 .wm-led { fill: #3a2020; stroke: #1a1a1a; stroke-width: 0.4; }
 .wm-led--power { fill: #f2f2f2; }
 .wm.is-playing .wm-led--play { fill: #ff3b3b; animation: wm-blink var(--beat) ease-in-out infinite alternate; }
-.wm.is-muted .wm-led--play { fill: #3a2020; animation: none; }
 
 /* knobs, wheel and the mute button */
 .wm-knob, .wm-wheel { cursor: ns-resize; touch-action: none; }
@@ -2712,7 +2702,8 @@ body.workbench-open { overflow:hidden; }
 .wm-knob:hover .wm-tick--major { stroke: #fff; }
 .wm-mute { transition: transform 0.12s ease, filter 0.2s ease; transform-box: fill-box; transform-origin: center; }
 .wm-mute:active { transform: scale(0.9); }
-.wm.is-muted .wm-mute { transform: scale(0.9); filter: brightness(0.5); }
+.wm-mute.is-hit { animation: wm-preset 0.45s ease-out; }
+@keyframes wm-preset { 0% { filter: brightness(1.8) drop-shadow(0 0 3px #ff4a4a); } 100% { filter: none; } }
 
 @keyframes wm-open { from { transform: scale(0.38); opacity: 0.5; } to { transform: scale(1); opacity: 1; } }
 @keyframes wm-close { from { transform: scale(1); opacity: 1; } to { transform: scale(0.38); opacity: 0.5; } }
@@ -2906,6 +2897,10 @@ body.workbench-open .tmc { display: none; }
 
 /* Front and back are single flat faces; only the one facing you can be pointed at */
 .toy .logo-case { animation: none; transform-style: flat; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+/* The face never tilts on its own: the whole case moves as one piece */
+.toy .logo-case.toy-front { transform: none; transition: none; }
+.toy img { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; pointer-events: none; }
+.toy.is-moving { will-change: transform; }
 .toy .hero-badge { animation: none; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .toy-front, .toy-back, .toy .hero-badge { pointer-events: auto; }
 .toy .toy-back { position: absolute; inset: 0; display: flex; transform: rotateY(180deg); }
@@ -3002,9 +2997,9 @@ body.workbench-open .tmc { display: none; }
 .toy-cable { position: absolute; left: 0; top: 0; z-index: 1; width: 100%; height: 100%; overflow: visible; pointer-events: none; opacity: 0; transition: opacity 0.6s ease; }
 .toy-cable.is-on { opacity: 1; }
 .toy-cable path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.tc-glow { stroke: var(--red); stroke-width: 7; opacity: 0.1; }
-.tc-base { stroke: var(--red); stroke-width: 1.3; opacity: 0.6; }
-.tc-pulse { stroke: #ff9a9a; stroke-width: 2.2; stroke-dasharray: 10 100; stroke-dashoffset: 10; filter: drop-shadow(0 0 5px #ff2626); animation: toy-pulse 2.8s cubic-bezier(0.45, 0, 0.3, 1) infinite; }
+.tc-glow { stroke: var(--red); stroke-width: 9; opacity: 0.12; }
+.tc-base { stroke: var(--red); stroke-width: 2.2; opacity: 0.72; }
+.tc-pulse { stroke: #ff9a9a; stroke-width: 3; stroke-dasharray: 10 100; stroke-dashoffset: 10; filter: drop-shadow(0 0 5px #ff2626); animation: toy-pulse 2.8s cubic-bezier(0.45, 0, 0.3, 1) infinite; }
 .toy-cable rect { fill: var(--bg); stroke: var(--red); stroke-width: 1.2; }
 .toy-cable rect.tc-dot { fill: var(--red); stroke: none; }
 
@@ -3190,3 +3185,10 @@ body.workbench-open .route { display: none; }
 .phone .ph-dot { fill: currentColor; opacity: 0.55; }
 .phone .is-live .ph-dot { opacity: 1; }
 @media print { .phone { display: none; } #contact.has-phone-room { padding-top: 1rem; } }
+
+/* The 3D handset (phone3d.js) draws into a canvas over the section; the flat drawing is the fallback */
+.phone-gl { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; }
+.phone.is-gl .ph-rail, .phone.is-gl .ph-cord, .phone.is-gl .ph-cord-hi, .phone.is-gl .ph-car, .phone.is-gl .ph-hs > :not(.ph-hit) { display: none; }
+.phone.is-gl .ph-all { filter: none; }
+.phone:not(.is-gl) .ph-ring3d { display: none; }
+@media print { .phone-gl { display: none; } }

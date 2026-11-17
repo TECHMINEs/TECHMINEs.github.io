@@ -38,8 +38,8 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&amp;family=Chakra+Petch:wght@500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=22">
 
 <script>
   // Pick the theme before the page paints, so there's no flash.
@@ -159,7 +159,7 @@
         <span class="case-corner case-corner--br" aria-hidden="true"></span>
         <div class="frame">
           <div class="frame-inner">
-            <img src="profile.jpg" alt="The TECHMINES logo: a red V12 engine" width="1200" height="1200" fetchpriority="high">
+            <img src="profile.jpg" alt="The TECHMINES logo: a red V12 engine" width="1200" height="1200" fetchpriority="high" draggable="false">
             <span class="frame-glint" aria-hidden="true"></span>
           </div>
         </div>
@@ -780,25 +780,17 @@
   });
   if (location.hash) revealUpTo(document.querySelector(location.hash));
 
-  // ── The logo case tilts gently towards the pointer ──
+  // ── A glint on the logo's glass follows the pointer ──
   var logoCase = document.querySelector('.logo-case');
   if (logoCase && !calm && window.matchMedia('(hover: hover)').matches) {
     var heroLogo = document.getElementById('hero-logo');
     heroLogo.addEventListener('pointermove', function (e) {
       var box = logoCase.getBoundingClientRect();
-      var x = (e.clientX - box.left) / box.width - 0.5;
-      var y = (e.clientY - box.top) / box.height - 0.5;
-      logoCase.style.setProperty('--rx', (-y * 8).toFixed(2) + 'deg');
-      logoCase.style.setProperty('--ry', (x * 10).toFixed(2) + 'deg');
-      logoCase.style.setProperty('--gx', ((x + 0.5) * 100).toFixed(1) + '%');
-      logoCase.style.setProperty('--gy', ((y + 0.5) * 100).toFixed(1) + '%');
+      logoCase.style.setProperty('--gx', ((e.clientX - box.left) / box.width * 100).toFixed(1) + '%');
+      logoCase.style.setProperty('--gy', ((e.clientY - box.top) / box.height * 100).toFixed(1) + '%');
       logoCase.classList.add('is-tilting');
     });
-    heroLogo.addEventListener('pointerleave', function () {
-      logoCase.classList.remove('is-tilting');
-      logoCase.style.setProperty('--rx', '0deg');
-      logoCase.style.setProperty('--ry', '0deg');
-    });
+    heroLogo.addEventListener('pointerleave', function () { logoCase.classList.remove('is-tilting'); });
   }
 
   // ── Mobile menu: proper button with aria-expanded ──
@@ -968,13 +960,13 @@
     });
   });
 </script>
-<script src="workbench.js?v=2" defer></script>
-<script src="walkman.js?v=4" defer></script>
-<script src="toy.js?v=2" defer></script>
+<script src="workbench.js?v=3" defer></script>
+<script src="walkman.js?v=8" defer></script>
+<script src="toy.js?v=3" defer></script>
 <script src="backdrop.js?v=11" defer></script>
 <script src="skills.js?v=1" defer></script>
 <script src="extras.js?v=1" defer></script>
-<script src="phone.js?v=8" defer></script>
+<script src="phone.js?v=13" defer></script>
 <script src="cursor.js?v=9" defer></script>
 </body>
 </html>

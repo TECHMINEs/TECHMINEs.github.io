@@ -148,6 +148,7 @@
 
   function step() {
     var n = pt.length, i, k, p;
+    for (i = 0; i < n; i++) { pt[i].px = pt[i].x; pt[i].py = pt[i].y; }   // kept so frames can be drawn between steps
     for (i = 1; i < n; i++) {
       p = pt[i];
       var vx = (p.x - p.ox) * 0.99, vy = (p.y - p.oy) * 0.99;
@@ -171,15 +172,18 @@
     }
   }
 
-  function render() {
-    var A = pt[N], B = pt[N + 1], sway = A.x - A.ox, dx = A.x - cx, dy = A.y - cy;
+  // Draw between the last two physics steps, so the motion is smooth on 120 Hz screens too
+  function at(p, k) { return p.px == null ? { x: p.x, y: p.y } : { x: p.px + (p.x - p.px) * k, y: p.py + (p.y - p.py) * k }; }
+  function render(k) {
+    if (k == null) k = 1;
+    var A = at(pt[N], k), B = at(pt[N + 1], k), sway = pt[N].x - pt[N].ox, dx = A.x - cx, dy = A.y - cy;
     angle = Math.atan2(-(B.x - A.x), B.y - A.y);
     var resting = !drag && Math.abs(angle) < 0.002 && Math.abs(sway) < 0.03;
     // at rest it sits on whole pixels, so the picture and the text stay sharp
     toy.style.transform = resting
       ? 'translate(' + Math.round(dx) + 'px,' + Math.round(dy) + 'px)'
       : 'translate(' + dx.toFixed(2) + 'px,' + dy.toFixed(2) + 'px) rotate(' + angle.toFixed(4) + 'rad) rotateY(' + Math.max(-18, Math.min(18, sway * 2)).toFixed(2) + 'deg)';
-    var d = 'M' + pt.slice(0, N + 1).map(function (p) { return p.x.toFixed(1) + ' ' + p.y.toFixed(1); }).join('L');
+    var d = 'M' + pt.slice(0, N + 1).map(function (p) { var q = at(p, k); return q.x.toFixed(1) + ' ' + q.y.toFixed(1); }).join('L');
     cable[0].setAttribute('d', d); cable[1].setAttribute('d', d); cable[2].setAttribute('d', d);
     nodes[2].setAttribute('x', A.x - 4.5); nodes[2].setAttribute('y', A.y - 4.5);
     nodes[3].setAttribute('x', A.x - 1.5); nodes[3].setAttribute('y', A.y - 1.5);
@@ -194,13 +198,15 @@
     lastT = now;
     var steps = 0;
     while (acc >= 1 / 60 && steps < 4) { step(); acc -= 1 / 60; steps++; }
-    quiet = render() ? quiet + 1 : 0;
+    var resting = render(Math.min(1, acc * 60));
+    toy.classList.toggle('is-moving', !resting);
+    quiet = resting ? quiet + 1 : 0;
     if (visible && quiet < 45) raf = requestAnimationFrame(frame);
     else lastT = 0;
   }
   function wake() { quiet = 0; if (!raf && pt && !calm && visible && !document.hidden) raf = requestAnimationFrame(frame); }
 
-  function settle() { for (var q = 0; q < 1200; q++) step(); render(); }
+  function settle() { for (var q = 0; q < 1200; q++) step(); render(1); }
 
   function relayout(first) {
     place();
@@ -229,8 +235,12 @@
     if (e.key === 'Escape' && toy.classList.contains('is-flipped')) { e.preventDefault(); flip(); toy.focus(); return; }
     if (e.target === toy && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); flip(); }
   });
+  // the picture inside must never be dragged on its own (Safari starts a native image drag otherwise)
+  toy.addEventListener('dragstart', function (e) { e.preventDefault(); });
+  Array.prototype.forEach.call(toy.querySelectorAll('img'), function (im) { im.draggable = false; });
   toy.addEventListener('pointerdown', function (e) {
     if (e.button || e.target.closest('a, button')) return;
+    if (e.pointerType === 'mouse') e.preventDefault();
     var r = hero.getBoundingClientRect(), A = pt ? pt[N] : null, B = pt ? pt[N + 1] : null;
     drag = { sx: e.clientX, sy: e.clientY, m: 0 };
     if (A) { drag.gx = e.clientX - r.left - (A.x + B.x) / 2; drag.gy = e.clientY - r.top - (A.y + B.y) / 2; }

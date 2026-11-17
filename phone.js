@@ -6,7 +6,9 @@
 
    The rail only covers space that is free: it never sits over the text or the links, and it
    stays out of the column the Walkman uses, moving aside when the Walkman opens or is carried
-   to the other side. Decorative only: the section works the same without it. */
+   to the other side. The handset is drawn in 3D by phone3d.js (three.js, loaded just before the
+   section comes into view); the flat drawing below is the fallback when 3D is not available.
+   Decorative only: the section works the same without it. */
 (function () {
   'use strict';
 
@@ -59,6 +61,7 @@
       '<path class="ph-track" d=""/><path class="ph-track-hi" d=""/>' +
       '<rect class="ph-stop ph-stop-a" width="5" height="13" rx="1"/><rect class="ph-stop ph-stop-b" width="5" height="13" rx="1"/>' +
     '</g>' +
+    '<g class="ph-ring3d ph-ring"><path d="M7.4-5.2A9 9 0 0 1 7.4 5.2"/><path d="M13.1-9.2A16 16 0 0 1 13.1 9.2"/><path d="M18.8-13.2A23 23 0 0 1 18.8 13.2"/></g>' +
     '<g class="ph-lbl"><circle class="ph-dot" r="2.6"/><text class="ph-say" text-anchor="end"></text></g>' +
     '<g class="ph-all" filter="url(#ph-shadow)">' +
       '<path class="ph-cord"/><path class="ph-cord-hi"/>' +
@@ -98,11 +101,14 @@
   var $ = function (s) { return svg.querySelector(s); };
   var track = $('.ph-track'), trackHi = $('.ph-track-hi'), stopA = $('.ph-stop-a'), stopB = $('.ph-stop-b');
   var car = $('.ph-car'), hs = $('.ph-hs'), ring = $('.ph-ring'), word = $('.ph-word'), hit = $('.ph-hit');
+  var ring3d = $('.ph-ring3d');
   var cordP = $('.ph-cord'), cordH = $('.ph-cord-hi'), lbl = $('.ph-lbl'), say = $('.ph-say'), dot = $('.ph-dot');
   hit.setAttribute('data-cursor', 'drag');
 
   // ------------------------------------------------------------------ placement
-  var ATTACH = { x: 8, y: -13 }, COM = { x: 14, y: 101 }, HS_H = 216, HALF = 50;
+  var ATTACH = { x: 8, y: -13 }, COM = { x: 14, y: 101 }, HS_H = 240, HALF = 60;
+  var BASE = document.currentScript ? document.currentScript.src : location.href;
+  var gl = null;
   var CAR_Y = 22, ANCHOR_DY = 5;
   var S = 0.86, HL = 114, N = 12, LL = 10, zone = null, rest = 0, room = 0, shown = false;
 
@@ -136,7 +142,7 @@
   }
 
   function freeIntervals(scale, cord, obstacles, cols, W, minX) {
-    var half = HALF * scale, bottom = CAR_Y + ANCHOR_DY + cord * 1.12 + HS_H * scale + 14, pad = 18 * scale;
+    var half = HALF * scale, bottom = CAR_Y + ANCHOR_DY + cord * 1.12 + HS_H * scale + 14, pad = 22 * scale;
     var lo = Math.max(half + 16, minX), hi = W - half - 16, list = [], start = null;
     for (var x = lo; x <= hi + 0.1; x += 4) {
       var l = x - half, r = x + half, ok = true;
@@ -193,7 +199,7 @@
     rest = zone[0] + (zone[1] - zone[0]) * 0.55;
     var newLL = pick.cord / newN;
     var rebuild = !pts.length || Math.abs(newS - S) > 0.001 || Math.abs(newLL - LL) > 0.5;
-    S = newS; N = newN; LL = newLL; HL = Math.hypot(COM.x - ATTACH.x, COM.y - ATTACH.y) * S;
+    S = newS; N = newN; LL = newLL; HL = (gl ? 112 : Math.hypot(COM.x - ATTACH.x, COM.y - ATTACH.y)) * S;
     if (rebuild) seed(pts.length ? carX : rest, pts.length ? 0.05 : 0.32);
     drawRail();
     if (!running) { for (var i = 0; i < (calm ? 240 : 0); i++) step(); render(performance.now(), { near: false, px: -9999, py: -9999 }); }
@@ -202,7 +208,7 @@
   var railA = 0, railB = 0;
   function drawRail() {
     if (!zone) return;
-    var a = Math.min(zone[0], pts.length ? carX : zone[0]) - 34 * S, b = Math.max(zone[1], pts.length ? carX : zone[1]) + 34 * S, y = CAR_Y - 12;
+    var a = Math.min(zone[0], pts.length ? carX : zone[0]) - 30 * S, b = Math.max(zone[1], pts.length ? carX : zone[1]) + 30 * S, y = CAR_Y - 12;
     if (Math.abs(a - railA) < 0.5 && Math.abs(b - railB) < 0.5) return;
     railA = a; railB = b;
     track.setAttribute('d', 'M' + a.toFixed(1) + ' ' + y + 'H' + b.toFixed(1));
@@ -243,9 +249,12 @@
     if (!grab && engage > 0.01) {
       var tx = px, ty = py;
       if (hot) { var mr = mail.getBoundingClientRect(); tx = mr.right - s.left; ty = mr.top + mr.height / 2 - s.top; }
-      var reach = 90 * S;
+      // it leans toward you but stays in its own column and never hangs lower than at rest,
+      // so it can never swing over the text or the buttons below it
+      var reach = 14 * S, depth = CAR_Y + ANCHOR_DY + N * LL * 1.05 + HL;
       tx = Math.max(zone[0] - reach, Math.min(zone[1] + reach, tx));
-      ty = Math.max(CAR_Y + 60 * S, Math.min(CAR_Y + ANCHOR_DY + N * LL * 1.6 + HL + 20, ty));
+      ty = Math.max(CAR_Y + 60 * S, Math.min(depth, ty));
+      if (hot) ty = Math.min(ty, depth - 20 * S);
       var dx = tx - end.x, dy = ty - end.y, d = Math.hypot(dx, dy) || 1;
       var pull = Math.min(0.85, d * 0.006) * engage * (hot ? 0.9 : 1) * Math.min(1, d / 30);
       fx = dx / d * pull; fy = dy / d * pull;
@@ -272,6 +281,12 @@
         a.x += ddx * corr * wa; a.y += ddy * corr * wa;
         b.x -= ddx * corr * wb; b.y -= ddy * corr * wb;
       }
+    }
+    // stay in its own column even when the carriage moves fast
+    if (!grab) {
+      var lim0 = zone[0] - 26 * S, lim1 = zone[1] + 26 * S;
+      if (end.x < lim0) end.x += (lim0 - end.x) * 0.3;
+      if (end.x > lim1) end.x -= (end.x - lim1) * 0.3;
     }
     // never let it flip up over the rail
     var floor = CAR_Y + ANCHOR_DY + 24 * S;
@@ -307,6 +322,12 @@
     var locA = Math.atan2((COM.y - ATTACH.y), (COM.x - ATTACH.x) * f);
     var rot = (segA - locA) * 57.29578 + shake * 5;
     hs.setAttribute('transform', 'translate(' + (top.x + shake * 1.2).toFixed(2) + ' ' + top.y.toFixed(2) + ') rotate(' + rot.toFixed(2) + ') scale(' + (f * S).toFixed(3) + ' ' + S.toFixed(3) + ') translate(' + (-ATTACH.x) + ' ' + (-ATTACH.y) + ')');
+    if (gl) {
+      var ep = gl.draw({ W: sec.clientWidth, H: sec.clientHeight, face: face, segA: segA, shake: shake, top: top, S: S, carX: carX, carY: CAR_Y, railA: railA, railB: railB, pts: pts });
+      var el = Math.hypot(ep.dx, ep.dy), ang = el > 6 * S ? Math.atan2(ep.dy, ep.dx) * 57.29578 : (face < 0 ? 180 : 0);
+      ring3d.setAttribute('transform', 'translate(' + ep.x.toFixed(1) + ' ' + ep.y.toFixed(1) + ') rotate(' + ang.toFixed(1) + ') scale(' + S.toFixed(3) + ')');
+      ring3d.style.opacity = (ringAmt * burst * (0.55 + 0.45 * Math.abs(Math.sin(t * 10)))).toFixed(3);
+    }
     var sx = f < 0 ? -1 : 1;
     if (sx !== lastSx) { lastSx = sx; word.setAttribute('transform', 'translate(2.6 100) scale(' + sx + ' 1)'); }
     ring.style.opacity = (ringAmt * burst * (0.55 + 0.45 * Math.abs(Math.sin(t * 10)))).toFixed(3);
@@ -345,19 +366,28 @@
     while (acc >= 1 / 60 && g++ < 6) { acc -= 1 / 60; st = step(); }
     if (g >= 6) acc = 0;
     if (st) render(now, st);
+    // go to sleep once nothing is moving and nobody is near
+    var e = pts[pts.length - 1], motion = Math.abs(e.x - e.ox) + Math.abs(e.y - e.oy) + Math.abs(carV) / 60;
+    var idle = !grab && !hot && engage === 0 && ringAmt < 0.004 && motion < 0.01 && now > autoRingUntil && now > copiedUntil && now > pickedUntil;
+    quiet = idle ? quiet + 1 : 0;
+    if (quiet > 90) { running = false; quiet = 0; return; }
     requestAnimationFrame(frame);
   }
   function wake() { if (!running && visible && shown && pts.length) { running = true; last = performance.now(); requestAnimationFrame(frame); } }
 
   // ------------------------------------------------------------------ input
-  window.addEventListener('pointermove', function (e) { if (e.pointerType === 'touch' && !grab) return; P.x = e.clientX; P.y = e.clientY; P.on = true; }, { passive: true });
+  window.addEventListener('pointermove', function (e) {
+    if (e.pointerType === 'touch' && !grab) return;
+    P.x = e.clientX; P.y = e.clientY; P.on = true;
+    if (!running && visible) { var r = sec.getBoundingClientRect(); if (P.y > r.top - 300 && P.y < r.bottom + 300) wake(); }
+  }, { passive: true });
   document.documentElement.addEventListener('pointerleave', function () { P.on = false; });
   [mail, copyBtn].forEach(function (el) {
     if (!el) return;
-    ['pointerenter', 'focus'].forEach(function (ev) { el.addEventListener(ev, function () { hot = true; }); });
-    ['pointerleave', 'blur'].forEach(function (ev) { el.addEventListener(ev, function () { hot = false; }); });
+    ['pointerenter', 'focus'].forEach(function (ev) { el.addEventListener(ev, function () { hot = true; wake(); }); });
+    ['pointerleave', 'blur'].forEach(function (ev) { el.addEventListener(ev, function () { hot = false; wake(); }); });
   });
-  if (copyBtn) copyBtn.addEventListener('click', function () { setTimeout(function () { if (copyBtn.classList.contains('copied')) copiedUntil = performance.now() + 2200; }, 60); });
+  if (copyBtn) copyBtn.addEventListener('click', function () { setTimeout(function () { if (copyBtn.classList.contains('copied')) copiedUntil = performance.now() + 2200; wake(); }, 60); });
 
   var down = null;
   hit.addEventListener('pointerdown', function (e) {
@@ -393,6 +423,35 @@
     end.oy += 1.6 * k; end.ox += (Math.random() - 0.5) * 1.2 * k;
     wake();
   });
+
+  // ------------------------------------------------------------------ the 3D handset
+  // three.js loads a little before the section comes into view; until then (or if WebGL is
+  // missing) the flat drawing above is shown instead.
+  var glTried = false;
+  function loadScript(src, ok, fail) { var t = document.createElement('script'); t.src = src; t.async = true; t.onload = ok; t.onerror = fail; document.head.appendChild(t); }
+  function loadGL() {
+    if (glTried) return; glTried = true;
+    try { var test = document.createElement('canvas'); if (!(test.getContext('webgl2') || test.getContext('webgl'))) return; } catch (e) { return; }
+    var go = function () {
+      loadScript(new URL('phone3d.js?v=3', BASE).href, function () {
+        try { gl = window.TMPhone3D && window.TMPhone3D(sec); } catch (e) { gl = null; }
+        if (!gl) return;
+        svg.classList.add('is-gl');
+        hit.setAttribute('y', '-20'); hit.setAttribute('height', '252');
+        plan(); render(performance.now(), { near: false, px: -9999, py: -9999 }); wake();
+      }, function () {});
+    };
+    if (window.THREE) go();
+    else loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', go, function () {});
+  }
+  // start loading once the visitor is within a few screens of the section
+  var glWatch = function () {
+    var r = sec.getBoundingClientRect();
+    if (r.top < window.innerHeight * 3 && r.bottom > -window.innerHeight) { window.removeEventListener('scroll', glWatch); loadGL(); }
+  };
+  window.addEventListener('scroll', glWatch, { passive: true });
+  window.addEventListener('load', glWatch);
+  glWatch();
 
   // ------------------------------------------------------------------ start and keep placed
   var replan = 0;

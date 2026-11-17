@@ -1,3 +1,6 @@
+/* TECHMINES project workbench.
+   A full-screen dialog that runs each project's live demo in a frame, with a tab per project,
+   a loading state while the demo starts, and a link to open the demo in its own tab. */
 (function () {
   'use strict';
   const dialog = document.getElementById('workbench');
