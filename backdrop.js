@@ -130,6 +130,7 @@
   }
 
   function draw(dt) {
+    if (!pulses.width || !pulses.height) return;   // the page has no size yet (a hidden tab or frame)
     var red = css('--red'), lt = light(), shift = scrollP * -40;
     var v = lt
       ? { trace: 0.3, pad: 0.5, ring: 0.6, pulse: 0.75, glow: 8 }
